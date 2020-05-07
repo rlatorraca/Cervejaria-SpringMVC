@@ -6,14 +6,14 @@ import jakarta.validation.constraints.Size;
 public class Beer {
 
 
-	@NotBlank(message = "SKU is mandatory")// Verifica se a String n�o � NULA ou VAZIA
+	@NotBlank(message = "SKU is mandatory")// Verifica se a String não é NULA ou VAZIA
 	private String sku;
 	
-	@NotBlank(message = "Name is mandatory")// Verifica se a String n�o � NULA ou VAZIA
+	@NotBlank(message = "Name is mandatory")// Verifica se a String não é NULA ou VAZIA
 	private String name;
 	
-	@NotBlank(message = "Description is mandatory")// Verifica se a String n�o � NULA ou VAZIA
-	@Size(min=1, max=50, message="Description needs maxium 50 characters")
+	@NotBlank(message = "Description is mandatory")// Verifica se a String não é NULA ou VAZIA
+	@Size(min=1, max=50, message="Description needs maximum 50 characters")
 	private String description;
 
 	public String getSku() {

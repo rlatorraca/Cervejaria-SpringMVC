@@ -31,10 +31,14 @@ public class BeersController {
 	 * @param cerveja
 	 * @param result ==> recebe o resultado da validação dos campos feita pelo SPRING
 	 * @param model ==> passagem INFORMAÇÕES/MENSAGENS para a página  HTML, quando fizer o "FORWARD"
-	 * @param redirectAttributes ==> passagem INFORMACÔES/MENSAGENS para a p�gina  HTML, quando fizer o "REDIRECT"
+	 * @param redirectAttributes ==> passagem INFORMACÔES/MENSAGENS para a página  HTML, quando fizer o "REDIRECT"
 	 * 
-	 * Forward (Padrão do Spring)==> faz um REQUEST, retorna o 200 (OK) e uma RESPONSE (geralmente a pagina html)
-	 * Redirect ==> apresenta uma LOCATION para uma "URL" (faz uma "GET").
+	 * -----------------
+	 * 
+	 * >>> Forward (Padrão do Spring)==> faz um REQUEST (faz um GET), retorna o 200 (OK) e uma RESPONSE (geralmente a pagina html / uma VIEW)
+	 * 
+	 * >>> Redirect ==> REQUEST (faz um POST), qure RESPONDE com um 302 (FOUND) que apresenta uma LOCATION (url) para uma "URL"  e faz uma "GET" na LOCATION (url)
+	 * 	- Objetivo: comecar /renovar as especificacoes no local de destino
 	 * 
 	 * @return
 	 */
@@ -43,10 +47,11 @@ public class BeersController {
 		
 		if (result.hasErrors()) {
 			model.addAttribute(beer);
+			//model.addAttribute("message", "Existem Erros");
 			
 			return newBeer(beer);
-		}
-		redirectAttributes.addFlashAttribute("mensagem", "Formulário preenchido com SUCESSO !!!!"); // Existir� mesmo AP�S um REDIRECT
+		}		
+		redirectAttributes.addFlashAttribute("mensagem", "Formulário preenchido com SUCESSO !!!!"); // Existirão mesmo APÓS um REDIRECT
 		System.out.println(">>> sku: " + beer.getSku());
 		return "redirect:/cervejas/newbeer";
 	}
