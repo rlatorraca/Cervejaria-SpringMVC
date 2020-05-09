@@ -8,8 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -86,5 +86,18 @@ public class WebConfig implements WebMvcConfigurer , ApplicationContextAware{
 		resolver.setSuffix(".html"); //
 		resolver.setTemplateMode(TemplateMode.HTML);
 		return resolver;
+	}
+	
+	/**
+	 * Todos os recursos STATICs estarao dentro dessa configuracao.
+	 * Quando usamos o padrão "/**", significa dizer que estamos criando um padrão de URL que serve para qualquer URL. 
+	 * 		então se fazemos "/**" quer dizer "/QUALQUER_PADRAO_DE_STRING". Então quando temos o código:
+	 * 		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+	 * 	Significa que estamos capturando qualquer URL e dizendo que o local dos arquivos estáticos para essa URL é o que definimos depois no próximo trecho de código, 
+	 * 		que é "classpath:/static/", ou seja, a pasta static no classpath da nossa aplicação.
+	 */
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 	}
 }

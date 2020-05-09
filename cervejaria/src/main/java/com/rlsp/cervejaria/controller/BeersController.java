@@ -22,7 +22,7 @@ public class BeersController {
 	@RequestMapping("/cervejas/newbeer")
 	public String newBeer(Beer beer) {
 		// model.addAttribute(new Beer()); //cria e passa o OBJETO de "Beer" para o HTML
-		return "cervejas/registerbeer.html";
+		return "cerveja/CadastroCerveja.html";
 	}
 	
 	/**
@@ -53,6 +53,11 @@ public class BeersController {
 		}		
 		redirectAttributes.addFlashAttribute("mensagem", "Formulário preenchido com SUCESSO !!!!"); // Existirão mesmo APÓS um REDIRECT
 		System.out.println(">>> sku: " + beer.getSku());
-		return "redirect:/cervejas/newbeer";
+		return "redirect:/cerveja/newbeer";
+	}
+	
+	@RequestMapping("/cervejas/cadastro")
+	public String cadastro() {
+		return "cerveja/cadastro-produto";
 	}
 }

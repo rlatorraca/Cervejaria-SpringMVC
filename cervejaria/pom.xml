@@ -9,7 +9,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>cervejaria</name>
   <packaging>war</packaging>
-  
+    
   <properties>
   
   		<!-- Padrão UTF-8 -->
