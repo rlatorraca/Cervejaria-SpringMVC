@@ -18,6 +18,8 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.rlsp.cervejaria.controller.BeersController;
 
+import nz.net.ultraq.thymeleaf.LayoutDialect;
+
 /**
  * Classe que ensina o SPRING MVC a encontrar os CONTROLLERs
  *  
@@ -71,6 +73,9 @@ public class WebConfig implements WebMvcConfigurer , ApplicationContextAware{
 		SpringTemplateEngine engine = new SpringTemplateEngine();
 		engine.setEnableSpringELCompiler(true);
 		engine.setTemplateResolver(templateResolver());
+		
+		//Insere o Dialeto de Templates no Thymeleaf
+		engine.addDialect(new LayoutDialect());
 		return engine;
 	}
 
