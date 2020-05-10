@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.rlsp.cervejaria.model.Beer;
+import com.rlsp.cervejaria.model.Cerveja;
 
 import jakarta.validation.Valid;
 
@@ -20,7 +20,7 @@ import jakarta.validation.Valid;
 public class BeersController {
 
 	@RequestMapping("/cervejas/newbeer")
-	public String newBeer(Beer beer) {
+	public String newBeer(Cerveja beer) {
 		// model.addAttribute(new Beer()); //cria e passa o OBJETO de "Beer" para o HTML
 		return "cerveja/CadastroCerveja.html";
 	}
@@ -43,7 +43,7 @@ public class BeersController {
 	 * @return
 	 */
 	@RequestMapping(value = "/cervejas/newbeer", method = RequestMethod.POST)
-	public String registerBeer(@Valid Beer beer, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+	public String registerBeer(@Valid Cerveja beer, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		
 		if (result.hasErrors()) {
 			model.addAttribute(beer);
