@@ -5,6 +5,7 @@ import javax.servlet.Filter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.rlsp.cervejaria.config.JPAConfig;
 import com.rlsp.cervejaria.config.WebConfig;
 /**
  * Configurações iniciais para o SERVLETs que iria inicializar os FRONT CONTROLLER DO SPRING (DISPATCHER SERVLET) ==> que chamará os CONTROLLERs
@@ -15,19 +16,23 @@ import com.rlsp.cervejaria.config.WebConfig;
  */
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
+	/**
+	 * Ensina o SPRING a encontrar os BEANS de Service antes da WEB (Servlets)
+	 */
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return new Class<?>[] { JPAConfig.class };
+		//return null;
 	}
 
 	/**
-	 * Ensina o SPRING a encontrar os CONTROLLERs
+	 * Ensina o SPRING a encontrar os CONTROLLERs na parte WEB
 	 */
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
 		
-		return new Class<?>[] {WebConfig.class}; // ==> Dentro dp PACOTE "com.rlsp.brewer.config"
+		return new Class<?>[] { WebConfig.class }; // ==> Dentro dp PACOTE "com.rlsp.brewer.config"
 	}
 
 	/**
