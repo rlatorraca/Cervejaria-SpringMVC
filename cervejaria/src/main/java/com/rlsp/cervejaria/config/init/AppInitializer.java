@@ -6,6 +6,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.rlsp.cervejaria.config.JPAConfig;
+import com.rlsp.cervejaria.config.ServiceConfig;
 import com.rlsp.cervejaria.config.WebConfig;
 /**
  * Configurações iniciais para o SERVLETs que iria inicializar os FRONT CONTROLLER DO SPRING (DISPATCHER SERVLET) ==> que chamará os CONTROLLERs
@@ -22,7 +23,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		
-		return new Class<?>[] { JPAConfig.class };
+		return new Class<?>[] { JPAConfig.class , ServiceConfig.class};
 		//return null;
 	}
 
@@ -59,5 +60,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		
 		return new Filter[] { characterEncodingFilter };
 	}
+	
+	
 
 }

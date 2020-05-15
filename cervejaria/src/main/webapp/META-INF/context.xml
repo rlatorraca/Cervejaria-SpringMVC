@@ -5,7 +5,7 @@
             factory="org.apache.naming.factory.BeanFactory"
             type="com.mchange.v2.c3p0.ComboPooledDataSource"
             driverClass="com.mysql.cj.jdbc.Driver"
-            jdbcUrl="jdbc:mysql://localhost:3306/cervejaria?useSSL=false&amp;serverTimezone=America/Halifax"
+            jdbcUrl="jdbc:mysql://localhost/cervejaria?useSSL=false&amp;serverTimezone=America/Halifax"
             user="root"
             password="123" 
             initialPoolSize="5" 

@@ -13,6 +13,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.repository.CervejasRepository;
@@ -23,7 +24,8 @@ import com.rlsp.cervejaria.repository.CervejasRepository;
  *
  */
 @Configuration
-@EnableJpaRepositories(basePackageClasses = CervejasRepository.class) // Para encontrar os repositorios no PACOTE de CervejasRepository
+@EnableJpaRepositories(basePackageClasses = CervejasRepository.class, enableDefaultTransactions = false) // Para encontrar os repositorios no PACOTE de CervejasRepository
+@EnableTransactionManagement //Diz para o Spring que o PROGRAMADOR vai gerenciar as transacoes com o DB [enableDefaultTransactions = false, acima necessario para desabilitar o gerenciamento do Spring]
 public class JPAConfig {
 	
 	/**
