@@ -24,7 +24,7 @@ import com.rlsp.cervejaria.repository.CervejasRepository;
  *
  */
 @Configuration
-@EnableJpaRepositories(basePackageClasses = CervejasRepository.class, enableDefaultTransactions = false) // Para encontrar os repositorios no PACOTE de CervejasRepository
+@EnableJpaRepositories(basePackages = "com.rlsp.cervejaria.repository", enableDefaultTransactions = false) // Para encontrar os repositorios no PACOTE de CervejasRepository
 @EnableTransactionManagement //Diz para o Spring que o PROGRAMADOR vai gerenciar as transacoes com o DB [enableDefaultTransactions = false, acima necessario para desabilitar o gerenciamento do Spring]
 public class JPAConfig {
 	

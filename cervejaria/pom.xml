@@ -29,7 +29,7 @@
 		<!-- Spring MVC -->
 		<!-- Spring Framework (Bill of Materials) ==> Controla a compabilidade 
 			das versões dos projetos Maven -->
-		<spring-framework.version>5.2.6.RELEASE</spring-framework.version>
+		<spring-framework.version>5.2.5.RELEASE</spring-framework.version>
 
 		<!-- Servlet API -->
 		<servlet.version>4.0.1</servlet.version>
@@ -38,7 +38,7 @@
 		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
 
 		<!-- Bean Validation / Hibernate Validator -->
-		<hibernate-validator.version>7.0.0.Alpha1</hibernate-validator.version>
+		<hibernate-validator.version>6.1.2.Final</hibernate-validator.version>
 
 		<!-- Thymeleaf - Layout Dialect -->
 		<thymeleaf-layout-dialect.version>2.4.1</thymeleaf-layout-dialect.version>
@@ -48,7 +48,7 @@
 		<jcl-over-slf4j.version>2.0.0-alpha1</jcl-over-slf4j.version>
 
 		<!-- Hibernate -->
-		<hibernate.version>6.0.0.Alpha5</hibernate.version>
+		<hibernate.version>5.4.15.Final</hibernate.version>
 		
 		<!-- MySQL -->
 		<mysql-connector-java.version>8.0.20</mysql-connector-java.version>
@@ -56,8 +56,15 @@
 		<!-- Flyway - migacao do  DB -->
 		<flyway-maven-plugin.version>6.4.1</flyway-maven-plugin.version>
 		
-		<!-- Spring Data JPA -->
+		<!-- Spring Data JPA --> 
 		<spring-data-jpa-version>2.2.7.RELEASE</spring-data-jpa-version>
+		<!-- ><spring-data-jpa-version>1.11.23.RELEASE</spring-data-jpa-version>  -->
+		
+		<!-- JSON -->
+		<jackson-json-version>2.10.4</jackson-json-version>
+		
+		<!-- Glassfish-el -->
+		<glassfish-el-version>3.0.1-b11</glassfish-el-version>
 	</properties>
 
 	<build>
@@ -150,7 +157,21 @@
 			<scope>compile</scope> <!-- Significa que eu preciso dessa dependencia sempre ==> DEFAULT -->
 		</dependency>
 
-
+		<!-- Expression Language 3.0,  Dec 14, 2018-->
+		<dependency>
+    		<groupId>org.glassfish</groupId>
+    		<artifactId>javax.el</artifactId>
+    		<version>${glassfish-el-version}</version>    		
+		</dependency>
+		
+		<!-- JSON - Jackson -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>${jackson-json-version}</version>		    
+		</dependency>
+		
+		
 		<!-- Thymeleaf - Layout Dialect -->
 		<dependency>
 			<groupId>nz.net.ultraq.thymeleaf</groupId>

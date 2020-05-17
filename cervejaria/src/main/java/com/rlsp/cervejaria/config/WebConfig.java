@@ -1,24 +1,27 @@
 package com.rlsp.cervejaria.config;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-import com.rlsp.cervejaria.controller.BeersController;
+import com.rlsp.cervejaria.controller.BeerController;
 import com.rlsp.cervejaria.controller.converter.EstiloConverter;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
@@ -32,16 +35,16 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  * @ComponentScan ==> escanea os CONTROLLERs (as classes de controller)
  * @EnableWebMvc ==> configura��o para um projeto WEB MVC
  * 
- * basePackageClasses = BeersController.class ==> diz para que o sistema encontre os CONTROLLers que esta na classe "BeersController" (é um VETOR, usa-se {})
+ * basePackageClasses = BeerController.class ==> diz para que o sistema encontre os CONTROLLers que esta na classe "BeersController" (é um VETOR, usa-se {})
  * 
  * WebMvcConfigurer ==> implementa algumas CLASSES que serão usadas para as configurações do SPRING MVC para WEB (ex: formatador,etc)
  *
  */
 
 @Configuration
-@ComponentScan(basePackageClasses = {BeersController.class})
+@ComponentScan(basePackageClasses = {BeerController.class})
 @EnableWebMvc
-public class WebConfig implements WebMvcConfigurer , ApplicationContextAware{
+public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
 
 	/**
 	 * Objeto do SPRING. Quando aplicao subir receber�á o CONTEXT (devido a Implementação da Interface ApplicationContextAware)
@@ -118,6 +121,18 @@ public class WebConfig implements WebMvcConfigurer , ApplicationContextAware{
 		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
 		conversionService.addConverter(new EstiloConverter());
 		
+		/**
+		 * Converte valores BigDecimais que entrarem no form respeitando o padrao da mascara
+		 */
+		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,###,##0.00");
+		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);
+		
+		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
+		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
+		
 		return conversionService;
 	}
+
+	
+
 }

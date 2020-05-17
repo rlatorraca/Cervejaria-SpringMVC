@@ -1,6 +1,5 @@
 package com.rlsp.cervejaria.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,17 +8,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+
 
 @Entity
 @Table(name = "estilo")
-public class Estilo implements Serializable {
+public class Estilo  {
 
-	private static final long serialVersionUID = 1L;
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 
+	@NotBlank(message = "O nome é obrigatório")
+	@Size(max = 20, message = "O tamanho do nome não pode ser maior que {max} caracteres")
 	private String nome;
 	
 	@OneToMany(mappedBy = "estilo")
@@ -32,6 +37,7 @@ public class Estilo implements Serializable {
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
+	
 
 	public String getNome() {
 		return nome;
@@ -39,6 +45,14 @@ public class Estilo implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public List<Cerveja> getCervejas() {
+		return cervejas;
+	}
+
+	public void setCervejas(List<Cerveja> cervejas) {
+		this.cervejas = cervejas;
 	}
 
 	@Override
