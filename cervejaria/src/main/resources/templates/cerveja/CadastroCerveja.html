@@ -2,10 +2,14 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:cervejaria="http://cervejaria.rlsp.com"
 	layout:decorate="layout/LayoutPadrao">
 
 <head>
 	<title>Cadastro de Cerveja</title>
+	
+	<link rel="stylesheet" th:href="@{/css/vendors/bootstrap-switch.css}"/>
+	<link rel="stylesheet" th:href="@{/css/vendors/uikit.css}"/>
 </head>
 
 <body>
@@ -19,34 +23,36 @@
 
 		<div class="container-fluid">
 
+			<form method="POST" th:object="${cerveja}" class="form-vertical  js-form-loading">
 			
-			<th:block th:include="fragments/MensagemSucesso"></th:block>
-			
-
-			<form method="POST" th:object="${cerveja}"
-				class="form-vertical  js-form-loading">
+				<!-- ELEMENTO do dialeto personalizado -->
+				<cervejaria:message/>	
 				
-				<th:block th:include="fragments/MensagemErroValidacao"></th:block>
+				<!-- <th:block th:include="fragments/MensagemSucesso"></th:block>  -->
+				<!-- <th:block th:include="fragments/MensagemErroValidacao"></th:block> --> 
 
 				<div class="row">
-					<div class="col-sm-2  form-group" th:classappend="${#fields.hasErrors('sku')} ? has-error">
+					
+					<!-- <div class="col-sm-2  form-group" th:classappend="${#fields.hasErrors('sku')} ? has-error"> -->
+					<!-- cervejaria:classforerror="sku" é um ATRIBUTO personalizado -->
+					<div class="col-sm-2  form-group" cervejaria:classforerror="sku">
 						<label for="sku" class="control-label">SKU</label> 
 						<input id="sku" type="text"	class="form-control" th:field="*{sku}"/>
 					</div>
 
-					<div class="col-sm-10  form-group" th:classappend="${#fields.hasErrors('nome')} ? has-error">
+					<div class="col-sm-10  form-group" cervejaria:classforerror="nome">
 						<label for="nome" class="control-label">Nome</label> 
 						<input id="nome" type="text" class="form-control" th:field="*{nome}"/>
 					</div>
 				</div>
 
-				<div class="form-group" th:classappend="${#fields.hasErrors('descricao')} ? has-error">
+				<div class="form-group" cervejaria:classforerror="descricao">
 					<label for="descricao" class="control-label">Descrição</label>
 					<textarea id="descricao" rows="3" class="form-control" th:field="*{descricao}"></textarea>
 				</div>
 
 				<div class="row">
-					<div class="col-sm-3  form-group" th:classappend="${#fields.hasErrors('estilo')} ? has-error">
+					<div class="col-sm-3  form-group" cervejaria:classforerror="estilo">
 						<label for="estilo" class="control-label">Estilo</label>
 						<div class="bw-field-action">
 							<select id="estilo" class="form-control" th:field="*{estilo}">
@@ -62,7 +68,7 @@
 
 					</div>
 
-					<div class="col-sm-3  form-group" th:classappend="${#fields.hasErrors('sabor')} ? has-error">
+					<div class="col-sm-3  form-group" cervejaria:classforerror="sabor">
 						<label for="sabor" class="control-label">Sabor</label> 
 						<select id="sabor" class="form-control" th:field="*{sabor}">
 							<option value="">Selecione o sabor</option>
@@ -70,15 +76,15 @@
 						</select>
 					</div>
 
-					<div class="col-sm-3  form-group" th:classappend="${#fields.hasErrors('teorAlcoolico')} ? has-error">
-						<label for="teorAlcoolico">Teor alcoólico</label>
+					<div class="col-sm-3  form-group" cervejaria:classforerror="teorAlcoolico">
+						<label for="teorAlcoolico"  class="control-label">Teor alcoólico</label>
 						<div class="input-group">
 							<input id="teorAlcoolico" type="text" class="form-control js-decimal" th:field="*{teorAlcoolico}"/>
 							<div class="input-group-addon">%</div>
 						</div>
 					</div>
 
-					<div class="col-lg-3  col-sm-6  form-group" th:classappend="${#fields.hasErrors('origem')} ? has-error" >
+					<div class="col-lg-3  col-sm-6  form-group" cervejaria:classforerror="origem" >
 						<label for="origem" class="control-label">Origem</label>
 						<div>
 							<th:block th:each="origem : ${origens}">
@@ -92,7 +98,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-sm-3  form-group" th:classappend="${#fields.hasErrors('valor')} ? has-error">
+					<div class="col-sm-3  form-group" cervejaria:classforerror="valor">
 						<label for="valor" class="control-label">Valor unitário</label>
 						<div class="input-group">
 							<div class="input-group-addon">R$</div>
@@ -100,7 +106,7 @@
 						</div>
 					</div>
 
-					<div class="col-sm-3  form-group" th:classappend="${#fields.hasErrors('comissao')} ? has-error">
+					<div class="col-sm-3  form-group" cervejaria:classforerror="comissao">
 						<label for="comissao" class="control-label">Comissão</label>
 						<div class="input-group">
 							<input id="comissao" type="text" class="form-control js-decimal" th:field="*{comissao}"/>
@@ -108,9 +114,39 @@
 						</div>
 					</div>
 
-					<div class="col-sm-3  form-group" th:classappend="${#fields.hasErrors('quantidadeEstoque')} ? has-error">
+					<div class="col-sm-3  form-group" cervejaria:classforerror="quantidadeEstoque">
 						<label for="estoque" class="control-label">Estoque</label> 
 						<input id="estoque" type="text" class="form-control js-plain" th:field="*{quantidadeEstoque}"/>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="form-group  col-sm-12" >
+						<label class="control-label">Foto</label>
+						<div class="js-upload uk-placeholder uk-text-center">							
+						    <span uk-icon="icon: cloud-upload"></span>
+						    <span class="uk-text-middle">Arraste a foto aqui ou </span>
+						    <div uk-form-custom>
+						        <input type="file" accept=".jpg,.jpeg,.png">
+						        <span class="uk-link">Selecione</span>
+						    </div>
+						</div>
+					</div>
+				</div>
+				
+				<progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
+				
+				
+				
+				<div class="row">
+					<div class="form-group  col-sm-12">
+						<label class="control-label">Foto</label>
+						
+						<div id="upload-drop" class="bw-upload">
+							<i class="glyphicon  glyphicon-cloud-upload"></i>
+							<span>Arraste a foto aqui ou </span>
+							<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpg,.jpeg,.png"/></a>
+						</div>
 					</div>
 				</div>
 
@@ -125,6 +161,79 @@
 	</section>
 	<th:block layout:fragment="js-extra">
 		<script th:src="@{/js/estilo-cadastro-rapido.js}"></script>
+		<script th:src="@{/js/vendors/bootstrap-switch.js}"></script>
+		<script th:src="@{/js/vendors/uikit.js}"></script>
+		<script th:src="@{/js/vendors/uikit-icons.js}"></script>
+		
+		
+	
+		<script>
+
+		
+			 var bar = document.getElementById('js-progressbar');
+
+			    UIkit.upload('.js-upload', {
+			        
+			        type :'json',			        
+			        allow: '*.(jpg|jpeg|png)',
+			        multiple: false,
+
+			        beforeSend: function (environment) {
+			            console.log('beforeSend', arguments);
+
+			            // The environment object can still be modified here. 
+			            // var {data, method, headers, xhr, responseType} = environment;
+
+			        },
+			        beforeAll: function () {
+			            console.log('beforeAll', arguments);
+			        },
+			        load: function () {
+			            console.log('load', arguments);
+			        },
+			        error: function () {
+			            console.log('error', arguments);
+			        },
+			        complete: function () {
+			            console.log('complete', arguments);
+			        },
+
+			        loadStart: function (e) {
+			            console.log('loadStart', arguments);
+
+			            bar.removeAttribute('hidden');
+			            bar.max = e.total;
+			            bar.value = e.loaded;
+			        },
+
+			        progress: function (e) {
+			            console.log('progress', arguments);
+
+			            bar.max = e.total;
+			            bar.value = e.loaded;
+			        },
+
+			        loadEnd: function (e) {
+			            console.log('loadEnd', arguments);
+
+			            bar.max = e.total;
+			            bar.value = e.loaded;
+			        },
+
+			        completeAll: function () {
+			            console.log('completeAll', arguments);
+
+			            setTimeout(function () {
+			                bar.setAttribute('hidden', 'hidden');
+			            }, 1000);
+
+			            alert('Upload Completed');
+			        }
+
+			    });
+			    
+
+		</script>
 	</th:block>
 </body>
 </html>

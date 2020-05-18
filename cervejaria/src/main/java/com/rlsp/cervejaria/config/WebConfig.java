@@ -2,9 +2,8 @@ package com.rlsp.cervejaria.config;
 
 import java.math.BigDecimal;
 
-import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,7 @@ import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -23,6 +22,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.rlsp.cervejaria.controller.BeerController;
 import com.rlsp.cervejaria.controller.converter.EstiloConverter;
+import com.rlsp.cervejaria.thymeleaf.CervejariaDialect;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
@@ -44,17 +44,19 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @Configuration
 @ComponentScan(basePackageClasses = {BeerController.class})
 @EnableWebMvc
-public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
+//public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
+public class WebConfig implements WebMvcConfigurer {
 
 	/**
-	 * Objeto do SPRING. Quando aplicao subir receber�á o CONTEXT (devido a Implementação da Interface ApplicationContextAware)
+	 * Objeto do SPRING. Quando aplicao subir receberá o CONTEXT (devido a Implementação da Interface ApplicationContextAware)
 	 */	
+	@Autowired
 	private ApplicationContext applicationContext;
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+//	@Override
+//	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+//		this.applicationContext = applicationContext;
+//	}
 
 	/**
 	 * Resolve / Encontra as páginas HTML e processar os dados (objetos) inseridos nas p�ginas HTML
@@ -82,6 +84,10 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		
 		//Insere o Dialeto de Templates no Thymeleaf
 		engine.addDialect(new LayoutDialect());
+
+		//Insere o Dialeto de Templates Personalizado
+		engine.addDialect(new CervejariaDialect());
+		
 		return engine;
 	}
 
