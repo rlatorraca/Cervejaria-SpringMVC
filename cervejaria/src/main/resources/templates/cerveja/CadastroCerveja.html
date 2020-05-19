@@ -17,7 +17,7 @@
 
 		<div class="page-header">
 			<div class="container-fluid">
-				<h1>Cadastro de cerveja</h1>
+				<h2>Cadastro de cerveja</h2>
 			</div>
 		</div>
 
@@ -122,15 +122,22 @@
 				
 				<div class="row">
 					<div class="form-group  col-sm-12" >
+						<input type="hidden" th:field="*{foto}">
+						<input type="hidden" th:field="*{contentType}">	
+						
 						<label class="control-label">Foto</label>
-						<div class="js-upload uk-placeholder uk-text-center">							
-						    <span uk-icon="icon: cloud-upload"></span>
-						    <span class="uk-text-middle">Arraste a foto aqui ou </span>
-						    <div uk-form-custom>
-						        <input type="file" accept=".jpg,.jpeg,.png">
-						        <span class="uk-link">Selecione</span>
-						    </div>
-						</div>
+						
+						<div class="js-container-foto-cerveja" th:attr="data-url-fotos=@{/fotos}">
+							<div class="js-upload uk-placeholder uk-text-center" >							
+							    <span uk-icon="icon: cloud-upload"></span>
+							    <span class="uk-text-middle">Arraste a foto aqui ou </span>
+							    <div uk-form-custom>
+							    	
+							        <input type="file" accept=".jpg,.jpeg,.png">
+							        <span class="uk-link">Selecione</span>
+							    </div>
+							</div>
+						</div>	
 					</div>
 				</div>
 				
@@ -158,82 +165,19 @@
 		</div>
 		
 		<div th:replace="estilo/CadastroRapidoEstilo :: modal"></div>
+		<th:block th:replace="handlerbars/FotoCerveja"></th:block>
 	</section>
 	<th:block layout:fragment="js-extra">
 		<script th:src="@{/js/estilo-cadastro-rapido.js}"></script>
 		<script th:src="@{/js/vendors/bootstrap-switch.js}"></script>
 		<script th:src="@{/js/vendors/uikit.js}"></script>
 		<script th:src="@{/js/vendors/uikit-icons.js}"></script>
+		<script th:src="@{/js/vendors/handlebars.min.js}"></script>
+		<script th:src="@{/js/cerveja-upload-foto.js}"></script>
 		
-		
+	</th:block>	
 	
-		<script>
-
-		
-			 var bar = document.getElementById('js-progressbar');
-
-			    UIkit.upload('.js-upload', {
-			        
-			        type :'json',			        
-			        allow: '*.(jpg|jpeg|png)',
-			        multiple: false,
-
-			        beforeSend: function (environment) {
-			            console.log('beforeSend', arguments);
-
-			            // The environment object can still be modified here. 
-			            // var {data, method, headers, xhr, responseType} = environment;
-
-			        },
-			        beforeAll: function () {
-			            console.log('beforeAll', arguments);
-			        },
-			        load: function () {
-			            console.log('load', arguments);
-			        },
-			        error: function () {
-			            console.log('error', arguments);
-			        },
-			        complete: function () {
-			            console.log('complete', arguments);
-			        },
-
-			        loadStart: function (e) {
-			            console.log('loadStart', arguments);
-
-			            bar.removeAttribute('hidden');
-			            bar.max = e.total;
-			            bar.value = e.loaded;
-			        },
-
-			        progress: function (e) {
-			            console.log('progress', arguments);
-
-			            bar.max = e.total;
-			            bar.value = e.loaded;
-			        },
-
-			        loadEnd: function (e) {
-			            console.log('loadEnd', arguments);
-
-			            bar.max = e.total;
-			            bar.value = e.loaded;
-			        },
-
-			        completeAll: function () {
-			            console.log('completeAll', arguments);
-
-			            setTimeout(function () {
-			                bar.setAttribute('hidden', 'hidden');
-			            }, 1000);
-
-			            alert('Upload Completed');
-			        }
-
-			    });
-			    
-
-		</script>
-	</th:block>
+	
+	
 </body>
 </html>

@@ -1,8 +1,13 @@
 package com.rlsp.cervejaria.config.init;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
+import javax.servlet.annotation.MultipartConfig;
+import javax.swing.plaf.multi.MultiFileChooserUI;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.rlsp.cervejaria.config.JPAConfig;
@@ -59,6 +64,15 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		characterEncodingFilter.setForceEncoding(true); // Para que o filtro UTF-8 seja aplicado sempre
 		
 		return new Filter[] { characterEncodingFilter };
+	}
+	
+	/**
+	 * Usado para recuperar os dados MULTIPART (ex: fotos) no Lado do Servidor
+	 */
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+	
+		registration.setMultipartConfig(new MultipartConfigElement("")); // O servidor ira salva o arquivo temporario onde achar melhor
 	}
 	
 	

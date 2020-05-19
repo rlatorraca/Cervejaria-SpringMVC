@@ -9,7 +9,7 @@
 	</Appenders>
 	
 	<Loggers>
-		<Logger name="com.rlsp.cervejaria.controller" level="error"/>
+		<Logger name="com.rlsp.cervejaria.controller" level="debug"/>
 	
 		<Logger name="org.hibernate.SQL" level="debug"/>
 		
