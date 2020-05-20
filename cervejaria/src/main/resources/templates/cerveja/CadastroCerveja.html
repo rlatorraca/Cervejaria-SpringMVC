@@ -35,24 +35,24 @@
 					
 					<!-- <div class="col-sm-2  form-group" th:classappend="${#fields.hasErrors('sku')} ? has-error"> -->
 					<!-- cervejaria:classforerror="sku" é um ATRIBUTO personalizado -->
-					<div class="col-sm-2  form-group" cervejaria:classforerror="sku">
+					<div class="col-sm-2  form-group bw-required"  cervejaria:classforerror="sku">
 						<label for="sku" class="control-label">SKU</label> 
 						<input id="sku" type="text"	class="form-control" th:field="*{sku}"/>
 					</div>
 
-					<div class="col-sm-10  form-group" cervejaria:classforerror="nome">
+					<div class="col-sm-10  form-group bw-required" cervejaria:classforerror="nome">
 						<label for="nome" class="control-label">Nome</label> 
 						<input id="nome" type="text" class="form-control" th:field="*{nome}"/>
 					</div>
 				</div>
 
-				<div class="form-group" cervejaria:classforerror="descricao">
+				<div class="form-group bw-required" cervejaria:classforerror="descricao">
 					<label for="descricao" class="control-label">Descrição</label>
 					<textarea id="descricao" rows="3" class="form-control" th:field="*{descricao}"></textarea>
 				</div>
 
 				<div class="row">
-					<div class="col-sm-3  form-group" cervejaria:classforerror="estilo">
+					<div class="col-sm-3  form-group bw-required" cervejaria:classforerror="estilo">
 						<label for="estilo" class="control-label">Estilo</label>
 						<div class="bw-field-action">
 							<select id="estilo" class="form-control" th:field="*{estilo}">
@@ -68,7 +68,7 @@
 
 					</div>
 
-					<div class="col-sm-3  form-group" cervejaria:classforerror="sabor">
+					<div class="col-sm-3  form-group bw-required" cervejaria:classforerror="sabor">
 						<label for="sabor" class="control-label">Sabor</label> 
 						<select id="sabor" class="form-control" th:field="*{sabor}">
 							<option value="">Selecione o sabor</option>
@@ -76,7 +76,7 @@
 						</select>
 					</div>
 
-					<div class="col-sm-3  form-group" cervejaria:classforerror="teorAlcoolico">
+					<div class="col-sm-3  form-group bw-required" cervejaria:classforerror="teorAlcoolico">
 						<label for="teorAlcoolico"  class="control-label">Teor alcoólico</label>
 						<div class="input-group">
 							<input id="teorAlcoolico" type="text" class="form-control js-decimal" th:field="*{teorAlcoolico}"/>
@@ -84,7 +84,7 @@
 						</div>
 					</div>
 
-					<div class="col-lg-3  col-sm-6  form-group" cervejaria:classforerror="origem" >
+					<div class="col-lg-3  col-sm-6  form-group bw-required" cervejaria:classforerror="origem" >
 						<label for="origem" class="control-label">Origem</label>
 						<div>
 							<th:block th:each="origem : ${origens}">
@@ -98,7 +98,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-sm-3  form-group" cervejaria:classforerror="valor">
+					<div class="col-sm-3  form-group bw-required" cervejaria:classforerror="valor">
 						<label for="valor" class="control-label">Valor unitário</label>
 						<div class="input-group">
 							<div class="input-group-addon">R$</div>
@@ -106,7 +106,7 @@
 						</div>
 					</div>
 
-					<div class="col-sm-3  form-group" cervejaria:classforerror="comissao">
+					<div class="col-sm-3  form-group bw-required" cervejaria:classforerror="comissao">
 						<label for="comissao" class="control-label">Comissão</label>
 						<div class="input-group">
 							<input id="comissao" type="text" class="form-control js-decimal" th:field="*{comissao}"/>
@@ -114,7 +114,7 @@
 						</div>
 					</div>
 
-					<div class="col-sm-3  form-group" cervejaria:classforerror="quantidadeEstoque">
+					<div class="col-sm-3  form-group bw-required" cervejaria:classforerror="quantidadeEstoque">
 						<label for="estoque" class="control-label">Estoque</label> 
 						<input id="estoque" type="text" class="form-control js-plain" th:field="*{quantidadeEstoque}"/>
 					</div>
