@@ -3,6 +3,10 @@
 # UTILIDADES
 ######################
 */
+
+.page-header h1{
+	font-size: 30px; !important
+}
 .bw-glyphicon-large {
 	font-size: 18px;
 }
@@ -11,7 +15,9 @@
 	content: "*";
 }
 
-
+.js-container-foto-cerveja {
+	background : #fafafa;
+}
 /*
 ######################
 # COMPONENTES

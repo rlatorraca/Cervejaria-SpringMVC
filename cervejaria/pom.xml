@@ -49,22 +49,25 @@
 
 		<!-- Hibernate -->
 		<hibernate.version>5.4.15.Final</hibernate.version>
-		
+
 		<!-- MySQL -->
 		<mysql-connector-java.version>8.0.20</mysql-connector-java.version>
-		
-		<!-- Flyway - migacao do  DB -->
+
+		<!-- Flyway - migacao do DB -->
 		<flyway-maven-plugin.version>6.4.1</flyway-maven-plugin.version>
-		
-		<!-- Spring Data JPA --> 
+
+		<!-- Spring Data JPA -->
 		<spring-data-jpa-version>2.2.7.RELEASE</spring-data-jpa-version>
-		<!-- ><spring-data-jpa-version>1.11.23.RELEASE</spring-data-jpa-version>  -->
-		
+		<!-- ><spring-data-jpa-version>1.11.23.RELEASE</spring-data-jpa-version> -->
+
 		<!-- JSON -->
 		<jackson-json-version>2.10.4</jackson-json-version>
-		
+
 		<!-- Glassfish-el -->
 		<glassfish-el-version>3.0.1-b11</glassfish-el-version>
+
+		<!-- Thumbnailator -->
+		<thumb-version>0.4.11</thumb-version>
 	</properties>
 
 	<build>
@@ -80,8 +83,8 @@
 				</configuration>
 
 			</plugin>
-			
-			
+
+
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
@@ -90,7 +93,7 @@
 					<driver>com.mysql.cj.jdbc.Driver</driver>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 
@@ -157,21 +160,21 @@
 			<scope>compile</scope> <!-- Significa que eu preciso dessa dependencia sempre ==> DEFAULT -->
 		</dependency>
 
-		<!-- Expression Language 3.0,  Dec 14, 2018-->
+		<!-- Expression Language 3.0, Dec 14, 2018 -->
 		<dependency>
-    		<groupId>org.glassfish</groupId>
-    		<artifactId>javax.el</artifactId>
-    		<version>${glassfish-el-version}</version>    		
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>${glassfish-el-version}</version>
 		</dependency>
-		
+
 		<!-- JSON - Jackson -->
 		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>${jackson-json-version}</version>		    
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-json-version}</version>
 		</dependency>
-		
-		
+
+
 		<!-- Thymeleaf - Layout Dialect -->
 		<dependency>
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
@@ -228,12 +231,19 @@
 
 		<!-- Spring Data JPA -->
 		<dependency>
-		    <groupId>org.springframework.data</groupId>
-		    <artifactId>spring-data-jpa</artifactId>
-		    <version>${spring-data-jpa-version}</version>
-    	</dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring-data-jpa-version}</version>
+		</dependency>
 
-</dependencies>
+		<!-- Thumbnailator - https://github.com/coobird/thumbnailator -Feb 2020 -->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>${thumb-version}</version>
+		</dependency>
+
+	</dependencies>
 
 
 </project>

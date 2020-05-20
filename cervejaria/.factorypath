@@ -55,4 +55,5 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-jdbc/5.2.5.RELEASE/spring-jdbc-5.2.5.RELEASE.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-tx/5.2.5.RELEASE/spring-tx-5.2.5.RELEASE.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/aspectj/aspectjrt/1.9.5/aspectjrt-1.9.5.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/net/coobird/thumbnailator/0.4.11/thumbnailator-0.4.11.jar" enabled="true" runInBatchMode="false"/>
 </factorypath>

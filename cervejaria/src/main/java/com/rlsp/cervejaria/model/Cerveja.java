@@ -22,6 +22,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.util.StringUtils;
+
 import com.rlsp.cervejaria.validation.SKU;
 
 
@@ -82,6 +84,14 @@ public class Cerveja implements Serializable {
 	
 	@Column(name="content_type")
 	private String contentType;
+	
+	/**
+	 * Retorna a foto de MockUp em caso de nao inclusao de foto no Cadastro da Cerveja	 * 
+	 */
+	public String getFotoOrMockUp() {
+		return !StringUtils.isEmpty(foto) ? foto : "cerveja-mock.png";
+	}
+
 	
 	/**
 	 * METODOS DE CALLBACK (do JPA) 
@@ -178,8 +188,7 @@ public class Cerveja implements Serializable {
 
 	public void setEstilo(Estilo estilo) {
 		this.estilo = estilo;
-	}
-	
+	}	
 	
 
 	public String getFoto() {

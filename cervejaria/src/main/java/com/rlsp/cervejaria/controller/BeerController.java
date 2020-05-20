@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.model.Origem;
 import com.rlsp.cervejaria.model.Sabor;
+import com.rlsp.cervejaria.repository.CervejasRepository;
 import com.rlsp.cervejaria.repository.EstilosRepository;
 import com.rlsp.cervejaria.service.CadastroCervejaService;
 
@@ -33,6 +35,8 @@ public class BeerController{
 	@Autowired
 	private CadastroCervejaService cadastroCervejaService; 
 	
+	@Autowired
+	private CervejasRepository cervejas;
 
 	@RequestMapping("/novo")
 	public ModelAndView newBeer(Cerveja beer) {
@@ -79,6 +83,15 @@ public class BeerController{
 		return new ModelAndView("redirect:/cervejas/novo");
 	}
 	
-	
+	@GetMapping
+	public ModelAndView pesquisar() {
+		ModelAndView mv = new ModelAndView("cerveja/PesquisaCervejas");
+		mv.addObject("estilos", estilos.findAll());
+		mv.addObject("sabores", Sabor.values());
+		mv.addObject("origens", Origem.values());
+		
+		mv.addObject("cervejas", cervejas.findAll());
+		return mv;
+	}
 	
 }
