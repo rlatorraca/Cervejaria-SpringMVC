@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
@@ -37,15 +38,19 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  * 
  * basePackageClasses = BeerController.class ==> diz para que o sistema encontre os CONTROLLers que esta na classe "BeersController" (é um VETOR, usa-se {})
  * 
- * WebMvcConfigurer ==> implementa algumas CLASSES que serão usadas para as configurações do SPRING MVC para WEB (ex: formatador,etc)
+ * @WebMvcConfigurer ==> implementa algumas CLASSES que serão usadas para as configurações do SPRING MVC para WEB (ex: formatador,etc)
+ * 
+ * @EnableSpringDataWebSupport ==> adiciona o SUporte a PAGINACAO do Spring Data
  *
  */
 
 @Configuration
 @ComponentScan(basePackageClasses = {BeerController.class})
 @EnableWebMvc
-//public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
+@EnableSpringDataWebSupport
 public class WebConfig implements WebMvcConfigurer {
+//public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
+
 
 	/**
 	 * Objeto do SPRING. Quando aplicao subir receberá o CONTEXT (devido a Implementação da Interface ApplicationContextAware)

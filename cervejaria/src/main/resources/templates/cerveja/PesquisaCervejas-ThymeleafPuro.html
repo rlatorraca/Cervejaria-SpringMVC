@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="'layout/LayoutPadrao'"
-	xmlns:cervejaria="http://cervejaria.rlsp.com">
+	xmlns:brewer="http://brewer.algaworks.com">
 	
 <head>
 	<title>Pesquisa de cervejas</title>
@@ -32,12 +32,12 @@
 	<div class="container-fluid">
 		<form method="GET" th:object="${cervejaFilter}">
 			<div class="row">
-				<div class="form-group  col-sm-3">
+				<div class="form-group  col-sm-6">
 					<label class="control-label" for="sku">SKU</label>
 					<input type="text" class="form-control" id="sku" autofocus="autofocus" th:field="*{sku}"/>
 				</div>
 				
-				<div class="form-group  col-sm-9" >
+				<div class="form-group  col-sm-6" >
 					<label class="control-label" for="nome">Nome</label>
 					<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
 				</div>
@@ -67,7 +67,7 @@
 					<div>
 	  					<th:block th:each="origem : ${origens}">
 	  						<div class="radio  radio-inline">
-		    					<input th:id="|id_${origem}|" type="radio" th:value="${origem}" name="origem" th:field="*{origem}"/>
+		    					<input th:id="|id_${origem}|" type="radio" th:value="${origem}" th:field="*{origem}"/>
 		    					<label th:for="|id_${origem}|" th:text="${origem.descricao}">Nacional</label>
 	    					</div>
 	  					</th:block>
@@ -79,11 +79,11 @@
 				</div>
 
 				<div class="col-sm-6  form-group">
-					<label for="precoDe">Preço unitário</label>
+					<label for="valorDe">Valor unitário</label>
 					<div class="form-inline">
-						<input type="text" class="form-control  aw-form-control-inline-sm  js-decimal" id="precoDe" th:field="*{valorDe}"/>
-						<label for="precoAte" class="aw-form-label-between">até</label>
-						<input type="text" class="form-control  aw-form-control-inline-sm  js-decimal" id="precoAte" th:field="*{valorAte}"/>
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-decimal" id="valorDe" th:field="*{valorDe}"/>
+						<label for="valorAte" class="aw-form-label-between">até</label>
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-decimal" id="valorAte" th:field="*{valorAte}"/>
 					</div>
 				</div>
 			</div>
@@ -97,10 +97,22 @@
 					<tr>
 						<th class="table-cervejas-col-foto"></th>
 						<th class="table-cervejas-col-sku">
-							<cervejaria:order page="${pagina}" field="sku" text="SKU"/>
+							<a th:href="${pagina.urlOrdenada('sku')}" th:remove="${pagina.vazia} ? tag">
+								<span>SKU</span>
+								<span class="dropup" th:remove="${pagina.descendente('sku')} ? tag"
+										th:if="${pagina.ordenada('sku')}">
+									<span class="caret"></span>
+								</span>
+							</a>
 						</th>
 						<th class="table-cervejas-col-nome">
-							<cervejaria:order page="${pagina}" field="nome" text="Nome"/>
+							<a th:href="${pagina.urlOrdenada('nome')}" th:remove="${pagina.vazia} ? tag">
+								<span>Nome</span>
+								<span class="dropup" th:remove="${pagina.descendente('nome')} ? tag"
+										th:if="${pagina.ordenada('nome')}">
+									<span class="caret"></span>
+								</span>
+							</a>
 						</th>
 						<th class="table-cervejas-col-estilo">Estilo</th>
 						<th class="table-cervejas-col-origem">Origem</th>
@@ -112,7 +124,7 @@
 				<tbody>
 					<tr th:each="cerveja : ${pagina.conteudo}">
 						<td class="text-center">
-							<img th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOrMockUp})}" class="img-responsive"/>
+							<img th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOuMock})}" class="img-responsive"/>
 						</td>
 						<td class="text-center" th:text="${cerveja.sku}">AA1234</td>
 						<td th:text="${cerveja.nome}">Cerveja Stella</td>
@@ -134,7 +146,26 @@
 				</tbody>
 			</table>
 		</div>
-		<cervejaria:pagination page="${pagina}"/>
+		
+		<div class="col-sm-12  text-center" th:if="${not pagina.vazia}">
+			<nav>
+				<ul class="pagination  pagination-sm" th:with="paginaAtual=${pagina.atual}">
+					<li th:class="${pagina.primeira} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+					</li>
+					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p - 1}">
+						<li th:class="${paginaAtual == numeroPagina} ? active">
+							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+						</li>
+					</th:block>
+					
+					<li th:class="${pagina.ultima} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		
 	</div>
 
 </section>
