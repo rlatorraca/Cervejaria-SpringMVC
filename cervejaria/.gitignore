@@ -1,1 +1,7 @@
-/target/
+/target/Servers/*
+.metadata
+.settings
+.classpath
+.project
+.mvn*
+mvnw*

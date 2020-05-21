@@ -1,0 +1,249 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.rlsp</groupId>
+	<artifactId>cervejaria</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>cervejaria</name>
+	<packaging>war</packaging>
+
+	<properties>
+
+		<!-- Padrão UTF-8 -->
+		<project.build.sourceEnconding>UTF-8</project.build.sourceEnconding>
+		<project.build.outputEnconding>UTF-8</project.build.outputEnconding>
+
+		<!-- Sem WebXml, se não tiver como falso ficará reclamando, a partir do 
+			servlet 3 -->
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+
+		<!-- Java 13 -->
+		<java.version>12</java.version>
+
+		<!-- Versão do Plugin Maven = (Mar 2019) -->
+		<maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
+
+		<!-- Spring MVC -->
+		<!-- Spring Framework (Bill of Materials) ==> Controla a compabilidade 
+			das versões dos projetos Maven -->
+		<spring-framework.version>5.2.5.RELEASE</spring-framework.version>
+
+		<!-- Servlet API -->
+		<servlet.version>4.0.1</servlet.version>
+
+		<!-- Thymeleaf -->
+		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+
+		<!-- Bean Validation / Hibernate Validator -->
+		<hibernate-validator.version>6.1.2.Final</hibernate-validator.version>
+
+		<!-- Thymeleaf - Layout Dialect -->
+		<thymeleaf-layout-dialect.version>2.4.1</thymeleaf-layout-dialect.version>
+
+		<!-- Logging -->
+		<log4j.version>2.13.2</log4j.version>
+		<jcl-over-slf4j.version>2.0.0-alpha1</jcl-over-slf4j.version>
+
+		<!-- Hibernate -->
+		<hibernate.version>5.4.15.Final</hibernate.version>
+
+		<!-- MySQL -->
+		<mysql-connector-java.version>8.0.20</mysql-connector-java.version>
+
+		<!-- Flyway - migacao do DB -->
+		<flyway-maven-plugin.version>6.4.1</flyway-maven-plugin.version>
+
+		<!-- Spring Data JPA -->
+		<spring-data-jpa-version>2.2.7.RELEASE</spring-data-jpa-version>
+		<!-- ><spring-data-jpa-version>1.11.23.RELEASE</spring-data-jpa-version> -->
+
+		<!-- JSON -->
+		<jackson-json-version>2.10.4</jackson-json-version>
+
+		<!-- Glassfish-el -->
+		<glassfish-el-version>3.0.1-b11</glassfish-el-version>
+
+		<!-- Thumbnailator -->
+		<thumb-version>0.4.11</thumb-version>
+	</properties>
+
+	<build>
+		<finalName>${project.name}</finalName>
+		<plugins>
+			<plugin>
+				<!-- compilador do Maven -->
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin-version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>${flyway-maven-plugin.version}</version>
+				<configuration>
+					<driver>com.mysql.cj.jdbc.Driver</driver>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+
+	<!-- BOM = Bill of materials (Pega as versoes compativeos entre as APIs 
+		necessarias -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${spring-framework.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
+	<dependencies>
+		<!-- Spring MVC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<scope>compile</scope> <!-- Significa que eu preciso dessa dependencia sempre ==> DEFAULT -->
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Dispatcher Servlet = Front Controler do Spring - Procura o controller 
+			que deverá entregar a requisição -->
+		<!-- Servlet API -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope> <!-- Já existe dentro do TOMCAT 9 / nao será cololocado quando for empacotado -->
+		</dependency>
+
+		<!-- Thymeleaf -->
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf</artifactId>
+			<version>${thymeleaf.version}</version>
+			<scope>compile</scope> <!-- Significa que eu preciso dessa dependencia sempre ==> DEFAULT -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf-spring5</artifactId>
+			<version>${thymeleaf.version}</version>
+			<scope>compile</scope> <!-- Siginifica que eu preciso dessa dependencia sempre ==> DEFAULT -->
+		</dependency>
+
+		<!-- Bean Validation / Hibernate Validator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+			<scope>compile</scope> <!-- Significa que eu preciso dessa dependencia sempre ==> DEFAULT -->
+		</dependency>
+
+		<!-- Expression Language 3.0, Dec 14, 2018 -->
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>${glassfish-el-version}</version>
+		</dependency>
+
+		<!-- JSON - Jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-json-version}</version>
+		</dependency>
+
+
+		<!-- Thymeleaf - Layout Dialect -->
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+			<version>${thymeleaf-layout-dialect.version}</version>
+		</dependency>
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${jcl-over-slf4j.version}</version>
+		</dependency>
+
+		<!-- JPA / Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Hibernate - Java 8 support -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>${hibernate.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+
+		<!-- MySQL Driver -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Spring Data JPA -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring-data-jpa-version}</version>
+		</dependency>
+
+		<!-- Thumbnailator - https://github.com/coobird/thumbnailator -Feb 2020 -->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>${thumb-version}</version>
+		</dependency>
+
+	</dependencies>
+
+
+</project>
