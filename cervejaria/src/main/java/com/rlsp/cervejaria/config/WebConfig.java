@@ -21,6 +21,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.rlsp.cervejaria.controller.BeerController;
 import com.rlsp.cervejaria.controller.converter.EstiloConverter;
 import com.rlsp.cervejaria.thymeleaf.CervejariaDialect;
@@ -92,6 +93,9 @@ public class WebConfig implements WebMvcConfigurer {
 
 		//Insere o Dialeto de Templates Personalizado
 		engine.addDialect(new CervejariaDialect());
+		
+		//Insere o Dialeto de Thymeleaf data attributes no HTML (data:"nome_tag")
+		engine.addDialect(new DataAttributeDialect());
 		
 		return engine;
 	}

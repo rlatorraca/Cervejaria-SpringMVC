@@ -68,6 +68,9 @@
 
 		<!-- Thumbnailator -->
 		<thumb-version>0.4.11</thumb-version>
+		
+		<!-- tags thymeleaf (elementos data no html)-->
+		<thymeleaf-tags-version>2.0.1</thymeleaf-tags-version>
 	</properties>
 
 	<build>
@@ -236,11 +239,20 @@
 			<version>${spring-data-jpa-version}</version>
 		</dependency>
 
-		<!-- Thumbnailator - https://github.com/coobird/thumbnailator -Feb 2020 -->
+		<!--  Thumbnailator (diminuir fotos para thumbnail)- https://github.com/coobird/thumbnailator -Feb 2020 -->
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>
 			<version>${thumb-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- Tags Thymnleaf  (elementos data no html)-->
+		<dependency>
+		    <groupId>com.github.mxab.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-data-attribute</artifactId>
+		    <version>${thymeleaf-tags-version}</version>
+		    <scope>compile</scope>
 		</dependency>
 
 	</dependencies>
