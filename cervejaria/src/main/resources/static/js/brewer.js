@@ -49,10 +49,27 @@ Cervejaria.MaskPhoneNumber = (function() {
 	
 }());
 
+Cervejaria.MaskCep = (function() {
+	
+	function MaskCep() {
+		this.inputCep = $('.js-cep');
+	}
+	
+	MaskCep.prototype.enable = function() {
+		this.inputCep.mask('00.000-000');
+	}
+	
+	return MaskCep;
+	
+}()); 
+
 $(function() {
 	var maskMoney = new Cervejaria.MaskMoney();
 	maskMoney.enable();
 	
 	var maskPhoneNumber = new Cervejaria.MaskPhoneNumber();
 	maskPhoneNumber.enable();
+	
+	var maskCep = new Cervejaria.MaskCep();
+	maskCep.enable();
 });

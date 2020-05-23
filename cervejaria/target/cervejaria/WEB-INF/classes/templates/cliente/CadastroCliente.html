@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	xmlns:data="http://www.thymeleaf.or/extras/data"
-	layout:decorate="layout/LayoutPadrao">
+	layout:decorate="~{layout/LayoutPadrao}">
 
 <head>
 <title>Cadastro de Cliente</title>
@@ -110,21 +110,30 @@
 				<div class="row">
 					<div class="form-group  col-sm-4">
 						<label for="cep">CEP</label> <input type="text"
-							class="form-control" id="cep" />
+							class="form-control js-cep" id="cep" />
 					</div>
 
 					<div class="form-group  col-sm-4">
-						<label for="estado">Estado</label> <select id="estado"
-							class="form-control">
-							<option value="">Selecione o estado</option>
-						</select>
+						<label for="estado">Estado</label>
+						<select id="estado" class="form-control">
+		                    <option value="">Selecione o estado</option>
+		                    <option th:each="estado : ${estados}" th:value="${estado.codigo}" th:text="${estado.nome}">São Paulo</option>
+		                </select>
 					</div>
 
 					<div class="form-group  col-sm-4">
-						<label for="cidade">Cidade</label> <select id="cidade"
-							class="form-control">
-							<option value="">Selecione a cidade</option>
-						</select>
+						<label for="cidade">Cidade</label>
+						<div class="bw-field-action">							
+							<select id="cidade" class="form-control" data:url="@{/cidades}">
+								<option value="">Selecione a cidade</option>
+							</select>
+							
+							<div class="bw-field-action__icon js-image-loading" style="display: none">
+								<img th:scr="@{/images/mini-loading.gif}">							
+							</div>
+						
+						</div> 
+						
 					</div>
 				</div>
 
@@ -137,6 +146,7 @@
 	</section>
 	<th:block layout:fragment="js-extra">
 		<script th:src="@{/js/cliente.mascara-cpf-cnpj.js}"></script>
+		<script th:src="@{/js/cliente.combo-estado-cidade.js}"></script>
 	</th:block>	
 </body>
 </html>
