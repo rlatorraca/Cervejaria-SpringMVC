@@ -11,10 +11,24 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
+import org.hibernate.validator.group.GroupSequenceProvider;
+
+import com.rlsp.cervejaria.model.validation.ClienteGrupoProvider;
+import com.rlsp.cervejaria.model.validation.group.CnpjGroup;
+import com.rlsp.cervejaria.model.validation.group.CpfGroup;
 
 @Entity
 @Table(name = "cliente")
+@GroupSequenceProvider(ClienteGrupoProvider.class) // Serve para validar usando CPF / CNPJ, usando a Classe "ClienteGrupoProvider", com base na SEQUENCIA definida nessa classe ja citada
 public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -23,21 +37,43 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 
+	@NotNull(message = "Pessoa Físcia ou Jurídica é obrigatório")
 	@Enumerated(EnumType.STRING) // Salava  o NOME do ENUM  (e nao ORDINAL = valores)
 	@Column(name = "tipo_pessoa")
 	private TipoPessoa tipoPessoa;
 
+	@CPF(groups = CpfGroup.class)
+	@CNPJ(groups = CnpjGroup.class)
+	@NotBlank(message = "CPF/CNPJ é obrigatório")
 	@Column(name = "cpf_cnpj")
 	private String cpfOuCnpj;
 
 	private String telefone;
 
+	@Email(message = "Email inválido")
 	private String email;
 
 	@Embedded
 	private Endereco endereco;
+
+	//----------------------------IMPLEMENTACOES NECESSARIAS -----------------------------------
+	
+	/**
+	 * Metodos de CAllBack do JPA
+	 */
+	@PrePersist @PreUpdate
+	private void prePersistPreUpdate() {
+		this.cpfOuCnpj = this.cpfOuCnpj.replaceAll("\\.|-|/", "");
+	}
+	
+	public String getCpfOuCnpjSemFormatacao() {
+		return TipoPessoa.removerFormatacao(this.cpfOuCnpj);
+	}
+
+	//----------------------------GETTERS and SETTERS-----------------------------------
 
 	public Long getCodigo() {
 		return codigo;

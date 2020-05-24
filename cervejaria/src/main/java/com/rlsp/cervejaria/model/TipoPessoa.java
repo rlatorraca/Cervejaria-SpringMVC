@@ -1,19 +1,29 @@
 package com.rlsp.cervejaria.model;
 
+import com.rlsp.cervejaria.model.validation.group.CnpjGroup;
+import com.rlsp.cervejaria.model.validation.group.CpfGroup;
+
 public enum TipoPessoa {
 
-	FISICA("Física", "CPF", "000.000.000-00"), 
-	JURIDICA("Jurídica", "CNPJ", "00.000.000/0000-00");
+	FISICA("Física", "CPF", "000.000.000-00", CpfGroup.class), 
+	JURIDICA("Jurídica", "CNPJ", "00.000.000/0000-00", CnpjGroup.class);
 
 	private String descricao;
 	private String documento;
 	private String mascara;
+	private Class<?> grupo;
 
-	TipoPessoa(String descricao, String documento, String mascara) {
+	TipoPessoa(String descricao, String documento, String mascara, Class<?> grupo) {
 		this.descricao = descricao;
 		this.documento = documento;
 		this.mascara = mascara;
+		this.grupo = grupo;
 	}
+	
+	public static String removerFormatacao(String cpfOuCnpj) {
+		return cpfOuCnpj.replaceAll("\\.|-|/", "");
+	}
+	
 
 	public String getDescricao() {
 		return descricao;
@@ -26,5 +36,10 @@ public enum TipoPessoa {
 	public String getMascara() {
 		return mascara;
 	}
+	
+	public Class<?> getGrupo() {
+		return grupo;
+	}
+	
 
 }

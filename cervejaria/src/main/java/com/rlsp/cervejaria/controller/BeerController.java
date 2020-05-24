@@ -83,7 +83,7 @@ public class BeerController{
 		}		
 		
 		cadastroCervejaService.salvar(beer);		
-		redirectAttributes.addFlashAttribute("mensagem", "Formulário preenchido com SUCESSO !!!!"); // Existirão mesmo APÓS um REDIRECT
+		redirectAttributes.addFlashAttribute("mensagem", "CERVEJA salva com SUCESSO !!!!"); // Existirão mesmo APÓS um REDIRECT
 		
 		return new ModelAndView("redirect:/cervejas/novo");
 	}

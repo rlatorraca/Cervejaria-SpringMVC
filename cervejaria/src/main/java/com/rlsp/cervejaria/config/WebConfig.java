@@ -23,6 +23,8 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.rlsp.cervejaria.controller.BeerController;
+import com.rlsp.cervejaria.controller.converter.CidadeConverter;
+import com.rlsp.cervejaria.controller.converter.EstadoConverter;
 import com.rlsp.cervejaria.controller.converter.EstiloConverter;
 import com.rlsp.cervejaria.thymeleaf.CervejariaDialect;
 
@@ -135,6 +137,8 @@ public class WebConfig implements WebMvcConfigurer {
 	public FormattingConversionService mvcConversionService() {
 		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
 		conversionService.addConverter(new EstiloConverter());
+		conversionService.addConverter(new CidadeConverter());
+		conversionService.addConverter(new EstadoConverter());
 		
 		/**
 		 * Converte valores BigDecimais que entrarem no form respeitando o padrao da mascara

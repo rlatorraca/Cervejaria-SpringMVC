@@ -41,7 +41,7 @@ public class Cerveja implements Serializable {
 	@NotBlank(message = "SKU é obrigatório")// Verifica se a String não é NULA ou VAZIA
 	private String sku;
 	
-	@NotBlank(message = "Name é obrigatório")// Verifica se a String não é NULA ou VAZIA
+	@NotBlank(message = "Nome é obrigatório")// Verifica se a String não é NULA ou VAZIA
 	private String nome;
 	
 	@NotBlank(message = "Descricao é obrigatória")// Verifica se a String não é NULA ou VAZIA
