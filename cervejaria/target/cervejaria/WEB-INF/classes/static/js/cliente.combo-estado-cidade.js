@@ -25,7 +25,7 @@ Cervejaria.ComboCidade = (function() {
 	function ComboCidade(comboEstado) {
 		this.comboEstado = comboEstado;
 		this.combo = $('#cidade');
-		this.imgLoading = $('.js-image-loading');
+		this.imgLoading = $('.js-img-loading');
 		this.inputHiddenCidadeSelecionada = $('#inputHiddenCidadeSelecionada');
 	}
 	
