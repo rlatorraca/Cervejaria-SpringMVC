@@ -1,4 +1,4 @@
-<script>
+
 
 		
 			 var bar = document.getElementById('js-progressbar');
@@ -71,4 +71,4 @@
 			    });
 			    
 
-		</script>
+		

@@ -8,6 +8,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -22,8 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.rlsp.cervejaria.dto.CervejaDTO;
-import com.rlsp.cervejaria.model.Cerveja;
+import com.rlsp.cervejaria.model.Cidade;
 import com.rlsp.cervejaria.model.Cliente;
+import com.rlsp.cervejaria.model.Endereco;
+import com.rlsp.cervejaria.model.Estado;
 import com.rlsp.cervejaria.repository.filter.CervejaFilter;
 import com.rlsp.cervejaria.repository.filter.ClienteFilter;
 import com.rlsp.cervejaria.repository.paginacao.PaginacaoUtil;
@@ -45,8 +50,20 @@ public class ClientesRepositoryImpl  implements ClientesRepositoryQueries{
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Cliente> query = builder.createQuery(Cliente.class);
 		Root<Cliente> clienteEntity = query.from(Cliente.class);
+		
+		
+		/*
+		Join<Cliente, Endereco> enderecoCliente = clienteEntity.join(Cliente_.endereco);
+		Fetch<Endereco, Cidade> cidadeCliente = enderecoCliente.fetch(Endereco_.cidade,JoinType.LEFT);
+		Fetch<Cidade, Estado> estadoCliente = cidadeCliente.fetch(Cidade_.estado,JoinType.LEFT);
+		*/
+		
+		Join<Cliente, Endereco> enderecoCliente = clienteEntity.join("endereco");
+		Fetch<Endereco, Cidade> cidadeCliente = enderecoCliente.fetch("cidade",JoinType.LEFT);
+		Fetch<Cidade, Estado> estadoCliente = cidadeCliente.fetch("estado",JoinType.LEFT);
+		
 		Predicate[] filtros = adicionarFiltro(filtro, clienteEntity);
-
+		
 		query.select(clienteEntity).where(filtros);
 		
 		TypedQuery<Cliente> typedQuery =  (TypedQuery<Cliente>) paginacaoUtil.prepararOrdem(query, clienteEntity, pageable);
@@ -99,41 +116,23 @@ public class ClientesRepositoryImpl  implements ClientesRepositoryQueries{
 				criteria.add(Restrictions.ilike("nome", filtro.getNome(), MatchMode.ANYWHERE));
 			}
 
-			if (isEstiloPresente(filtro)) {
-				criteria.add(Restrictions.eq("estilo", filtro.getEstilo()));
-			}
-
-			if (filtro.getSabor() != null) {
-				criteria.add(Restrictions.eq("sabor", filtro.getSabor()));
-			}
-
-			if (filtro.getOrigem() != null) {
-				criteria.add(Restrictions.eq("origem", filtro.getOrigem()));
-			}
-
-			if (filtro.getValorDe() != null) {
-				criteria.add(Restrictions.ge("valor", filtro.getValorDe()));
-			}
-
-			if (filtro.getValorAte() != null) {
-				criteria.add(Restrictions.le("valor", filtro.getValorAte()));
-			}
+			
 		}
 	}
 	
-	private boolean isEstiloPresente(CervejaFilter filtro) {
-		return filtro.getEstilo() != null && filtro.getEstilo().getCodigo() != null;
-	}
-
-	public List<CervejaDTO> porSkuOuNome(String skuOuNome) {
-		
-		String jpql = "select new com.algaworks.brewer.dto.CervejaDTO(codigo, sku, nome, origem, valor, foto) "
-				+ "from Cerveja where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
-		
-		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
-					.setParameter("skuOuNome", skuOuNome + "%")
-					.getResultList();
-		
-		return cervejasFiltradas;
-	}
+//	private boolean isEstiloPresente(CervejaFilter filtro) {
+//		return filtro.getEstilo() != null && filtro.getEstilo().getCodigo() != null;
+//	}
+//
+//	public List<CervejaDTO> porSkuOuNome(String skuOuNome) {
+//		
+//		String jpql = "select new com.algaworks.brewer.dto.CervejaDTO(codigo, sku, nome, origem, valor, foto) "
+//				+ "from Cerveja where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
+//		
+//		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
+//					.setParameter("skuOuNome", skuOuNome + "%")
+//					.getResultList();
+//		
+//		return cervejasFiltradas;
+//	}
 }
