@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
@@ -41,7 +43,7 @@ public class CidadeController {
 	@Autowired
 	private CadastroCidadeService cadastroCidadeService;
 	
-	@RequestMapping("nova")
+	@RequestMapping("/nova")
 	public ModelAndView nova(Cidade cidade) {
 		ModelAndView mv = new ModelAndView("cidade/CadastroCidade");
 		mv.addObject("estados", estados.findAll());
@@ -52,7 +54,11 @@ public class CidadeController {
 	 * Respondera a uma requisicao com GET onde CONTENT_TYPE = JSON
 	 *  - @RequestParam(name="estado", defaultValue = "-1") ==> para poder receber o "estado" vindo da URL (cervejaria
 	 *  - @ResponseBody ==> para fazer o RETORNO como arquivo JSON 
+	 *  - @Cacheable("cidades") ==> fazer o Cache em Memoria
+	 *  	 - key = "#codigoEstado" ==> Invaida o CACHE apenas para o codigo do estado enviado por @CacheEvict (ao salvar)
 	 */
+	//@Cacheable("cidades")
+	@Cacheable(value = "cidades", key = "#codigoEstado")
 	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)	
 	public @ResponseBody List<Cidade> pesquisaCidadePorCodigoEstado (@RequestParam(name="estado", defaultValue = "-1") Long codigoEstado) {
 		
@@ -64,10 +70,21 @@ public class CidadeController {
 	
 	}
 	
+	/**
+	 * @CacheEvict(value = "cidades", allEntries = true) ==> usado para APAGAR O CACHE em caso de NOVO cidades adicionada
+	 *  - allEntries = true ==> invalidade TODO CACHE 
+	 *  - key="#cidade.estado.codigo" ==> pega o CODIDO do ESTADO
+	 *  - condition="#cidade.temEstado()" ==> se TRUE sera apagado o CACHE
+	 */
+	//@CacheEvict(value = "cidades", allEntries = true)
+	
 	@PostMapping("/nova")
+	@CacheEvict(value = "cidades", key="#cidade.estado.codigo", condition="#cidade.temEstado()")
 	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
+			System.out.println(" >>> Era pra imprimir os ERRORs");
 			return nova(cidade);
+			
 		}
 		
 		try {

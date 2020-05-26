@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,8 +25,10 @@ public class Cidade implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 	
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 	
+	@NotNull(message = "Estado é obrigatório")
 	@ManyToOne(fetch = FetchType.LAZY) // Para nao inicializarr/ trazer o  Estado na consulta (NO CASO DESSE PROJETO)
 	@JoinColumn(name = "codigo_estado")
 	@JsonIgnore //Ignora a busca em REQUISICOES JSON
@@ -51,6 +55,18 @@ public class Cidade implements Serializable{
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
+	
+	//---------------------------------------------------
+	
+	/**
+	 * Usado no CACHE (em CidadeController - JSON - na funcao de pegar os estados)	 * 
+	 */
+	public boolean temEstado() {
+		return estado != null;
+	}
+		
+	
+	//----------------------------------------------------
 	@Override
 	public int hashCode() {
 		final int prime = 31;

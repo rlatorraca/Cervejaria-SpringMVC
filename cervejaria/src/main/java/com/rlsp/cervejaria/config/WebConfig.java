@@ -3,6 +3,9 @@ package com.rlsp.cervejaria.config;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -44,6 +47,8 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  * @WebMvcConfigurer ==> implementa algumas CLASSES que serão usadas para as configurações do SPRING MVC para WEB (ex: formatador,etc)
  * 
  * @EnableSpringDataWebSupport ==> adiciona o SUporte a PAGINACAO do Spring Data
+ * 
+ * @EnableCaching ==> habilantando a possibilidade de CACHE (gravar em Memoria RAM)
  *
  */
 
@@ -51,6 +56,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @ComponentScan(basePackageClasses = {BeerController.class})
 @EnableWebMvc
 @EnableSpringDataWebSupport
+@EnableCaching
 public class WebConfig implements WebMvcConfigurer {
 //public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
 
@@ -152,6 +158,25 @@ public class WebConfig implements WebMvcConfigurer {
 		return conversionService;
 	}
 
-	
+	/**
+	 * Implementacao do CACHE
+	 *  - Esse padrao eh do SPRING (
+	 *  - NAO RECOMENDADO para producao
+	 */
+	@Bean
+	public CacheManager chacheManager() {
+		 return new ConcurrentMapCacheManager();  //guarda o CACHE em MAP (SPRING)
+		
+		 /* >> Usado para GUAVA
+		 CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder()
+				.maximumSize(3) // Maximo de 3 objetos
+				.expireAfterAccess(20, TimeUnit.SECONDS); //expira depois de X tempo
+		
+		
+		GuavaCacheManager cacheManager = new GuavaCacheManager();
+		cacheManager.setCacheBuilder(cacheBuilder);
+		return cacheManager;
+		*/
+	}
 
 }
