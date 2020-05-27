@@ -74,6 +74,9 @@
 
 		<!-- Google Guave - Cache Profissional -->
 		<guava.version>19.0</guava.version>
+		
+		<!-- Apache Beans Utils -->
+		<beansutils-version>1.9.4</beansutils-version>
 	</properties>
 
 	<build>
@@ -266,12 +269,22 @@
 			<version>${guava.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Usado para dar Suporte ao GUAVA -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-		</dependency>		
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Apache Beans Utils ==> Classe utilitaria usada para trabalhar com 
+			CLASSES OBJECTO -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${beansutils-version}</version>
+			<scope>compile</scope>
+		</dependency>
 
 	</dependencies>
 
