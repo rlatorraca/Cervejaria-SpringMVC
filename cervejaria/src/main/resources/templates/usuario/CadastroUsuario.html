@@ -54,7 +54,7 @@
 				</div>
 
 				<div class="row">
-					<div class="form-group  col-sm-3" cervejaria:classforerror="senha">
+					<div class="form-group  col-sm-3" cervejaria:classforerror="senha" th:classappend="${usuario.novo} ? bw-required">
 						<label for="senha"  class="control-label">Senha</label> 
 						<input type="password" class="form-control" id="senha" th:field="*{senha}" autocomplete="off"/>
 					</div>
@@ -78,12 +78,13 @@
 					<div class="form-group  col-sm-6" cervejaria:classforerror="grupos">
 						<label class="control-label">Grupos</label>
 						<div>
+						<th:block th:each="grupo : ${grupos}">
 							<div class="checkbox  checkbox-inline">
-								<input type="checkbox" /> <label>Administrador</label>
+								<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}"/> 
+								<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}">Administrador</label>
 							</div>
-							<div class="checkbox  checkbox-inline">
-								<input type="checkbox" /> <label>Vendedor</label>
-							</div>
+						</th:block>
+													
 						</div>
 					</div>
 				</div>

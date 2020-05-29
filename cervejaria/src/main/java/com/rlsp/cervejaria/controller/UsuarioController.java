@@ -11,8 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rlsp.cervejaria.model.Usuario;
+import com.rlsp.cervejaria.repository.GruposRepository;
 import com.rlsp.cervejaria.service.CadastroUsuarioService;
 import com.rlsp.cervejaria.service.exception.EmailUsuarioJaCadastradoException;
+import com.rlsp.cervejaria.service.exception.SenhaObrigatoriaUsuarioException;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -20,10 +22,14 @@ public class UsuarioController {
 	
 	@Autowired
 	private CadastroUsuarioService cadastroUsuarioService;
+	
+	@Autowired
+	private GruposRepository gruposRepository;
 
 	@RequestMapping("/novo")
 	public ModelAndView novo(Usuario usuario) {
 		ModelAndView mv = new ModelAndView("usuario/CadastroUsuario");
+		mv.addObject("grupos",gruposRepository.findAll());
 		return mv;
 	}
 	
@@ -38,6 +44,9 @@ public class UsuarioController {
 			cadastroUsuarioService.salvar(usuario);
 		} catch (EmailUsuarioJaCadastradoException e) {
 			result.rejectValue("email", e.getMessage(), e.getMessage());
+			return novo(usuario);
+		} catch (SenhaObrigatoriaUsuarioException e) {
+			result.rejectValue("senha", e.getMessage(), e.getMessage());
 			return novo(usuario);
 		}
 		

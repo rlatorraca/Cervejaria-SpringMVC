@@ -3,14 +3,12 @@ package com.rlsp.cervejaria.config.init;
 import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
-import javax.servlet.annotation.MultipartConfig;
-import javax.swing.plaf.multi.MultiFileChooserUI;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.rlsp.cervejaria.config.JPAConfig;
+import com.rlsp.cervejaria.config.SecurityConfig;
 import com.rlsp.cervejaria.config.ServiceConfig;
 import com.rlsp.cervejaria.config.WebConfig;
 /**
@@ -28,7 +26,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		
-		return new Class<?>[] { JPAConfig.class , ServiceConfig.class};
+		return new Class<?>[] { JPAConfig.class , ServiceConfig.class,  SecurityConfig.class};
 		//return null;
 	}
 

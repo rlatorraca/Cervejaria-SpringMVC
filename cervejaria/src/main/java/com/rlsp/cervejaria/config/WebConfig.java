@@ -33,6 +33,7 @@ import com.rlsp.cervejaria.controller.BeerController;
 import com.rlsp.cervejaria.controller.converter.CidadeConverter;
 import com.rlsp.cervejaria.controller.converter.EstadoConverter;
 import com.rlsp.cervejaria.controller.converter.EstiloConverter;
+import com.rlsp.cervejaria.controller.converter.GrupoConverter;
 import com.rlsp.cervejaria.thymeleaf.CervejariaDialect;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
@@ -149,6 +150,7 @@ public class WebConfig implements WebMvcConfigurer {
 		conversionService.addConverter(new EstiloConverter());
 		conversionService.addConverter(new CidadeConverter());
 		conversionService.addConverter(new EstadoConverter());
+		conversionService.addConverter(new GrupoConverter());
 		
 		/**
 		 * Converte valores BigDecimais que entrarem no form respeitando o padrao da mascara
