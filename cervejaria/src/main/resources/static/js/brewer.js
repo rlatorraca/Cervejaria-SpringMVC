@@ -82,6 +82,23 @@ Cervejaria.MaskDate = (function() {
 	
 }()); 
 
+Cervejaria.Security = (function() {
+	
+	function Security() {
+		this.token = $('input[name=_csrf]').val();
+		this.header = $('input[name=_csrf_header]').val();
+	}
+	
+	Security.prototype.enable = function() {
+		$(document).ajaxSend(function(event, jqxhr, settings) {
+			jqxhr.setRequestHeader(this.header, this.token);
+		}.bind(this));
+	}
+	
+	return Security;
+	
+}());
+
 $(function() {
 	var maskMoney = new Cervejaria.MaskMoney();
 	maskMoney.enable();
@@ -92,6 +109,9 @@ $(function() {
 	var maskCep = new Cervejaria.MaskCep();
 	maskCep.enable();
 	
-	var MaskDate = new Cervejaria.MaskDate();
-	MaskDate.enable();
+	var maskDate = new Cervejaria.MaskDate();
+	maskDate.enable();
+	
+	var security = new Cervejaria.Security();
+	security.enable();
 });

@@ -26,16 +26,10 @@ Cervejaria.UploadFoto = (function() {
 	        allow: '*.(jpg|jpeg|png)',
 	        multiple: false,
 	        url: this.containerFotoCerveja.data('url-fotos'),
-
-	        beforeSend: function (environment) {
-	            console.log('beforeSend', arguments);
-
-	            // The environment object can still be modified here. 
-	            // var {data, method, headers, xhr, responseType} = environment;
-
-	        },
+	        
 	        beforeAll: function () {
 	            console.log('beforeAll', arguments);
+	            
 	        },
 	        load: function () {
 	            console.log('load', arguments);
@@ -92,7 +86,22 @@ Cervejaria.UploadFoto = (function() {
 	           // alert('Upload Completed');
 	        },
 	        
-	        complete: onUploadCompleto.bind(this)
+	        complete: onUploadCompleto.bind(this),
+	        
+	        beforeSend:	function (environment) {	        	
+	        	console.log('beforeSend', arguments);
+	        	adcionarCsrfToken();
+	        	
+	           	var token = $('input[name=_csrf]').val();
+		        var header = $('input[name=_csrf_header]').val();
+		        environment.xhr.setRequestHeader(header, token); 
+	            
+	            
+
+	            // The environment object can still be modified here. 
+	            // var {data, method, headers, xhr, responseType} = environment;
+
+	        },
 
 	    });
 
@@ -118,8 +127,6 @@ Cervejaria.UploadFoto = (function() {
 			this.inputContentType.val(resposta.contentType);
 		}
 		
-		console.log(this.inputNomeFoto.val());
-		console.log(this.inputContentType.val());
 		
 				
 		this.uploadDrop.addClass('hidden');
@@ -140,6 +147,14 @@ Cervejaria.UploadFoto = (function() {
 		this.inputNomeFoto.val('');
 		this.inputContentType.val('');
 	}
+	
+	//Funcao usada para pegar o NOME e a chave CSRF na pagina Layout padrao 
+	function adcionarCsrfToken(jqXHR) {
+		var token = $('input[name=_csrf]').val();
+		var header = $('input[name=_csrf_header]').val();
+		jqXHR.setRequestHeader(header, token); // Adicona o Token na requisicao
+	}
+
 	
 	return UploadFoto;
 	

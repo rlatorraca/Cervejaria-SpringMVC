@@ -28,7 +28,7 @@
 			<i class="fa  fa-exclamation-circle"></i> Já existe um produto com o nome informado.
 		</div> -->
 
-			<form method="POST" th:object="${usuario}">
+			<form method="POST" th:object="${usuario}"  th:action="@{/usuarios/novo}">
 			
 				<cervejaria:message/>
 				

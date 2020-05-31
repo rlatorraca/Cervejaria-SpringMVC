@@ -17,4 +17,11 @@ public class LoginController {
 		
 		return "Login";
 	}
+	
+	
+	@GetMapping("/403")
+	public String acessoNegado() {
+		return "403";
+	}
+	
 }
