@@ -9,11 +9,11 @@
 	</Appenders>
 	
 	<Loggers>
-		<Logger name="com.rlsp.cervejaria.controller" level="debug"/>
+		<Logger name="com.rlsp.cervejaria.controller" level="debu"/>
 	
 		<Logger name="org.hibernate.SQL" level="debug"/>
 		
-		<Root level="error">
+		<Root level="debug">
 			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>

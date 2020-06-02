@@ -31,10 +31,29 @@ Cervejaria.UploadFoto = (function() {
 	            console.log('beforeAll', arguments);
 	            
 	        },
+	        beforeSend:	function (environment) {	        	
+	        	console.log('beforeSend', arguments);
+	        	var token = $('input[name=_csrf]').val();
+	    		var header = $('input[name=_csrf_header]').val();
+	    		environment.headers[header] = token;
+	    		
+
+	    		
+	    		
+	    		//console.log(environment.headers);
+	    		//environment.headers(header, token); // Adicona o Token na requisicao
+	            
+
+	            // The environment object can still be modified here. 
+	            // var {data, method, headers, xhr, responseType} = environment;
+
+	        },
+	        
 	        load: function () {
 	            console.log('load', arguments);
 	           
 	        },
+	        
 	        error: function () {
 	            console.log('error', arguments);
 	        },
@@ -86,22 +105,9 @@ Cervejaria.UploadFoto = (function() {
 	           // alert('Upload Completed');
 	        },
 	        
-	        complete: onUploadCompleto.bind(this),
+	        complete: onUploadCompleto.bind(this)
 	        
-	        beforeSend:	function (environment) {	        	
-	        	console.log('beforeSend', arguments);
-	        	adcionarCsrfToken();
-	        	
-	           	var token = $('input[name=_csrf]').val();
-		        var header = $('input[name=_csrf_header]').val();
-		        environment.xhr.setRequestHeader(header, token); 
-	            
-	            
-
-	            // The environment object can still be modified here. 
-	            // var {data, method, headers, xhr, responseType} = environment;
-
-	        },
+	        
 
 	    });
 
@@ -149,10 +155,10 @@ Cervejaria.UploadFoto = (function() {
 	}
 	
 	//Funcao usada para pegar o NOME e a chave CSRF na pagina Layout padrao 
-	function adcionarCsrfToken(jqXHR) {
+	function adcionarCsrfToken() {
 		var token = $('input[name=_csrf]').val();
 		var header = $('input[name=_csrf_header]').val();
-		jqXHR.setRequestHeader(header, token); // Adicona o Token na requisicao
+		enviroment.headers(header, token); // Adicona o Token na requisicao
 	}
 
 	
