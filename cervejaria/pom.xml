@@ -74,12 +74,16 @@
 
 		<!-- Google Guave - Cache Profissional -->
 		<guava.version>19.0</guava.version>
-		
+
 		<!-- Apache Beans Utils -->
 		<beansutils-version>1.9.4</beansutils-version>
-		
-		<!--  Spring SECUTIRY -->
+
+		<!-- Spring SECURITY -->
 		<spring-security-version>5.3.2.RELEASE</spring-security-version>
+
+		<!-- Spring SECURITY EXTRA / Mostar o Nome do USuario na tela -->
+		<spring-extra-spring-security>3.0.4.RELEASE</spring-extra-spring-security>
+
 	</properties>
 
 	<build>
@@ -288,21 +292,28 @@
 			<version>${beansutils-version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Spring Security -->
-		
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 			<version>${spring-security-version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring-security-version}</version>
 			<scope>compile</scope>
+		</dependency>
+
+		<!-- Spring Securitu - EXTRA / Nome do Usuario logado -->
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+			<version>${spring-extra-spring-security}</version>
 		</dependency>
 
 	</dependencies>

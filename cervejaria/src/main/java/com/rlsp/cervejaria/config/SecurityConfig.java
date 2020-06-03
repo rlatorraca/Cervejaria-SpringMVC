@@ -78,7 +78,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))  // Logout com CSRF "th:action"
 				.and()
-			//.sessionManagement()
+			.sessionManagement()
+				.invalidSessionUrl("/login")   //Em caso de NAO estar logado e tenhta submeter algo
+			    .and()
 			//	.maximumSessions(1)    // 1 Sessao por usuario
 			//	.expiredUrl("/login"); // Retorna para pagina de Login (ao expirar a sessaco)
 			.exceptionHandling()

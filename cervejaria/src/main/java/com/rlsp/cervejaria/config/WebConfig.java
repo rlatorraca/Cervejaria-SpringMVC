@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -109,6 +110,9 @@ public class WebConfig implements WebMvcConfigurer {
 		
 		//Insere o Dialeto de Thymeleaf data attributes no HTML (data:"nome_tag")
 		engine.addDialect(new DataAttributeDialect());
+		
+		//Insere o Dialeto de Spring Security EXTRAS - Nome do Usuario Logado
+				engine.addDialect(new SpringSecurityDialect());
 		
 		return engine;
 	}
