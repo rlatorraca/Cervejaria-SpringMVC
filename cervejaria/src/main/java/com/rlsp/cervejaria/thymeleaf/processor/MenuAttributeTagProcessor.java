@@ -27,13 +27,24 @@ public class MenuAttributeTagProcessor extends AbstractAttributeTagProcessor {
 	protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
 			String attributeValue, IElementTagStructureHandler structureHandler) {
 		
-		IEngineConfiguration configuration = context.getConfiguration();
+		/**
+		 * Pega a URI da pagina que esta sendo ACESSADA
+		 */		
+		IEngineConfiguration configuration = context.getConfiguration();  //Pega o Contexto
 		IStandardExpressionParser parser = StandardExpressions.getExpressionParser(configuration);
-		IStandardExpression expression = parser.parseExpression(context, attributeValue);
-		String menu = (String) expression.execute(context);
+		IStandardExpression expression = parser.parseExpression(context, attributeValue);  // Pega o valor do 'attributeValue' do Menu ex: "/estilos"
+		String menu = (String) expression.execute(context);  // Menu = "/cervejaria/cerveja"   ==> Contexto Correto
 		
-		HttpServletRequest request = ((IWebContext) context).getRequest();
+		/**
+		 * Pega a URI '/cerveajaria/**'
+		 */
+		HttpServletRequest request = ((IWebContext) context).getRequest(); 
 		String uri = request.getRequestURI();
+		
+		/**
+		 * Adicionara isActive(css classe), PARA MOSTRAR o MENU EXPANDIDO, se a URI comecar com  (startsWith)
+		 *  - Ex: /cervejaria/cerveja/* ==> adiciona isActive para todas a paginas a partir dessa URI
+		 */
 		
 		if (uri.startsWith(menu)) {
 			String classesExistentes = tag.getAttributeValue("class");

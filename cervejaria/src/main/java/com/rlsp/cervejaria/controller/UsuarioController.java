@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rlsp.cervejaria.model.Usuario;
 import com.rlsp.cervejaria.repository.GruposRepository;
+import com.rlsp.cervejaria.repository.UsuariosRepository;
+import com.rlsp.cervejaria.repository.filter.UsuarioFilter;
 import com.rlsp.cervejaria.service.CadastroUsuarioService;
 import com.rlsp.cervejaria.service.exception.EmailUsuarioJaCadastradoException;
 import com.rlsp.cervejaria.service.exception.SenhaObrigatoriaUsuarioException;
@@ -24,12 +27,15 @@ public class UsuarioController {
 	private CadastroUsuarioService cadastroUsuarioService;
 	
 	@Autowired
-	private GruposRepository gruposRepository;
+	private GruposRepository grupos;
+	
+	@Autowired
+	private UsuariosRepository usuarios;
 
 	@RequestMapping("/novo")
 	public ModelAndView novo(Usuario usuario) {
 		ModelAndView mv = new ModelAndView("usuario/CadastroUsuario");
-		mv.addObject("grupos",gruposRepository.findAll());
+		mv.addObject("grupos",grupos.findAll());
 		return mv;
 	}
 	
@@ -52,6 +58,14 @@ public class UsuarioController {
 		
 		attributes.addFlashAttribute("mensagem", "Usuário salvo com sucesso");
 		return new ModelAndView("redirect:/usuarios/novo");
+	}
+	
+	@GetMapping
+	public ModelAndView pesquisar(UsuarioFilter usuarioFilter) {
+		ModelAndView mv = new ModelAndView("/usuario/PesquisaUsuarios");
+		mv.addObject("usuarios", usuarios.filtrar(usuarioFilter));
+		mv.addObject("grupos", grupos.findAll());
+		return mv;
 	}
 	
 }
