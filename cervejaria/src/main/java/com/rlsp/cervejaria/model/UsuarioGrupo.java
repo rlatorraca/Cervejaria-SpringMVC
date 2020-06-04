@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Table(name = "usuario_grupo")
 public class UsuarioGrupo {
 
-	@EmbeddedId
+	@EmbeddedId // I ID esta dentro da CLASSE "UsuarioGrupoId" que @Embadable
 	private UsuarioGrupoId id;
 
 	public UsuarioGrupoId getId() {

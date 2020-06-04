@@ -53,7 +53,7 @@ public class UsuariosRepositoryImpl implements UsuariosRepositoryQueries {
 	public List<Usuario> filtrar(UsuarioFilter filtro) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
 		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY); // DISTINCT apenas para pegar 1 usuario, no retorno (nao permitindo duplicados)
 		adicionarFiltro(filtro, criteria);
 		
 		return criteria.list();
@@ -70,13 +70,25 @@ public class UsuariosRepositoryImpl implements UsuariosRepositoryQueries {
 			}
 			
 			criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN);
+			
 			if (filtro.getGrupos() != null && !filtro.getGrupos().isEmpty()) {
+				
 				List<Criterion> subqueries = new ArrayList<>();
+				
+				/**
+				 * .stream() ==> mapeia em STREAM (iterador)
+				 * .mapToLong(Grupo::getCodigo) ==> transforma em um LONG, o atributi "codigo" na Entidade model/Grupo
+				 */
 				for (Long codigoGrupo : filtro.getGrupos().stream().mapToLong(Grupo::getCodigo).toArray()) {
-					DetachedCriteria dc = DetachedCriteria.forClass(UsuarioGrupo.class);
-					dc.add(Restrictions.eq("id.grupo.codigo", codigoGrupo));
-					dc.setProjection(Projections.property("id.usuario"));
 					
+					/**
+					 * Criteria/Consultada DESTACADA/SEPARADA
+					 *  - Sera chamanda PRIMEIRO, antes da principal
+					 */
+					DetachedCriteria dc = DetachedCriteria.forClass(UsuarioGrupo.class);
+					dc.add(Restrictions.eq("id.grupo.codigo", codigoGrupo));  // Filtra por "*"
+					
+					dc.setProjection(Projections.property("id.usuario"));	  //Retorna o Código do Usuario					
 					subqueries.add(Subqueries.propertyIn("codigo", dc));
 				}
 				

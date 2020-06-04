@@ -1,5 +1,6 @@
 package com.rlsp.cervejaria.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,5 @@ public interface UsuariosRepository extends JpaRepository<Usuario, Long>, Usuari
 
 	public Optional<Usuario> findByEmail(String email);
 
+	public List<Usuario> findByCodigoIn(Long[] codigos);
 }

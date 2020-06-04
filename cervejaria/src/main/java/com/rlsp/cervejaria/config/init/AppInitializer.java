@@ -4,7 +4,7 @@ import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
 
-import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.FormContentFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.rlsp.cervejaria.config.JPAConfig;
@@ -62,7 +62,13 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 //		characterEncodingFilter.setForceEncoding(true); // Para que o filtro UTF-8 seja aplicado sempre
 		
 //		return new Filter[] { characterEncodingFilter };
-		return new Filter[] {};
+		
+		/**
+		 * Habilita o uso do PUT @PutMapping na aplicacao
+		 */
+		FormContentFilter httpPutFormContentFilter = new FormContentFilter();
+		
+		return new Filter[] { httpPutFormContentFilter };
 	}
 	
 	/**

@@ -3,11 +3,15 @@ package com.rlsp.cervejaria.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -16,6 +20,7 @@ import com.rlsp.cervejaria.repository.GruposRepository;
 import com.rlsp.cervejaria.repository.UsuariosRepository;
 import com.rlsp.cervejaria.repository.filter.UsuarioFilter;
 import com.rlsp.cervejaria.service.CadastroUsuarioService;
+import com.rlsp.cervejaria.service.StatusUsuario;
 import com.rlsp.cervejaria.service.exception.EmailUsuarioJaCadastradoException;
 import com.rlsp.cervejaria.service.exception.SenhaObrigatoriaUsuarioException;
 
@@ -66,6 +71,21 @@ public class UsuarioController {
 		mv.addObject("usuarios", usuarios.filtrar(usuarioFilter));
 		mv.addObject("grupos", grupos.findAll());
 		return mv;
+	}
+	
+	
+	/**
+	 * @PutMapping("/status") ==> serve para ATUALIZAR parte da pagina de PesquisaUSuarios
+	 *  - Especificamente a parte dos CHECKBOXs de ATIVO/INATIVO
+	 *  
+	 *  @ResponseStatus(HttpStatus.OK) ==> como NAO RETORNA uma view (pagina) por estar trabalhando com JScript/AJAX
+	 */
+	@PutMapping("/status")
+	@ResponseStatus(HttpStatus.OK)
+	public void atualizarStatus(@RequestParam("codigos[]") Long[] codigos, @RequestParam("status") StatusUsuario statusUsuario) {
+			
+		
+		cadastroUsuarioService.alterarStatus(codigos, statusUsuario);
 	}
 	
 }

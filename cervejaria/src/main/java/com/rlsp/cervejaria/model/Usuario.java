@@ -12,11 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 import com.rlsp.cervejaria.validation.AtributoConfirmacaoSenha;
 
@@ -24,6 +27,7 @@ import com.rlsp.cervejaria.validation.AtributoConfirmacaoSenha;
 @AtributoConfirmacaoSenha(atributoSenha="senha", atributoConfirmacaoSenha="confirmacaoSenha", message="Senha e Contra-senha não são iguais ou vazios")
 @Entity
 @Table(name = "usuario")
+@DynamicUpdate  //So faz o UPDATE no atributo que foi Alterado
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -58,6 +62,12 @@ public class Usuario implements Serializable {
 	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
 
+	
+	//Usa para que seja confirmacaoSenha = senha em caso de usuario LOGADO e fazer ATIVACAO / DESATIVACAO de usuarios
+	@PreUpdate
+	private void preUpdate() {
+		this.confirmacaoSenha = senha;
+	}
 	
 	public boolean isNovo() {
 		return this.codigo == null;
