@@ -58,8 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		/**
 		 * Sempre COMECAR com o que se quer BLOQUEAR
 		 */
-		http
-			//.csrf().disable()
+		http			
+		//.csrf().disable();
 			.httpBasic()
 		 	.and()
 			.authorizeRequests()
@@ -69,8 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				//.antMatchers("/images/**").permitAll()   // Tudo que tiver em dentro da pasta IMAGES pode ser acessado sem AUTENTICACAO
 				.anyRequest().authenticated() // Qualquer requisicao DEVER AUTENTICAR	
 				//.anyRequest().denyAll() 	  // Para NEGAR tudo, mas como ja esta bloqueando se nao for autenticado nao precisa	
-				.and()
-			
+				.and()			
 			.formLogin()
 				.loginPage("/login")          // Define a localizacao da pagina de LOGIN
 				.permitAll()				  // Nao precisa estar autenticado
@@ -85,6 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			//	.expiredUrl("/login"); // Retorna para pagina de Login (ao expirar a sessaco)
 			.exceptionHandling()
 				.accessDeniedPage("/403");
+				
+
 				
 			
 			//.sessionManagement()

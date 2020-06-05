@@ -81,6 +81,7 @@ public class UsuarioController {
 	 *  @ResponseStatus(HttpStatus.OK) ==> como NAO RETORNA uma view (pagina) por estar trabalhando com JScript/AJAX
 	 */
 	@PutMapping("/status")
+	//@RequestMapping(name = "/status", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	public void atualizarStatus(@RequestParam("codigos[]") Long[] codigos, @RequestParam("status") StatusUsuario statusUsuario) {
 			

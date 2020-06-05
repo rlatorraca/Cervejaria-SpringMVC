@@ -63,11 +63,11 @@
 		</form>
 		
 		<div class="aw-datatable-toolbar">
-			<button class="btn btn-default  btn-xs  js-status-btn" data:status="ATIVAR">
+			<button class="btn btn-default  btn-xs  js-status-btn" data:status="ATIVAR" data:url="@{/usuarios/status}">
 				<span>Ativar</span>
 			</button>
 			
-			<button class="btn btn-default  btn-xs  js-status-btn" data:status="DESATIVAR">
+			<button class="btn btn-default  btn-xs  js-status-btn" data:status="DESATIVAR" data:url="@{/usuarios/status}" >
 				<span>Desativar</span>
 			</button>
 		</div>
@@ -78,7 +78,7 @@
 	            	<tr>
 	            		<th class="table-usuarios-col-status">
 	            			<div class="checkbox  aw-checkbox-no-margin">
-	            				<input type="checkbox" class="js-selecao" data:codigo="${usuario.codigo}" />
+	            				<input type="checkbox" class="js-selecao-todos" />
 	            				<label></label>
 	            			</div>
 	            		</th>
@@ -92,6 +92,12 @@
 			
 	            <tbody>
 					<tr th:each="usuario : ${usuarios}">
+						<td>
+							<div class="checkbox  aw-checkbox-no-margin">
+	            				<input type="checkbox" class="js-selecao" data:codigo="${usuario.codigo}">
+	            				<label></label>
+	            			</div>
+						</td>
 						<td th:text="${usuario.nome}"></td>
 						<td th:text="${usuario.email}"></td>
 						<td>
