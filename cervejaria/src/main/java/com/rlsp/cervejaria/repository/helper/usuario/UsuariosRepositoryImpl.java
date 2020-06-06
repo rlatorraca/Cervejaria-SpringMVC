@@ -9,14 +9,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -24,11 +30,15 @@ import com.rlsp.cervejaria.model.Grupo;
 import com.rlsp.cervejaria.model.Usuario;
 import com.rlsp.cervejaria.model.UsuarioGrupo;
 import com.rlsp.cervejaria.repository.filter.UsuarioFilter;
+import com.rlsp.cervejaria.repository.paginacao.PaginacaoUtil;
 
 public class UsuariosRepositoryImpl implements UsuariosRepositoryQueries {
 
 	@PersistenceContext
 	private EntityManager manager;
+	
+	@Autowired
+	private PaginacaoUtil paginacaoUtil;
 	
 	@Override
 	public Optional<Usuario> porEmailEAtivo(String email) {
@@ -50,13 +60,25 @@ public class UsuariosRepositoryImpl implements UsuariosRepositoryQueries {
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	@Override
-	public List<Usuario> filtrar(UsuarioFilter filtro) {
+	public Page<Usuario> filtrar(UsuarioFilter filtro, Pageable pageable) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
 		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY); // DISTINCT apenas para pegar 1 usuario, no retorno (nao permitindo duplicados)
+		paginacaoUtil.preparar(criteria, pageable);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		adicionarFiltro(filtro, criteria);
 		
-		return criteria.list();
+		List<Usuario> filtrados = criteria.list();
+		
+		filtrados.forEach(u -> Hibernate.initialize(u.getGrupos())); // Pega os Grupos
+
+		return new PageImpl<>(filtrados, pageable, total(filtro));
+	}
+	
+	private Long total(UsuarioFilter filtro) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
+		adicionarFiltro(filtro, criteria);
+		criteria.setProjection(Projections.rowCount());
+		return (Long) criteria.uniqueResult();
 	}
 
 	private void adicionarFiltro(UsuarioFilter filtro, Criteria criteria) {
@@ -94,8 +116,11 @@ public class UsuariosRepositoryImpl implements UsuariosRepositoryQueries {
 				
 				Criterion[] criterions = new Criterion[subqueries.size()];
 				criteria.add(Restrictions.and(subqueries.toArray(criterions)));
+				
 			}
 		}
 	}
+
+	
 
 }

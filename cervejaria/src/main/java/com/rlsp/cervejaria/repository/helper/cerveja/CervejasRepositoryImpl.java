@@ -101,6 +101,7 @@ public class CervejasRepositoryImpl  implements CervejasRepositoryQueries{
 		}
 		
 		Predicate[] predArray = new Predicate[predicateList.size()];
+		
 		return predicateList.toArray(predArray);
 	}
 

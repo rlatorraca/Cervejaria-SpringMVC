@@ -5,12 +5,13 @@ Cervejaria.MultiSelecao = (function() {
 
 	function MultiSelecao() {
 		this.statusBtn = $('.js-status-btn');    // pega o Objeto para os botoes ATIVADO / DESATIVADO
-		this.selecaoCheckbox = $('.js-selecao'); // pega o USUARIO selecionado para ser ATIVADO ou DESATIVDADO
+		this.selecaoCheckbox = $('.js-selecao'); // pega o USUARIO (individualmente) que foi SELECIONADO 
+		this.selecaoTodosCheckbox = $('.js-selecao-todos'); // pega os JS para o BOTAO que seleciona TODOS os USUARIOS
 	}
 
 	MultiSelecao.prototype.iniciar = function() {
 		this.statusBtn.on('click', onStatusBtnClicado.bind(this));
-		this.selecaoTodosCheckbox.on('click', onSelecaoTodosClicado.bind(this));
+		this.selecaoTodosCheckbox.on('click', onSelecaoTodosClicado.bind(this)); // Chama a Funcao onSelecaoTodosClicado() ao clicar em 'js-selecao-todos'
 		this.selecaoCheckbox.on('click', onSelecaoClicado.bind(this));
 	}
 
@@ -42,17 +43,19 @@ Cervejaria.MultiSelecao = (function() {
 	}
 	
 	function onSelecaoTodosClicado() {
-		var status = this.selecaoTodosCheckbox.prop('checked');
-		this.selecaoCheckbox.prop('checked', status);
-		statusBotaoAcao.call(this, status);
+		var status = this.selecaoTodosCheckbox.prop('checked'); // Verifica se o BOTAO de SELECIONADO TODOS esta MARCADO /CHECKADO 
+		this.selecaoCheckbox.prop('checked', status); // SELECIONA / DESMARCA a depdender do STATUS do valor de ".js-selecao-todos' (marca todos / desmcarca todos) 
+		statusBotaoAcao.call(this, status);   // Chama funcao para HABILITAR / DESABILITAR os botoes 'Ativar' / 'Desativar'
 	}
 	
+	// Algum USUARIO foi Selecionado
 	function onSelecaoClicado() {
-		var selecaoCheckboxChecados = this.selecaoCheckbox.filter(':checked');
-		this.selecaoTodosCheckbox.prop('checked', selecaoCheckboxChecados.length >= this.selecaoCheckbox.length);
-		statusBotaoAcao.call(this, selecaoCheckboxChecados.length);
+		var selecaoCheckboxChecados = this.selecaoCheckbox.filter(':checked'); // Faz um FILTRO dos Checbox MARCADOS (retornando os CHECADOS)
+		this.selecaoTodosCheckbox.prop('checked', selecaoCheckboxChecados.length >= this.selecaoCheckbox.length); // Verifica se TODOS estao CHECADOS (usando '.js-selecao' para pegar o total de Checkbox existenteste)
+		statusBotaoAcao.call(this, selecaoCheckboxChecados.length); // Chama funcao para HABILITAR / DESABILITAR os botoes 'Ativar' / 'Desativar'
 	}
 	
+	// ATIVA / DESATIVA botao usando a classe 'DISABLE'
 	function statusBotaoAcao(ativar) {
 		ativar ? this.statusBtn.removeClass('disabled') : this.statusBtn.addClass('disabled');
 	}

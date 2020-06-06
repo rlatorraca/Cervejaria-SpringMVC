@@ -1,8 +1,11 @@
 package com.rlsp.cervejaria.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.rlsp.cervejaria.controller.page.PageWrapper;
+import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.model.Usuario;
 import com.rlsp.cervejaria.repository.GruposRepository;
 import com.rlsp.cervejaria.repository.UsuariosRepository;
@@ -66,11 +71,16 @@ public class UsuarioController {
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar(UsuarioFilter usuarioFilter) {
-		ModelAndView mv = new ModelAndView("/usuario/PesquisaUsuarios");
-		mv.addObject("usuarios", usuarios.filtrar(usuarioFilter));
+	public ModelAndView pesquisar(UsuarioFilter usuarioFilter, @PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest) {
+		ModelAndView mv = new ModelAndView("/usuario/PesquisaUsuarios");		
 		mv.addObject("grupos", grupos.findAll());
+		
+		//mv.addObject("usuarios", usuarios.filtrar(usuarioFilter));
+		PageWrapper<Usuario> paginaWrapper = new PageWrapper<>(usuarios.filtrar(usuarioFilter, pageable), httpServletRequest);
+		mv.addObject("pagina", paginaWrapper);
 		return mv;
+		
+		
 	}
 	
 	
