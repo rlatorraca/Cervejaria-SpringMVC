@@ -1,5 +1,6 @@
 package com.rlsp.cervejaria.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +17,8 @@ import com.rlsp.cervejaria.repository.helper.cliente.ClientesRepositoryQueries;
 public interface ClientesRepository extends JpaRepository<Cliente, Long>, ClientesRepositoryQueries{
 
 	public Optional<Cliente> findByCpfOuCnpj(String cpfOuCnpjString);
+
+	public List<Cliente> findByNomeStartingWithIgnoreCase(String nome);
 
 	
 }

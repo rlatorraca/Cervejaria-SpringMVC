@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/LayoutPadrao}"
-	xmlns:brewer="http://brewer.algaworks.com">
+	xmlns:cervejaria="http://cervejaria.rlsp.com">
 
 <head>
 	<title>Cadastro de venda</title>
@@ -63,7 +63,8 @@
 					<label class="control-label" for="nomeCliente">Cliente</label>
 					<div class="input-group">
 				      <input id="nomeCliente" type="text" readonly="readonly" class="form-control" placeholder="Clique na lupa para pesquisar o cliente"/>
-				       <input id="codigoCliente" type="hidden"/>
+				      <!-- Set up o codigo do CLiente ao Clicar no MODAL -->
+				      <input id="codigoCliente" type="hidden"/>
 				      <span class="input-group-btn">
 				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada"
 				        		data-toggle="modal" data-target="#pesquisaRapidaClientes" >
@@ -72,7 +73,7 @@
 				      </span>
 				    </div>
 				    
-				    <th:block th:replace="cliente/PesquisaRapidaClientes :: pesquisaRapidaClientes"></th:block>
+				   
 				</div>
 				
 				<div class="form-group  col-sm-4 bw-required">
@@ -163,7 +164,7 @@
 	<th:block th:replace="cliente/PesquisaRapidaClientes :: pesquisaRapidaClientes"></th:block>
 </section>
 
-	<th:block layout:fragment="javascript-extra">
+	<th:block layout:fragment="js-extra">
 		<script th:src="@{/js/vendors/handlebars.min.js}"></script>
 		<script th:src="@{/js/cliente.pesquisa-rapida.js}"></script>
 		<script>
