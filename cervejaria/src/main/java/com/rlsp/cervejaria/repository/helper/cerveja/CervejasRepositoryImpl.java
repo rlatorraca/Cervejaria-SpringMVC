@@ -142,6 +142,10 @@ public class CervejasRepositoryImpl  implements CervejasRepositoryQueries{
 		return filtro.getEstilo() != null && filtro.getEstilo().getCodigo() != null;
 	}
 
+	
+	/**
+	 * Usado para mostra a CERVEJA com FOTO na pagina de VENDAS / PEDIDOS	 * 
+	 */
 	public List<CervejaDTO> porSkuOuNome(String skuOuNome) {
 		
 		String jpql = "select new com.algaworks.brewer.dto.CervejaDTO(codigo, sku, nome, origem, valor, foto) "

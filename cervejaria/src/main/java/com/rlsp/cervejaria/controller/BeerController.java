@@ -1,5 +1,7 @@
 package com.rlsp.cervejaria.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -12,10 +14,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rlsp.cervejaria.controller.page.PageWrapper;
+import com.rlsp.cervejaria.dto.CervejaDTO;
 import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.model.Origem;
 import com.rlsp.cervejaria.model.Sabor;
@@ -105,6 +109,14 @@ public class BeerController{
 		PageWrapper<Cerveja> paginaWrapper = new PageWrapper<>(cervejas.filtrar(cervejaFilter, pageable), httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
+	}
+	
+	/**
+	 * @ResponseBody ==> retornar um OBJETO JSON	 * 
+	 */
+	@GetMapping("/filtro")
+	public @ResponseBody List<CervejaDTO> pesquisar(String skuOuNome) {
+		return cervejas.porSkuOuNome(skuOuNome);
 	}
 	
 }
