@@ -84,6 +84,9 @@
 		<!-- Spring SECURITY EXTRA / Mostar o Nome do USuario na tela -->
 		<spring-extra-spring-security>3.0.4.RELEASE</spring-extra-spring-security>
 
+		<!-- JUNIT -->
+		<junit-version>4.13</junit-version>
+
 	</properties>
 
 	<build>
@@ -314,6 +317,14 @@
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
 			<version>${spring-extra-spring-security}</version>
+		</dependency>
+
+		<!-- JUNIT - Testes -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-version}</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
