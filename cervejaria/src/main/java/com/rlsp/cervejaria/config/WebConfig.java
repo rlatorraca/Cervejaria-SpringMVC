@@ -35,6 +35,7 @@ import com.rlsp.cervejaria.controller.converter.CidadeConverter;
 import com.rlsp.cervejaria.controller.converter.EstadoConverter;
 import com.rlsp.cervejaria.controller.converter.EstiloConverter;
 import com.rlsp.cervejaria.controller.converter.GrupoConverter;
+import com.rlsp.cervejaria.session.TabelaItensVenda;
 import com.rlsp.cervejaria.thymeleaf.CervejariaDialect;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
@@ -59,7 +60,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  */
 
 @Configuration
-@ComponentScan(basePackageClasses = {BeerController.class})
+@ComponentScan(basePackageClasses = {BeerController.class, TabelaItensVenda.class})
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching
