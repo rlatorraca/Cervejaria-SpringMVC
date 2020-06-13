@@ -30,10 +30,9 @@ public class TabelaItensVenda {
 	
 	public void adicionarItem(Cerveja cerveja, Integer quantidade) {
 		
-		// Pega a CERVEJA incluida em Vendas / Pedidos e cria um STREAM verificando QUAL EH A CERVEJA
-		Optional<ItemVenda> itemVendaOptional = itens.stream()
-				.filter(i -> i.getCerveja().equals(cerveja))
-				.findAny();
+		 // Busca o ITEM de ACORDO COM a Cerveja escolhida / incluid
+		Optional<ItemVenda> itemVendaOptional = buscarItemPorCerveja(cerveja);
+		
 		
 		// Faz a VERIFICACAO se a CERVEJA ja EXISTE dentro do PEDIDO e apenas  ACRESCENTA a quantidade REQUERIDA
 		//	- CASO CONTRARIO
@@ -50,7 +49,14 @@ public class TabelaItensVenda {
 			itens.add(0, itemVenda); // o "0" faz INCLUSAO na 1ª posicao
 		}
 	}
-
+	
+	/**
+	 * Altera a QUANTIDADE da cerveja SELECIONADA 
+	 */
+	public void alterarQuantidadeDeCervejas(Cerveja cerveja, Integer quantidade) {
+		ItemVenda itemVenda = buscarItemPorCerveja(cerveja).get(); // Retorna a CERVEJA
+		itemVenda.setQuantidade(quantidade);
+	}
 
 	public int total() {
 		return itens.size();
@@ -60,7 +66,10 @@ public class TabelaItensVenda {
 		return itens;
 	}
 	
-	@SuppressWarnings("unused")
+	/**
+	 * RECUPERA a CERVEJA incluida em Vendas / Pedidos e cria um STREAM verificando QUAL EH A CERVEJA
+	 * 
+	 */
 	private Optional<ItemVenda> buscarItemPorCerveja(Cerveja cerveja) {
 		return itens.stream()
 				.filter(i -> i.getCerveja().equals(cerveja))
