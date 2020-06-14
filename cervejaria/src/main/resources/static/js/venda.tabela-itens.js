@@ -3,6 +3,7 @@ Cervejaria.TabelaItens = (function() {
 	function TabelaItens(autocomplete) {
 		this.autocomplete = autocomplete;
 		this.tabelaCervejasContainer = $('.js-tabela-cervejas-container');
+		this.uuid = $('#uuid').val();
 	}
 	
 	TabelaItens.prototype.iniciar = function() {
@@ -14,7 +15,8 @@ Cervejaria.TabelaItens = (function() {
 			url: 'item',   // Sem a "/" troca a pagina de procura apenas para "item" e nao inclue o "Localhost"
 			method: 'POST',
 			data: {
-				codigoCerveja: item.codigo
+				codigoCerveja : item.codigo,
+				uuid : this.uuid
 			}
 		});
 		
@@ -26,6 +28,7 @@ Cervejaria.TabelaItens = (function() {
 		this.tabelaCervejasContainer.html(html);
 		$('.js-tabela-cerveja-quantidade-item').on('change', onQuantidadeItemAlterado.bind(this)); // Ao mudar a QUANTIDADE de Cerveja chamada funcao
 		$('.js-tabela-item').on('dblclick', onDoubleClick); // Double-click na CERVEJA
+		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this)); // Ao cliccar em Exclui apos Double Click na Cerveja assina a funcao "onExclusaoItemClick"
 	}
 	
 	// Para alterar a quantidade de cervejas adicionadas
@@ -61,14 +64,17 @@ Cervejaria.TabelaItens = (function() {
 		$(this).toggleClass('solicitando-exclusao');
 	}
 	
+	
+	//Exclui a CERVEJA DA TELA
 	function onExclusaoItemClick(evento) {
-		var codigoCerveja = $(evento.target).data('codigo-cerveja');
+		var codigoCerveja = $(evento.target).data('codigo-cerveja'); // Pega o codigo da Cerveja usando o INPUT do BOTAO usando  "data:codigo-cerveja"
 		var resposta = $.ajax({
 			url: 'item/' + this.uuid + '/' + codigoCerveja,
+			//url: 'item/' + codigoCerveja,
 			method: 'DELETE'
 		});
 		
-		resposta.done(onItemAtualizadoNoServidor.bind(this));
+		resposta.done(onItemAtualizadoNoServidor.bind(this)); // Chama a funcao ACIMA (para atualizar os dados no servidor / DB)
 	}
 	
 	function bindQuantidade() {

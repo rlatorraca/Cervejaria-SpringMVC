@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
@@ -36,6 +37,7 @@ import com.rlsp.cervejaria.controller.converter.EstadoConverter;
 import com.rlsp.cervejaria.controller.converter.EstiloConverter;
 import com.rlsp.cervejaria.controller.converter.GrupoConverter;
 import com.rlsp.cervejaria.session.TabelaItensVenda;
+import com.rlsp.cervejaria.session.TabelasItensSession;
 import com.rlsp.cervejaria.thymeleaf.CervejariaDialect;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
@@ -60,7 +62,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  */
 
 @Configuration
-@ComponentScan(basePackageClasses = {BeerController.class, TabelaItensVenda.class})
+@ComponentScan(basePackageClasses = {BeerController.class, TabelasItensSession.class})
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching
@@ -204,6 +206,17 @@ public class WebConfig implements WebMvcConfigurer {
 		bundle.setBasename("classpath:/messages");
 		bundle.setDefaultEncoding("UTF-8"); // http://www.utf8-chartable.de
 		return bundle;
+	}
+	
+	
+	/*
+	 * - Usando para fazer a INTEGRACAO entre o SPRING MVC + SPRING JPA, permitindo a busca de um Elemento de uma ENTIDADE
+	 *  sem, precisar usar a funcao/metodo findById()
+	 * - Dessa forma fara a busca e conversao usando a URL (Ex.: "/item/{codigoCerveja}") do mapeamento para fazer a busca de elemento  
+	 */
+	@Bean
+	public DomainClassConverter<FormattingConversionService> domainClassConverter() {
+		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
 
 }

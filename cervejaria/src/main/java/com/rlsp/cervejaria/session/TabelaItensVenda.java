@@ -4,21 +4,25 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import java.util.stream.IntStream;
 
 import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.model.ItemVenda;
 
-@SessionScope // Cria um OBJETO (usuario) por SESSAO
-@Component
+
 public class TabelaItensVenda {
 
 	private String uuid;
+	
 	private List<ItemVenda> itens = new ArrayList<>();
 	
 	
+	public TabelaItensVenda(String uuid) {
+		
+		this.uuid = uuid;
+	}
+
+
 	//Calcula o VALOR TOTAL com os ITENS DE VENDA
 	public BigDecimal getValorTotal() {
 		return itens.stream()
@@ -56,6 +60,21 @@ public class TabelaItensVenda {
 	public void alterarQuantidadeDeCervejas(Cerveja cerveja, Integer quantidade) {
 		ItemVenda itemVenda = buscarItemPorCerveja(cerveja).get(); // Retorna a CERVEJA
 		itemVenda.setQuantidade(quantidade);
+	}
+	
+	/**
+	 * EXCLUI a CERVEJA da tabela /tela que apresenta as cervejas selecionadas
+	 * - IntStream ==> usado para gerar um indice de (iniciando em 0) com as cervejas existentes, para entao, poder exclui-la
+	 * 
+	 */
+	public void excluirCervejaTela(Cerveja cerveja) {
+		
+	
+		int indice = IntStream.range(0, itens.size())
+				.filter(i -> itens.get(i).getCerveja().equals(cerveja)) // ACHA a cerveja correta
+				.findAny()	 // PEGA a CERVEJA correta						
+				.getAsInt(); // Retorna como INT 		
+				itens.remove(indice);
 	}
 
 	public int total() {
