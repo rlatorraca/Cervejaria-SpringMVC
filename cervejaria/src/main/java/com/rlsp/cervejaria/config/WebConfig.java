@@ -2,6 +2,7 @@ package com.rlsp.cervejaria.config;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -19,10 +20,12 @@ import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -36,7 +39,6 @@ import com.rlsp.cervejaria.controller.converter.CidadeConverter;
 import com.rlsp.cervejaria.controller.converter.EstadoConverter;
 import com.rlsp.cervejaria.controller.converter.EstiloConverter;
 import com.rlsp.cervejaria.controller.converter.GrupoConverter;
-import com.rlsp.cervejaria.session.TabelaItensVenda;
 import com.rlsp.cervejaria.session.TabelasItensSession;
 import com.rlsp.cervejaria.thymeleaf.CervejariaDialect;
 
@@ -145,6 +147,19 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+	}
+	
+	/**
+	 * Faz o PT-BR o padrao de configuracao da APLICACAO
+	 * @return
+	 */
+	@Bean	
+	public LocaleResolver localeResolver() {
+		//return new FixedLocaleResolver(new Locale("pt", "BR"));
+		SessionLocaleResolver localeResolver = new SessionLocaleResolver();		
+	    localeResolver.setDefaultLocale(new Locale("pt", "BR"));//StringUtils.parseLocaleString("en")
+
+	    return localeResolver;
 	}
 	
 	/**

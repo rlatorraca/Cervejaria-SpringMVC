@@ -39,20 +39,27 @@ public class VendasController {
 	
 	
 	@GetMapping("/nova")
-	public ModelAndView nova(Venda venda) {
+	public ModelAndView nova() {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
-		
-		if (StringUtils.isEmpty(venda.getUuid())) {
-			venda.setUuid(UUID.randomUUID().toString());
-		}
-		
-		mv.addObject("itens", venda.getItens());
-		mv.addObject("valorFrete", venda.getValorFrete());
-		mv.addObject("valorDesconto", venda.getValorDesconto());
-		mv.addObject("valorTotalItens", tabelaItensSession.getValorTotal(venda.getUuid()));
-		
+		mv.addObject("uuid", UUID.randomUUID().toString());
 		return mv;
 	}
+	
+//	@GetMapping("/nova")
+//	public ModelAndView nova(Venda venda) {
+//		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
+//		
+//		if (StringUtils.isEmpty(venda.getUuid())) {
+//			venda.setUuid(UUID.randomUUID().toString());
+//		}
+//		
+//		mv.addObject("itens", venda.getItens());
+//		mv.addObject("valorFrete", venda.getValorFrete());
+//		mv.addObject("valorDesconto", venda.getValorDesconto());
+//		mv.addObject("valorTotalItens", tabelaItensSession.getValorTotal(venda.getUuid()));
+//		
+//		return mv;
+//	}
 
 	@PostMapping("/item")
 	public ModelAndView adicionarItem(Long codigoCerveja , String uuid) {
@@ -60,6 +67,7 @@ public class VendasController {
 		tabelaItensSession.adicionarItem(uuid, cerveja, 1);
 		ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
 		mv.addObject("itens", tabelaItensSession.getItens(uuid));
+		mv.addObject("valorTotal", tabelaItensSession.getValorTotal(uuid));
 		return mv;
 	}
 	
@@ -69,6 +77,7 @@ public class VendasController {
 		tabelaItensSession.alterarQuantidadeItens(uuid, cerveja, quantidade);
 		ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
 		mv.addObject("itens", tabelaItensSession.getItens(uuid));
+		mv.addObject("valorTotal", tabelaItensSession.getValorTotal(uuid));
 		return mv;
 	}
 	
@@ -89,6 +98,7 @@ public class VendasController {
 	private ModelAndView mvTabelaItensVenda(String uuid) {
 		ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
 		mv.addObject("itens", tabelaItensSession.getItens(uuid));
+		mv.addObject("valorTotal", tabelaItensSession.getValorTotal(uuid));
 		return mv;
 	}
 

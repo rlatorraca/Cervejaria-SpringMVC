@@ -4,10 +4,19 @@ Cervejaria.TabelaItens = (function() {
 		this.autocomplete = autocomplete;
 		this.tabelaCervejasContainer = $('.js-tabela-cervejas-container');
 		this.uuid = $('#uuid').val();
+		this.emitter = $({});
+		this.on = this.emitter.on.bind(this.emitter); // Dispara o EVENTO de um Listener em StandBy para ser usado quando a TabelaItens sofrer alguma mudanca
 	}
 	
 	TabelaItens.prototype.iniciar = function() {
 		this.autocomplete.on('item-selecionado', onItemSelecionado.bind(this));
+		
+		bindQuantidade.call(this);
+		bindTabelaItem.call(this);
+	}
+	
+	TabelaItens.prototype.valorTotal = function() {
+		return this.tabelaCervejasContainer.data('valor');
 	}
 	
 	function onItemSelecionado(evento, item) {
@@ -26,9 +35,17 @@ Cervejaria.TabelaItens = (function() {
 
 	function onItemAtualizadoNoServidor(html) {
 		this.tabelaCervejasContainer.html(html);
-		$('.js-tabela-cerveja-quantidade-item').on('change', onQuantidadeItemAlterado.bind(this)); // Ao mudar a QUANTIDADE de Cerveja chamada funcao
-		$('.js-tabela-item').on('dblclick', onDoubleClick); // Double-click na CERVEJA
+		
+		var quantidadeItemInput = $('.js-tabela-cerveja-quantidade-item')
+		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this)); // Ao mudar a QUANTIDADE de Cerveja chamada funcao
+		quantidadeItemInput.maskMoney({ precision: 0, thousands: ',' });
+		
+		var tabelaItem = $('.js-tabela-item');
+		tabelaItem.on('dblclick', onDoubleClick); // Double-click na CERVEJA
+		
 		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this)); // Ao cliccar em Exclui apos Double Click na Cerveja assina a funcao "onExclusaoItemClick"
+		
+		this.emitter.trigger('tabela-itens-atualizada', tabelaItem.data('valor-total')); // Emite um EVENTO em 'tabela-itens-atualizada'
 	}
 	
 	// Para alterar a quantidade de cervejas adicionadas
@@ -80,7 +97,7 @@ Cervejaria.TabelaItens = (function() {
 	function bindQuantidade() {
 		var quantidadeItemInput = $('.js-tabela-cerveja-quantidade-item');
 		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this));
-		quantidadeItemInput.maskMoney({ precision: 0, thousands: '' });
+		quantidadeItemInput.maskMoney({ precision: 0, thousands: ',' });
 	}
 	
 	function bindTabelaItem() {
@@ -93,12 +110,3 @@ Cervejaria.TabelaItens = (function() {
 	return TabelaItens;
 	
 }());
-
-$(function() {
-	
-	var autocomplete = new Cervejaria.Autocomplete();
-	autocomplete.iniciar();
-	
-	var tabelaItens = new Cervejaria.TabelaItens(autocomplete);
-	tabelaItens.iniciar();
-});	

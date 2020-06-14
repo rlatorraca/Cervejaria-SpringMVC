@@ -17,7 +17,7 @@ Cervejaria.MaskMoney = (function(){
 	
 	//Execucao
 	MaskMoney.prototype.enable = function(){
-		this.decimal.maskMoney({ decimal: ".", thousands: ",", allowZero: true });
+		this.decimal.maskMoney({ decimal: ",", thousands: ".", allowZero: true });
 		this.plain.maskMoney({ precision: 0 , thousands: ",", allowZero: true });
 		
 	}
@@ -99,9 +99,17 @@ Cervejaria.Security = (function() {
 	
 }());
 
+//Formata com NUMERAL.js (Framework)
 Cervejaria.formatarMoeda = function(valor) {
 	numeral.locale('pt-br');
 	return numeral(valor).format('0,0.00');
+}
+
+//UNFormata com NUMERAL.js (Framework)
+Cervejaria.recuperarValor = function(valorFormatado) {
+	numeral.locale('pt-br');
+	var numero = numeral(valorFormatado);
+	return numero.value();
 }
 
 $(function() {
