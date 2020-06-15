@@ -3,6 +3,7 @@ package com.rlsp.cervejaria.controller;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rlsp.cervejaria.model.Cerveja;
+import com.rlsp.cervejaria.model.Venda;
 import com.rlsp.cervejaria.repository.CervejasRepository;
-import com.rlsp.cervejaria.session.TabelaItensVenda;
+import com.rlsp.cervejaria.security.UsuarioSistema;
+import com.rlsp.cervejaria.service.CadastroVendaService;
 import com.rlsp.cervejaria.session.TabelasItensSession;
 
 @Controller
@@ -28,8 +32,8 @@ public class VendasController {
 	@Autowired
 	private TabelasItensSession tabelaItensSession;
 	
-	//@Autowired
-	//private CadastroVendaService cadastroVendaService;
+	@Autowired
+	private CadastroVendaService cadastroVendaService;
 	
 	//@Autowired
 	///private VendaValidator vendaValidator;
@@ -38,28 +42,42 @@ public class VendasController {
 	//private Vendas vendas;
 	
 	
+//	@GetMapping("/nova")
+//	public ModelAndView nova() {
+//		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
+//		mv.addObject("uuid", UUID.randomUUID().toString());
+//		return mv;
+//	}
+	
 	@GetMapping("/nova")
-	public ModelAndView nova() {
+	public ModelAndView nova(Venda venda) {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
-		mv.addObject("uuid", UUID.randomUUID().toString());
+		
+		if (StringUtils.isEmpty(venda.getUuid())) {
+			venda.setUuid(UUID.randomUUID().toString());
+		}
+		
+		mv.addObject("itens", venda.getItens());
+		mv.addObject("valorFrete", venda.getValorFrete());
+		mv.addObject("valorDesconto", venda.getValorDesconto());
+		mv.addObject("valorTotalItens", tabelaItensSession.getValorTotal(venda.getUuid()));
+		
 		return mv;
 	}
 	
-//	@GetMapping("/nova")
-//	public ModelAndView nova(Venda venda) {
-//		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
-//		
-//		if (StringUtils.isEmpty(venda.getUuid())) {
-//			venda.setUuid(UUID.randomUUID().toString());
-//		}
-//		
-//		mv.addObject("itens", venda.getItens());
-//		mv.addObject("valorFrete", venda.getValorFrete());
-//		mv.addObject("valorDesconto", venda.getValorDesconto());
-//		mv.addObject("valorTotalItens", tabelaItensSession.getValorTotal(venda.getUuid()));
-//		
-//		return mv;
-//	}
+	/**
+	 * @AuthenticationPrincipal ==> pega o Usuario legado
+	 *  - UsuarioSistema EXTEND User
+	 */
+	@PostMapping("/nova")
+	public ModelAndView salvar(Venda venda, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		venda.setUsuario(usuarioSistema.getUsuario());
+		venda.adicionarItens(tabelaItensSession.getItens(venda.getUuid()));
+		
+		cadastroVendaService.salvar(venda);
+		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
+		return new ModelAndView("redirect:/vendas/nova");
+	}
 
 	@PostMapping("/item")
 	public ModelAndView adicionarItem(Long codigoCerveja , String uuid) {

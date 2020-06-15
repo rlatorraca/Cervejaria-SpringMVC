@@ -56,7 +56,7 @@ Cervejaria.Venda = (function() {
 		var valorTotal = this.valorTotalItens + this.valorFrete - this.valorDesconto;
 		this.valorTotalBox.html(Cervejaria.formatarMoeda(valorTotal));
 		
-		//this.valorTotalBoxContainer.toggleClass('negativo', valorTotal < 0);
+		this.valorTotalBoxContainer.toggleClass('negativo', valorTotal < 0);
 	}
 	
 	return Venda;
