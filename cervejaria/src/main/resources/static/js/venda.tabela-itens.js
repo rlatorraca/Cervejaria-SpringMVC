@@ -35,15 +35,10 @@ Cervejaria.TabelaItens = (function() {
 
 	function onItemAtualizadoNoServidor(html) {
 		this.tabelaCervejasContainer.html(html);
+				
+		bindQuantidade.call(this);
 		
-		var quantidadeItemInput = $('.js-tabela-cerveja-quantidade-item')
-		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this)); // Ao mudar a QUANTIDADE de Cerveja chamada funcao
-		quantidadeItemInput.maskMoney({ precision: 0, thousands: ',' });
-		
-		var tabelaItem = $('.js-tabela-item');
-		tabelaItem.on('dblclick', onDoubleClick); // Double-click na CERVEJA
-		
-		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this)); // Ao cliccar em Exclui apos Double Click na Cerveja assina a funcao "onExclusaoItemClick"
+		var tabelaItem = bindTabelaItem.call(this); 
 		
 		this.emitter.trigger('tabela-itens-atualizada', tabelaItem.data('valor-total')); // Emite um EVENTO em 'tabela-itens-atualizada'
 	}
@@ -96,15 +91,16 @@ Cervejaria.TabelaItens = (function() {
 	
 	function bindQuantidade() {
 		var quantidadeItemInput = $('.js-tabela-cerveja-quantidade-item');
-		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this));
-		quantidadeItemInput.maskMoney({ precision: 0, thousands: ',' });
+		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this)); // Ao mudar a QUANTIDADE de Cerveja chamada funcao
+		quantidadeItemInput.maskMoney({ precision: 0, thousands: '' });
 	}
 	
 	function bindTabelaItem() {
 		var tabelaItem = $('.js-tabela-item');
-		tabelaItem.on('dblclick', onDoubleClick);
-		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this));
+		tabelaItem.on('dblclick', onDoubleClick); // Double-click na CERVEJAs
+		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this)); // Ao cliccar em Exclui apos Double Click na Cerveja assina a funcao "onExclusaoItemClick"
 		return tabelaItem;
+	
 	}
 	
 	return TabelaItens;

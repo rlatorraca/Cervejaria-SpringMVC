@@ -3,17 +3,15 @@ Cervejaria.Venda = (function() {
 	function Venda(tabelaItens) {
 		this.tabelaItens = tabelaItens;
 		this.valorTotalBox = $('.js-valor-total-box'); // VALOR TOTAL na TELA
-		this.valorFreteInput = $('#valorFrete'); // VALOR FRENTE na TELA
-		this.valorDescontoInput = $('#valorDesconto'); // VALOR DESCONTO na TELA
+		this.valorFreteInput = $('.js-valorFrete'); // VALOR FRENTE na TELA
+		this.valorDescontoInput = $('.js-valorDesconto'); // VALOR DESCONTO na TELA
 		this.valorTotalBoxContainer = $('.js-valor-total-box-container');
 		
-		this.valorTotalItens = 0;
-		this.valorFrete = 0;
-		this.valorDesconto = 0;
+
 		
-		/*this.valorTotalItens = this.tabelaItens.valorTotal();
+		this.valorTotalItens = this.tabelaItens.valorTotal();
 		this.valorFrete = this.valorFreteInput.data('valor');
-		this.valorDesconto = this.valorDescontoInput.data('valor'); */
+		this.valorDesconto = this.valorDescontoInput.data('valor');
 		
 	}
 	
@@ -27,32 +25,44 @@ Cervejaria.Venda = (function() {
 		this.valorFreteInput.on('keyup', onValoresAlterados.bind(this));
 		this.valorDescontoInput.on('keyup', onValoresAlterados.bind(this));
 		
-		//onValoresAlterados.call(this);
+		onValoresAlterados.call(this); // Chama ao Iniciar carregando a tela
 	}
 	
 	//Nao permite ENTRADA DE VALORES NEGATIVOS para os ITENS de cada cerveja
 	function onTabelaItensAtualizada(evento, valorTotalItens) {
 		this.valorTotalItens = valorTotalItens == null ? 0 : valorTotalItens; // Retorna ZERO ou o VALOR TOTAL do ITENS
 	}
+	
 
 	// Faz a modificacao "on fly" para valores de entrada de FRETE, convertando para valores sem MASCARA
 	function onValorFreteAlterado(evento) {
 		// Usa numeral.js (framework)
-		this.valorFrete = Cervejaria.recuperarValor($(evento.target).val()); // Transforma para um valor SEM MASCARA
+		var frete = $(evento.target).val();
+		if (frete == null || frete == 0){
+			this.valorFrete = 0;
+		} else {
+			this.valorFrete = Cervejaria.recuperarValor(frete); // Transforma para um valor SEM MASCARA
+		}
+		
 	}
 	
 	
 	// Faz a modificacao "on fly" para valores de entrada de DESCONTO, convertando para valores sem MASCARA
 	function onValorDescontoAlterado(evento) {
 		// Usa numeral.js (framework)
-		this.valorDesconto = Cervejaria.recuperarValor($(evento.target).val());
-		console.log(this.valorDesconto);
+		var desconto = $(evento.target).val();
+		if (desconto == null || desconto == 0){
+			this.valorDesconto = 0;
+		} else {
+			this.valorDesconto = Cervejaria.recuperarValor(desconto);	
+		}
+			
 	}
 	
 	// Faz a modificacao "on fly" para valores de do VALOR TOTAL ( ja retirados FRETE + DESCONTO se existirem)
 	function onValoresAlterados() {
 		// Usa numeral.js (framework)
-		//var valorTotal = numeral(this.valorTotalItens) + numeral(this.valorFrete) - numeral(this.valorDesconto);
+		//var valorTotal = Number(this.valorTotalItens) + Number(this.valorFrete) - Number(this.valorDesconto);
 		var valorTotal = this.valorTotalItens + this.valorFrete - this.valorDesconto;
 		this.valorTotalBox.html(Cervejaria.formatarMoeda(valorTotal));
 		

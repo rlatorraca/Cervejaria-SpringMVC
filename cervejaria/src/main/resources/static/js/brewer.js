@@ -107,9 +107,9 @@ Cervejaria.formatarMoeda = function(valor) {
 
 //UNFormata com NUMERAL.js (Framework)
 Cervejaria.recuperarValor = function(valorFormatado) {
-	numeral.locale('pt-br');
-	var numero = numeral(valorFormatado);
-	return numero.value();
+	numeral.locale('pt-br');	
+	var numero = numeral(valorFormatado);	
+	return numero._value;
 }
 
 $(function() {

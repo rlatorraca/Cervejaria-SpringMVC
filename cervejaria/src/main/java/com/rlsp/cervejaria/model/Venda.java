@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,13 +33,13 @@ public class Venda {
 	private LocalDateTime dataCriacao;
 
 	@Column(name = "valor_frete")
-	private BigDecimal valorFrete;
+	private BigDecimal valorFrete = BigDecimal.ZERO;
 
 	@Column(name = "valor_desconto")
-	private BigDecimal valorDesconto;
+	private BigDecimal valorDesconto = BigDecimal.ZERO;
 
 	@Column(name = "valor_total")
-	private BigDecimal valorTotal;
+	private BigDecimal valorTotal = BigDecimal.ZERO;
 
 	private String observacao;
 
@@ -194,6 +195,27 @@ public class Venda {
 	public void adicionarItens(List<ItemVenda> itens) {
 		this.itens = itens;
 		this.itens.forEach(i -> i.setVenda(this)); // Adiciona os ITENS para o OBjeto VENDA (Criado aqu)
+	}
+	
+	public void calcularValorTotal() {
+		/**
+		 * Calcula o VALOR TOTAL da VENDA
+		 */
+		BigDecimal valorTotalItens = getItens().stream()
+				.map(ItemVenda::getValorTotal)
+				.reduce(BigDecimal::add)
+				.orElse(BigDecimal.ZERO);
+		
+		this.valorTotal = calcularValorTotal(valorTotalItens, getValorFrete(), getValorDesconto());
+		
+	}
+	
+	private BigDecimal calcularValorTotal(BigDecimal valorTotalItens, BigDecimal valorFrete, BigDecimal valorDesconto) {
+				
+		BigDecimal valorTotal = valorTotalItens
+				.add(Optional.ofNullable(valorFrete).orElse(BigDecimal.ZERO)) // Cria um OPTIONAL que pode ser NULO (e ser = ZERO se nulo)
+				.subtract(Optional.ofNullable(valorDesconto).orElse(BigDecimal.ZERO));
+		return valorTotal;
 	}
 
 	@Override

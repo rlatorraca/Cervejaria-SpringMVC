@@ -2,12 +2,17 @@ package com.rlsp.cervejaria.controller;
 
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,12 +20,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.rlsp.cervejaria.controller.validator.VendaValidator;
 import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.model.Venda;
 import com.rlsp.cervejaria.repository.CervejasRepository;
+import com.rlsp.cervejaria.repository.VendasRepository;
 import com.rlsp.cervejaria.security.UsuarioSistema;
 import com.rlsp.cervejaria.service.CadastroVendaService;
 import com.rlsp.cervejaria.session.TabelasItensSession;
+
+import groovy.lang.Binding;
 
 @Controller
 @RequestMapping("/vendas")
@@ -35,11 +44,22 @@ public class VendasController {
 	@Autowired
 	private CadastroVendaService cadastroVendaService;
 	
-	//@Autowired
-	///private VendaValidator vendaValidator;
+	@Autowired
+	private VendaValidator vendaValidator;
 	
-	//@Autowired
-	//private Vendas vendas;
+	@Autowired
+	private VendasRepository vendas;
+	
+	
+	
+	/**
+	 * Adiciona um VALIDADOR para "model/Venda" usando o "validator/VendaValidator"
+	 * - Encontrado alguma varivel (metodo) @Valid fara o uso dessa Validacao
+	 */
+	@InitBinder
+	public void inicializarValidador(WebDataBinder binder) {
+		binder.setValidator(vendaValidator);
+	}
 	
 	
 //	@GetMapping("/nova")
@@ -62,6 +82,8 @@ public class VendasController {
 		mv.addObject("valorDesconto", venda.getValorDesconto());
 		mv.addObject("valorTotalItens", tabelaItensSession.getValorTotal(venda.getUuid()));
 		
+		
+		
 		return mv;
 	}
 	
@@ -70,9 +92,17 @@ public class VendasController {
 	 *  - UsuarioSistema EXTEND User
 	 */
 	@PostMapping("/nova")
-	public ModelAndView salvar(Venda venda, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
-		venda.setUsuario(usuarioSistema.getUsuario());
+	public ModelAndView salvar(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		//Adiciona os itens dentro da Venda, ANTES de fazer a validacao dos Itens
 		venda.adicionarItens(tabelaItensSession.getItens(venda.getUuid()));
+		venda.calcularValorTotal(); // Calcula o valor total dos itens "model/Venda"
+		
+		vendaValidator.validate(venda, result); // faz a VALIDACAO usando "VendaValidator"
+		if (result.hasErrors()) {
+			return nova(venda);
+		}
+		
+		venda.setUsuario(usuarioSistema.getUsuario());
 		
 		cadastroVendaService.salvar(venda);
 		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");

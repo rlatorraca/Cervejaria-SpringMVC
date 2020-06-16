@@ -73,7 +73,7 @@
 		<thymeleaf-tags-version>2.0.1</thymeleaf-tags-version>
 
 		<!-- Google Guave - Cache Profissional -->
-		<guava.version>19.0</guava.version>
+		<guava.version>29.0-jre</guava.version>
 
 		<!-- Apache Beans Utils -->
 		<beansutils-version>1.9.4</beansutils-version>
