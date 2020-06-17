@@ -38,11 +38,8 @@ Cervejaria.Venda = (function() {
 	function onValorFreteAlterado(evento) {
 		// Usa numeral.js (framework)
 		var frete = $(evento.target).val();
-		if (frete == null || frete == 0){
-			this.valorFrete = 0;
-		} else {
-			this.valorFrete = Cervejaria.recuperarValor(frete); // Transforma para um valor SEM MASCARA
-		}
+		this.valorFrete = Cervejaria.recuperarValor(frete); // Transforma para um valor SEM MASCARA
+		
 		
 	}
 	
@@ -51,11 +48,8 @@ Cervejaria.Venda = (function() {
 	function onValorDescontoAlterado(evento) {
 		// Usa numeral.js (framework)
 		var desconto = $(evento.target).val();
-		if (desconto == null || desconto == 0){
-			this.valorDesconto = 0;
-		} else {
-			this.valorDesconto = Cervejaria.recuperarValor(desconto);	
-		}
+		this.valorDesconto = Cervejaria.recuperarValor(desconto);	
+		
 			
 	}
 	
@@ -63,7 +57,7 @@ Cervejaria.Venda = (function() {
 	function onValoresAlterados() {
 		// Usa numeral.js (framework)
 		//var valorTotal = Number(this.valorTotalItens) + Number(this.valorFrete) - Number(this.valorDesconto);
-		var valorTotal = this.valorTotalItens + this.valorFrete - this.valorDesconto;
+		var valorTotal = Number(this.valorTotalItens) + Number(this.valorFrete) - Number(this.valorDesconto);
 		this.valorTotalBox.html(Cervejaria.formatarMoeda(valorTotal));
 		
 		this.valorTotalBoxContainer.toggleClass('negativo', valorTotal < 0);

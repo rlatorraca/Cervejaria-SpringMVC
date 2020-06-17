@@ -46,10 +46,20 @@ public class MenuAttributeTagProcessor extends AbstractAttributeTagProcessor {
 		 *  - Ex: /cervejaria/cerveja/* ==> adiciona isActive para todas a paginas a partir dessa URI
 		 */
 		
-		if (uri.startsWith(menu)) {
+
+		if (uri.matches(menu)) {
 			String classesExistentes = tag.getAttributeValue("class");
 			structureHandler.setAttribute("class", classesExistentes + " is-active");
 		}
+		
+		/**
+		 *	if (uri.startsWith(menu)) {
+				String classesExistentes = tag.getAttributeValue("class");
+				structureHandler.setAttribute("class", classesExistentes + " is-active");
+			} 		 
+		 */
+		
+		
 	}
 
 }

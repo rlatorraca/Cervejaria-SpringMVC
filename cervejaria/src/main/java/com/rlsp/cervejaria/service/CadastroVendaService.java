@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rlsp.cervejaria.model.StatusVenda;
 import com.rlsp.cervejaria.model.Venda;
 import com.rlsp.cervejaria.repository.VendasRepository;
 
@@ -37,6 +38,13 @@ public class CadastroVendaService {
 		}
 		
 		vendas.save(venda);
+	}
+	
+	
+	@Transactional
+	public void emitir(Venda venda) {
+		venda.setStatus(StatusVenda.EMITIDA);
+		salvar(venda);
 	}
 
 	

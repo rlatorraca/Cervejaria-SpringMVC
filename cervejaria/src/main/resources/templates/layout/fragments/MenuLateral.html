@@ -21,8 +21,13 @@
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas}">
+			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/vendas/nova}">
 			            	<a th:href="@{/vendas/nova}">Novo Pedido</a>
+			            </li>
+			        </ul>
+			        <ul class="aw-menu__list  aw-menu__list--sublist">
+			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/vendas}">
+			            	<a th:href="@{/vendas}">Pesquisa de Pedidos</a>
 			            </li>
 			        </ul>
 			    </li>
@@ -34,10 +39,10 @@
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/estilos}">
+			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/estilos.*}">
 			            	<a th:href="@{/estilos}">Estilos</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/cervejas}">
+			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/cervejas.*}">
 			            	<a th:href="@{/cervejas}">Cervejas</a>
 			            </li>
           			</ul>
@@ -50,13 +55,13 @@
           			</a>
 
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/cidades}">
+			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/cidades.*}">
 			            	<a th:href="@{/cidades}">Cidades</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/clientes}">
+			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/clientes.*}">
 			            	<a th:href="@{/clientes}">Clientes</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/usuarios}">
+			            <li class="aw-menu__item  aw-menu__item--link" cervejaria:menu="@{/usuarios.*}">
 			            	<a th:href="@{/usuarios}">Usuários</a>
 			            </li>
           			</ul>
