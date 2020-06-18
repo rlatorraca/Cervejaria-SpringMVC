@@ -86,6 +86,9 @@
 
 		<!-- JUNIT -->
 		<junit-version>4.13</junit-version>
+		
+		<!-- JAVA Mail -->
+		<java-mail-version>1.6.2</java-mail-version>			
 
 	</properties>
 
@@ -325,6 +328,13 @@
 			<artifactId>junit</artifactId>
 			<version>${junit-version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- JAVA Mail -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>${java-mail-version}</version>			
 		</dependency>
 
 	</dependencies>

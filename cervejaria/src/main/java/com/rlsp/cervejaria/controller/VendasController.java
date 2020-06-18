@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rlsp.cervejaria.controller.page.PageWrapper;
 import com.rlsp.cervejaria.controller.validator.VendaValidator;
+import com.rlsp.cervejaria.mail.Mailer;
 import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.model.StatusVenda;
 import com.rlsp.cervejaria.model.TipoPessoa;
@@ -53,6 +54,9 @@ public class VendasController {
 	
 	@Autowired
 	private VendasRepository vendas;
+	
+	@Autowired
+	private Mailer mailer; // Usado para o envio de EMAILs
 	
 	
 	
@@ -102,6 +106,8 @@ public class VendasController {
 			return nova(venda);
 		}
 		
+		System.out.println(">>> VendasController ==> salvar <<<");
+		
 		venda.setUsuario(usuarioSistema.getUsuario());
 		
 		cadastroVendaService.salvar(venda);
@@ -115,9 +121,11 @@ public class VendasController {
 		if (result.hasErrors()) {
 			return nova(venda);
 		}
+				
+		System.out.println(">>> VendasController ==> emitir <<<");
 		
 		venda.setUsuario(usuarioSistema.getUsuario());
-		
+						
 		cadastroVendaService.emitir(venda);
 		attributes.addFlashAttribute("mensagem", "Venda emitida com sucesso");
 		return new ModelAndView("redirect:/vendas/nova");
@@ -131,6 +139,13 @@ public class VendasController {
 		}
 		
 		venda.setUsuario(usuarioSistema.getUsuario());
+		
+		
+		System.out.println(">>> VendasController ==> enviarEmail <<<");
+		
+		mailer.enviar(venda); // Envia o Email
+		
+		
 		
 		cadastroVendaService.salvar(venda);
 		attributes.addFlashAttribute("mensagem", "Venda salva e e-mail enviado");

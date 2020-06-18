@@ -8,6 +8,7 @@ import org.springframework.web.filter.FormContentFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.rlsp.cervejaria.config.JPAConfig;
+import com.rlsp.cervejaria.config.MailConfig;
 import com.rlsp.cervejaria.config.SecurityConfig;
 import com.rlsp.cervejaria.config.ServiceConfig;
 import com.rlsp.cervejaria.config.WebConfig;
@@ -32,11 +33,12 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 	/**
 	 * Ensina o SPRING a encontrar os CONTROLLERs na parte WEB
+	 * OBS: o MailConfig esta sendo configurado aqui pois sera usado o ThymeLeaf para gerar o EMAIL
 	 */
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
 		
-		return new Class<?>[] { WebConfig.class }; // ==> Dentro dp PACOTE "com.rlsp.brewer.config"
+		return new Class<?>[] { WebConfig.class , MailConfig.class }; // ==> Dentro dp PACOTE "com.rlsp.brewer.config"
 	}
 
 	/**
