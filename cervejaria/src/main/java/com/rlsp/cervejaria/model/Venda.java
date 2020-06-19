@@ -197,16 +197,23 @@ public class Venda {
 		this.itens.forEach(i -> i.setVenda(this)); // Adiciona os ITENS para o OBjeto VENDA (Criado aqu)
 	}
 	
-	public void calcularValorTotal() {
-		/**
-		 * Calcula o VALOR TOTAL da VENDA
-		 */
-		BigDecimal valorTotalItens = getItens().stream()
+	/**
+	 * Calcula apenas o Subtotal do Itens (SEM desconto + SEM frete)
+	 */
+	public BigDecimal getValorSubtotalTotalItens() {
+		
+		return  getItens().stream()
 				.map(ItemVenda::getValorTotal)
 				.reduce(BigDecimal::add)
 				.orElse(BigDecimal.ZERO);
 		
-		this.valorTotal = calcularValorTotal(valorTotalItens, getValorFrete(), getValorDesconto());
+	}
+	
+	public void calcularValorTotal() {
+		/**
+		 * Calcula o VALOR TOTAL da VENDA
+		 */
+		this.valorTotal = calcularValorTotal(getValorSubtotalTotalItens(), getValorFrete(), getValorDesconto());
 		
 	}
 	

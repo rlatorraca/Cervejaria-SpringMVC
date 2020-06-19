@@ -114,4 +114,10 @@ public class FotoStorageLocal implements FotoStorage {
 		}
 	}
 
+
+	@Override
+	public byte[] recuperarThumbnail(String foto) {	
+		return recuperar("thumbnail." + foto); // Retorna o Prefixo dos Thumbnails para ser usado no EMAIL de confirmacaos
+	}
+
 }

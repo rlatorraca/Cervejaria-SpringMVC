@@ -102,6 +102,14 @@ public class Cerveja implements Serializable {
 		this.sku = sku.toUpperCase();
 	}
 	
+	/**
+	 * Usado nos EMAILS.	 * 
+	 */
+	public boolean temFoto() {
+		// TODO Auto-generated method stub
+		return !StringUtils.isEmpty(this.foto);
+	}
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -231,6 +239,8 @@ public class Cerveja implements Serializable {
 			return false;
 		return true;
 	}
+
+
 
 	
 	
