@@ -5,6 +5,7 @@ Cervejaria.UploadFoto = (function() {
 	function UploadFoto() {
 		this.inputNomeFoto = $('input[name=foto]');
 		this.inputContentType = $('input[name=contentType]');
+		this.novaFoto = $('input[name=novaFoto]');
 		
 		this.htmlFotoCervejaTemplate = $('#foto-cerveja').html();
 		this.template = Handlebars.compile(this.htmlFotoCervejaTemplate);
@@ -113,7 +114,8 @@ Cervejaria.UploadFoto = (function() {
 
 	    
 	    if (this.inputNomeFoto[0].defaultValue) {
-			onUploadCompleto.call(this, { nome:  this.inputNomeFoto[0].defaultValue, contentType: this.inputContentType[0].defaultValue});
+			//onUploadCompleto.call(this, { nome:  this.inputNomeFoto[0].defaultValue, contentType: this.inputContentType[0].defaultValue});
+	    	renderizarFoto.call(this, { nome:  this.inputNomeFoto[0].defaultValue, contentType: this.inputContentType[0].defaultValue});
 		}    
 		
 	}	
@@ -121,6 +123,10 @@ Cervejaria.UploadFoto = (function() {
 
 	function onUploadCompleto(resposta) {
 			
+		this.novaFoto.val('true');
+		renderizarFoto.call(this, resposta);
+		
+		/*
 		if(resposta.response)
 			this.inputNomeFoto.val(resposta.response.nome);
 		else {
@@ -133,13 +139,55 @@ Cervejaria.UploadFoto = (function() {
 			this.inputContentType.val(resposta.contentType);
 		}
 		
-		
+		var foto='';
+		if(fotoNova){
+			foto='/temp';
+		}
 				
 		this.uploadDrop.addClass('hidden');
+		var htmlFotoCerveja
 		if(resposta.response){
-			var htmlFotoCerveja = this.template({nomeFoto: resposta.response.nome});
+			htmlFotoCerveja = this.template({foto: resposta.response.nome});
 		} else {
-			var htmlFotoCerveja = this.template({nomeFoto: resposta.nome});
+			htmlFotoCerveja = this.template({foto: resposta.nome});
+		}
+		//var htmlFotoCerveja = this.template({nomeFoto: resposta.response.nome});
+		this.containerFotoCerveja.append(htmlFotoCerveja);
+		
+		$('.js-remove-foto').on('click', onRemoverFoto.bind(this));
+		*/
+	}
+	
+	function renderizarFoto(resposta){
+		
+		if(resposta.response)
+			this.inputNomeFoto.val(resposta.response.nome);
+		else {
+			this.inputNomeFoto.val(resposta.nome);
+		}
+		
+		if(resposta.response) {
+			this.inputContentType.val(resposta.response.contentType);
+		} else {
+			this.inputContentType.val(resposta.contentType);
+		}
+		
+		this.uploadDrop.addClass('hidden');
+		
+		var foto='';
+		
+		if (this.novaFoto.val() == 'true') {
+			foto = 'temp/';
+		}
+		
+		var htmlFotoCerveja;
+		
+		if(resposta.response){
+			foto += resposta.response.nome
+			htmlFotoCerveja = this.template({foto: foto});
+		} else {
+			foto += resposta.nome;
+			htmlFotoCerveja = this.template({foto: foto});
 		}
 		//var htmlFotoCerveja = this.template({nomeFoto: resposta.response.nome});
 		this.containerFotoCerveja.append(htmlFotoCerveja);
@@ -152,6 +200,7 @@ Cervejaria.UploadFoto = (function() {
 		this.uploadDrop.removeClass('hidden');
 		this.inputNomeFoto.val('');
 		this.inputContentType.val('');
+		this.novaFoto.val('false');
 	}
 	
 	//Funcao usada para pegar o NOME e a chave CSRF na pagina Layout padrao 

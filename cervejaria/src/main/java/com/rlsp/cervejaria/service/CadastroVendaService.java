@@ -20,7 +20,7 @@ public class CadastroVendaService {
 	private VendasRepository vendas;
 	
 	@Transactional
-	public void salvar(Venda venda) {
+	public Venda salvar(Venda venda) {
 		/**
 		 * Pega a DATA / HORA para nova VENDA
 		 */
@@ -37,7 +37,7 @@ public class CadastroVendaService {
 			venda.setDataHoraEntrega(LocalDateTime.of(venda.getDataEntrega(), venda.getHorarioEntrega() != null ? venda.getHorarioEntrega() : LocalTime.MIDNIGHT));
 		}
 		
-		vendas.save(venda);
+		return vendas.saveAndFlush(venda); // saveAndFlush ==> save + reorganiza os valores
 	}
 	
 	

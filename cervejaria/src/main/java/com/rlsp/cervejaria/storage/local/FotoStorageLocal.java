@@ -20,6 +20,7 @@ import net.coobird.thumbnailator.name.Rename;
 public class FotoStorageLocal implements FotoStorage {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FotoStorageLocal.class);
+	private static final String THUMBNAIL_PREFIX = "thumbnail.";
 	
 	private Path local;				//  Gravacao Final do Arqui com a foto da Cerveja
 	private Path localTemporario;	//	Para fazer uma gravacao TEMPORARiA
@@ -117,7 +118,22 @@ public class FotoStorageLocal implements FotoStorage {
 
 	@Override
 	public byte[] recuperarThumbnail(String foto) {	
-		return recuperar("thumbnail." + foto); // Retorna o Prefixo dos Thumbnails para ser usado no EMAIL de confirmacaos
+		return recuperar(THUMBNAIL_PREFIX + foto); // Retorna o Prefixo dos Thumbnails para ser usado no EMAIL de confirmacaos
+	}
+
+	/**
+	 * Exclui a foto da cerveja quando a CERVEJA É EXCLUIDA do DB
+	 */
+	@Override
+	public void excluir(String foto) {
+		try {
+			Files.deleteIfExists(this.local.resolve(foto));
+			Files.deleteIfExists(this.local.resolve(THUMBNAIL_PREFIX + foto));
+		} catch (IOException e) {
+			LOGGER.warn(String.format("Erro ao tentar deletar foto %s. Messagem de erro: %s", foto, e.getMessage()));
+		}
+		
+		
 	}
 
 }

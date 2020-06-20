@@ -8,17 +8,19 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 
 import com.rlsp.cervejaria.controller.page.PageWrapper;
 import com.rlsp.cervejaria.dto.CervejaDTO;
@@ -29,6 +31,7 @@ import com.rlsp.cervejaria.repository.CervejasRepository;
 import com.rlsp.cervejaria.repository.EstilosRepository;
 import com.rlsp.cervejaria.repository.filter.CervejaFilter;
 import com.rlsp.cervejaria.service.CadastroCervejaService;
+import com.rlsp.cervejaria.service.exception.ImpossivelExcluirEntidadeException;
 
 
 /**
@@ -49,8 +52,8 @@ public class BeerController{
 	@Autowired
 	private CervejasRepository cervejas;
 
-	@RequestMapping("/novo")
-	public ModelAndView newBeer(Cerveja beer) {
+	@RequestMapping("/nova")
+	public ModelAndView nova(Cerveja beer) {
 		ModelAndView mv = new ModelAndView("cerveja/CadastroCerveja");
 		mv.addObject("sabores", Sabor.values());
 		mv.addObject("estilos", estilos.findAll());
@@ -75,9 +78,12 @@ public class BeerController{
 	 * >>> Redirect ==> REQUEST (faz um POST), qure RESPONDE com um 302 (FOUND) que apresenta uma LOCATION (url) para uma "URL"  e faz uma "GET" na LOCATION (url)
 	 * 	- Objetivo: comecar /renovar as especificacoes no local de destino
 	 * 
+	 * "/nova" , "\\d+" ==> servira tanto para "/nova" (NOVA CERVEJA), quanto para "qualquer NUMERO" (EDITAR)
+	 *  = \\d+ ==> todos digitos 0 a infinito
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/novo", method = RequestMethod.POST)
+	@RequestMapping(value = { "/nova" , "{\\d+}"}, method = RequestMethod.POST)
 	public ModelAndView registerBeer(@Valid Cerveja beer, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		
 		
@@ -85,13 +91,13 @@ public class BeerController{
 			//model.addAttribute(beer);
 			//model.addAttribute("message", "Existem Erros");
 			
-			return newBeer(beer);
+			return nova(beer);
 		}		
 		
 		cadastroCervejaService.salvar(beer);		
 		redirectAttributes.addFlashAttribute("mensagem", "CERVEJA salva com SUCESSO !!!!"); // Existirão mesmo APÓS um REDIRECT
 		
-		return new ModelAndView("redirect:/cervejas/novo");
+		return new ModelAndView("redirect:/cervejas/nova");
 	}
 	
 	
@@ -121,4 +127,29 @@ public class BeerController{
 		return cervejas.porSkuOuNome(skuOuNome);
 	}
 	
+	
+	/**
+	 * @ResponseBody ResponseEntity<?> ==> retorna uma STRING (ERRO ou SUCESSO)	 * 
+	 */
+	@DeleteMapping("/{codigo}")
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Cerveja cerveja) {
+		try {
+			cadastroCervejaService.excluir(cerveja);
+		} catch (ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage()); // Retorna o e.getMessage pra ser usado no JS para mostrar a mensagem de ERRO (excecao) na tela
+		}
+		return ResponseEntity.ok().build();
+	}
+	
+	
+
+	/**
+	 * Serve para EDITAR a cerveja	 * 
+	 */
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable("codigo") Cerveja cerveja) {
+		ModelAndView mv = nova(cerveja);
+		mv.addObject(cerveja); // Adiciona as informacoes da CERVEJA e chama a pagina de cadastro da CERVEJA (mudando para Editar)
+		return mv;
+	}
 }

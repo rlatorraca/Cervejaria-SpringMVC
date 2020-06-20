@@ -2,6 +2,7 @@ package com.rlsp.cervejaria.mail;
 
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -15,7 +16,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -52,7 +52,7 @@ public class Mailer {
 //		mailSender.send(mensagem);
 		
 
-		Context context = new Context(); // Cria um contexto Web do Thymeleaf
+		Context context = new Context(new Locale("pt", "BR")); // Cria um contexto Web do Thymeleaf
 		context.setVariable("venda", venda); // Set "venda" para o contexto, para ser usado no EMAIL
 		context.setVariable("logo", "logo"); // 
 		
@@ -86,7 +86,7 @@ public class Mailer {
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // ((mimeMessage, multipart, encoding); multipart = pq sera adicionado IMAGENS
 			helper.setFrom("rlsprojects.ca@gmail.com");
 			helper.setTo(venda.getCliente().getEmail());
-			helper.setSubject("Cervejaria - Venda realizada");
+			helper.setSubject(String.format("Cervejaria - Venda nº %d", venda.getCodigo()));
 			helper.setText(email, true); // true = pq é um email HTML
 			
 			helper.addInline("logo", new ClassPathResource("static/images/logo-gray.png")); // Adiciona o LOGO com anexo do EMAIL

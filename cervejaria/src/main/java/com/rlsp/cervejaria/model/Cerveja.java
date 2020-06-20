@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
@@ -85,6 +86,9 @@ public class Cerveja implements Serializable {
 	@Column(name="content_type")
 	private String contentType;
 	
+	@Transient
+	private boolean novaFoto;
+	
 	/**
 	 * Retorna a foto de MockUp em caso de nao inclusao de foto no Cadastro da Cerveja	 * 
 	 */
@@ -108,6 +112,11 @@ public class Cerveja implements Serializable {
 	public boolean temFoto() {
 		// TODO Auto-generated method stub
 		return !StringUtils.isEmpty(this.foto);
+	}
+	
+	//Se for uma NOVA CERVEJA retorna um OBJETO com conteudo igual a NULL (TRUE)
+	public boolean isNova() {
+		return codigo == null;
 	}
 
 	public Long getCodigo() {
@@ -214,6 +223,18 @@ public class Cerveja implements Serializable {
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
+	
+	
+
+	public boolean isNovaFoto() {
+		return novaFoto;
+	}
+
+
+	public void setNovaFoto(boolean novaFoto) {
+		this.novaFoto = novaFoto;
+	}
+
 
 	@Override
 	public int hashCode() {

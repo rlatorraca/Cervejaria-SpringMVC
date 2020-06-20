@@ -10,6 +10,9 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * Usado na ORDENACAO das PAGINAS e Formacao das URIs * 
+ */
 public class PageWrapper<T> {
 
 	private Page<T> page;
@@ -21,11 +24,13 @@ public class PageWrapper<T> {
 	public PageWrapper(Page<T> page, HttpServletRequest httpServletRequest) {
 		this.page = page;
 		
-//		String httpUrl = httpServletRequest.getRequestURL()
-//				.append(httpServletRequest.getQueryString() != null ? "?" + httpServletRequest.getQueryString() : "")
-//				.toString().replaceAll("\\+", "%20");
-//		this.uriBuilder = UriComponentsBuilder.fromHttpUrl(httpUrl); // montar URI's
-		this.uriBuilder = ServletUriComponentsBuilder.fromRequest(httpServletRequest);
+		String httpUrl = httpServletRequest.getRequestURL()
+				.append(httpServletRequest.getQueryString() != null ? "?" + httpServletRequest.getQueryString() : "")
+				.toString()
+					.replaceAll("\\+", "%20")
+					.replaceAll("excluido", ""); // Usado no JS de Delecao das cervejas
+		this.uriBuilder = UriComponentsBuilder.fromHttpUrl(httpUrl); // montar URI's
+		//this.uriBuilder = ServletUriComponentsBuilder.fromRequest(httpServletRequest);
 	}
 	
 	

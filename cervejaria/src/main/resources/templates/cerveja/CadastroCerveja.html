@@ -17,14 +17,18 @@
 
 		<div class="page-header">
 			<div class="container-fluid">
-				<h1>Cadastro de cerveja</h1>
+				<h1 th:if="${cerveja.nova}">Cadastro de cerveja</h1>
+				<h1 th:unless="${cerveja.nova}" th:text="|Edição da ${cerveja.nome}|">Edição de cerveja</h1>
 			</div>
 		</div>
 
 		<div class="container-fluid">
 
-			<form method="POST" th:object="${cerveja}" th:action="@{/cervejas/novo}" class="form-vertical  js-form-loading">
+			<form method="POST" th:object="${cerveja}" th:action="${cerveja.nova}? @{/cervejas/nova} : @{/cervejas/{codigo}(codigo=${cerveja.codigo})}" class="form-vertical  js-form-loading">
 			
+				<!-- Usado para identificar se esta em CADASTRO (codigo == null) ou EDITANDO (codigo EXISTE) -->
+				<input type=hidden  th:field="*{codigo}" />
+				
 				<!-- ELEMENTO do dialeto personalizado -->
 				<cervejaria:message/>	
 				
@@ -123,7 +127,8 @@
 				<div class="row">
 					<div class="form-group  col-sm-12" >
 						<input type="hidden" th:field="*{foto}">
-						<input type="hidden" th:field="*{contentType}">	
+						<input type="hidden" th:field="*{contentType}">
+						<input type="hidden" th:field="*{novaFoto}">		
 						
 						<label class="control-label">Foto</label>
 						

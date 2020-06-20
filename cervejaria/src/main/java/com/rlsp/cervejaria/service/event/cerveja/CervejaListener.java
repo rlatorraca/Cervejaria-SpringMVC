@@ -15,7 +15,7 @@ public class CervejaListener {
 	/**
 	 * Chama Toda vez que  UMA CERVEJA é salva 
 	 */
-	@EventListener(condition = "#evento.temFoto()") // so vai chamar se TIVER UMA FOTO vinculada
+	@EventListener(condition = "#evento.temFoto() and #evento.novaFoto()") // so vai chamar se TIVER UMA FOTO vinculada
 	public void cervejaSalva(CervejaSalvaEvent evento) {
 		fotoStorage.salvar(evento.getCerveja().getFoto());
 	}
