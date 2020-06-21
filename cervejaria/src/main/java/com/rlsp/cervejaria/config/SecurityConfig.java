@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,9 +18,14 @@ import org.springframework.util.AntPathMatcher;
 
 import com.rlsp.cervejaria.security.AppUserDetailsService;
 
+/**
+ *  @EnableGlobalMethodSecurity(prePostEnabled = true) 
+ *   ==> Permite a inclusao de @PreAuthorize dentro de "CadastroVendaService.cancelar", adcionando a regra de quem pode CANCELAR (chamar o metodo)
+ */
 @Configuration
 @EnableWebSecurity // Habilita a Seguranca WEB
 @ComponentScan(basePackageClasses = AppUserDetailsService.class)
+@EnableGlobalMethodSecurity(prePostEnabled = true) // ==> Permite a inclusao de @PreAuthorize dentro de "CadastroVendaService.cancelar"
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	

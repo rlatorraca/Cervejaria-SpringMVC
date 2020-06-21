@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rlsp.cervejaria.controller.page.PageWrapper;
-import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.model.Usuario;
 import com.rlsp.cervejaria.repository.GruposRepository;
 import com.rlsp.cervejaria.repository.UsuariosRepository;
@@ -50,7 +50,7 @@ public class UsuarioController {
 	}
 	
 	
-	@PostMapping("/novo")
+	@PostMapping( { "/novo", "{\\d+}" } )
 	public ModelAndView salvar(@Valid Usuario usuario, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return novo(usuario);
@@ -97,6 +97,17 @@ public class UsuarioController {
 			
 		
 		cadastroUsuarioService.alterarStatus(codigos, statusUsuario);
+	}
+	
+	/**
+	 * Será usado para EDITAR o usuario	 * 
+	 */
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable Long codigo) {
+		Usuario usuario = usuarios.buscarComGrupos(codigo);
+		ModelAndView mv = novo(usuario);
+		mv.addObject(usuario);
+		return mv;
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +20,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
 @Table(name = "venda")
+@DynamicUpdate // Para apenas atualizar a parte ALTERADA
 public class Venda {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,8 +64,9 @@ public class Venda {
 
 	/**
 	 * Cascade = CascadeType.ALL ==: inclui os itens ao cadastrar um VENDA
+	 * orphanRemoval = apagar os Itens SEM Vendas (IMportante para EDICAO, quando se tem COLECOES)
 	 */
-	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemVenda> itens;
 
 	@Transient
@@ -71,6 +77,14 @@ public class Venda {
 
 	@Transient
 	private LocalTime horarioEntrega;
+	
+	@PostLoad
+	private void postLoad() {
+		if (dataHoraEntrega != null) {
+			this.dataEntrega = this.dataHoraEntrega.toLocalDate();
+			this.horarioEntrega = this.dataHoraEntrega.toLocalTime();
+		}
+	}
 
 	public Long getCodigo() {
 		return codigo;
@@ -223,6 +237,19 @@ public class Venda {
 				.add(Optional.ofNullable(valorFrete).orElse(BigDecimal.ZERO)) // Cria um OPTIONAL que pode ser NULO (e ser = ZERO se nulo)
 				.subtract(Optional.ofNullable(valorDesconto).orElse(BigDecimal.ZERO));
 		return valorTotal;
+	}
+	
+	public Long getDiasCriacao() {
+		LocalDate inicio = dataCriacao != null ? dataCriacao.toLocalDate() : LocalDate.now();
+		return ChronoUnit.DAYS.between(inicio, LocalDate.now()); // faz a CONTAGEM de dias da data da Criacao da VENDA / PEDIDO
+	}
+	
+	public boolean isSalvarPermitido() {
+		return !status.equals(StatusVenda.CANCELADA);
+	}
+	
+	public boolean isSalvarProibido() {
+		return !isSalvarPermitido();
 	}
 
 	@Override

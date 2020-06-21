@@ -64,7 +64,7 @@ public class UsuariosRepositoryImpl implements UsuariosRepositoryQueries {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
 		
 		paginacaoUtil.preparar(criteria, pageable);
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		//criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		adicionarFiltro(filtro, criteria);
 		
 		List<Usuario> filtrados = criteria.list();
@@ -91,7 +91,7 @@ public class UsuariosRepositoryImpl implements UsuariosRepositoryQueries {
 				criteria.add(Restrictions.ilike("email", filtro.getEmail(), MatchMode.START));
 			}
 			
-			criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN);
+			//criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN);
 			
 			if (filtro.getGrupos() != null && !filtro.getGrupos().isEmpty()) {
 				
@@ -119,6 +119,16 @@ public class UsuariosRepositoryImpl implements UsuariosRepositoryQueries {
 				
 			}
 		}
+	}
+
+	@Transactional(readOnly = true) // readOnly = apenas para pesquisa
+	@Override
+	public Usuario buscarComGrupos(Long codigo) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
+		criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN); // traz os grupos junto com cada USUARIO
+		criteria.add(Restrictions.eq("codigo", codigo)); // Filtrado pelo CODIGO
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY); // Agrupar por USUARIO
+		return (Usuario) criteria.uniqueResult();
 	}
 
 	

@@ -72,6 +72,10 @@ public class Usuario implements Serializable {
 	public boolean isNovo() {
 		return this.codigo == null;
 	}
+	
+	public boolean isEdicao() {
+		return codigo != null;
+	}
 
 	public Long getCodigo() {
 		return codigo;

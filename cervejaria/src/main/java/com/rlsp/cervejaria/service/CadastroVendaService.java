@@ -2,8 +2,10 @@ package com.rlsp.cervejaria.service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +23,19 @@ public class CadastroVendaService {
 	
 	@Transactional
 	public Venda salvar(Venda venda) {
+		
+		if (venda.isSalvarProibido()) {
+			throw new RuntimeException("Usuário tentando salvar uma venda proibida");
+		}
+		
 		/**
 		 * Pega a DATA / HORA para nova VENDA
 		 */
 		if (venda.isNova()) {
 			venda.setDataCriacao(LocalDateTime.now());
+		} else {
+			Venda vendaExistente = vendas.findById(venda.getCodigo()).orElse(null);
+			venda.setDataCriacao(vendaExistente.getDataCriacao());
 		}
 		
 				
@@ -43,10 +53,23 @@ public class CadastroVendaService {
 	
 	@Transactional
 	public void emitir(Venda venda) {
-		venda.setStatus(StatusVenda.EMITIDA);
+		venda.setStatus(StatusVenda.EMITIDA);		
 		salvar(venda);
+		System.out.println(" >>> Status Venda : " + venda.getStatus());
 	}
 
-	
+	/**
+	 * principal.usuario ==> QUEM CRIOU o Pedido
+	 * hasRole('CANCELAR_VENDA') ==> USUARIO com a ROLE "CANCELAR_VENDA
+	 * @param venda
+	 */
+	@PreAuthorize("#venda.usuario == principal.usuario or hasRole('CANCELAR_VENDA')")
+	@Transactional
+	public void cancelar(Venda venda) {
+		Venda vendaExistente = vendas.findById(venda.getCodigo()).orElse(null);
+		
+		vendaExistente.setStatus(StatusVenda.CANCELADA);
+		vendas.save(vendaExistente);
+	}
 	
 }

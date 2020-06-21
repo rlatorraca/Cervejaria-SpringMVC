@@ -17,5 +17,6 @@ public interface UsuariosRepository extends JpaRepository<Usuario, Long>, Usuari
 
 	public List<Usuario> findByCodigoIn(Long[] codigos);
 
-	public Page<Usuario> filtrar(UsuarioFilter usuarioFilter, Pageable pageable);
+	//public Page<Usuario> filtrar(UsuarioFilter usuarioFilter, Pageable pageable);
+	
 }
