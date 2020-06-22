@@ -3,7 +3,8 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/LayoutPadrao}"
-	xmlns:brewer="http://brewer.algaworks.com">
+	xmlns:cervejaria="http://brewer.algaworks.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
 	
 <head>
 	<title>Pesquisa de estilos</title>
@@ -47,7 +48,7 @@
 					<tr>
 						<th class="table-estilos-col-codigo">Código</th>
 						<th>
-							<brewer:order page="${pagina}" field="nome" text="Nome"/>
+							<cervejaria:order page="${pagina}" field="nome" text="Nome"/>
 						</th>
 						<th class="table-col-acoes"></th>
 					</tr>
@@ -58,10 +59,13 @@
 						<td class="text-center" th:text="${estilo.codigo}">1</td>
 						<td th:text="${estilo.nome}">Pale Lager</td>
 						<td class="text-center">
-							<a class="btn  btn-link  btn-xs" title="Editar"> 
+							<a class="btn  btn-link  btn-xs" title="Editar"
+								th:href="@{/estilos/{codigo}(codigo=${estilo.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn  btn-link  btn-xs" title="Excluir">
+							<a class="btn  btn-link  btn-xs js-exclusao-btn" title="Excluir"
+									data:url="@{/estilos/{codigo}(codigo=${estilo.codigo})}"
+									data:objeto="${estilo.nome}">
 								<i class="glyphicon glyphicon-remove"></i>
 							</a>
 						</td>
@@ -73,7 +77,7 @@
 			</table>
 		</div>
 		
-		<brewer:pagination page="${pagina}"/>
+		<cervejaria:pagination page="${pagina}"/>
 		
 	</div>
 

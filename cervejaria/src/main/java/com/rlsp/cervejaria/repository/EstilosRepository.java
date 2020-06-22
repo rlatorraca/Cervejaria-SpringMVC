@@ -11,10 +11,12 @@ import com.rlsp.cervejaria.repository.helper.estilo.EstilosRepositoryQueries;
 
 
 
-@Qualifier("estilos")
+//@Qualifier("estilos")
 @Repository
 public interface EstilosRepository extends JpaRepository<Estilo, Long>,  EstilosRepositoryQueries{
 
 	public Optional<Estilo> findByNomeIgnoreCase(String nome);
+	
+	public Estilo findByCodigo(Long codigo);
 	
 }

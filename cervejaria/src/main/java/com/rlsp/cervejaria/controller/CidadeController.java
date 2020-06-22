@@ -12,9 +12,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +31,7 @@ import com.rlsp.cervejaria.repository.CidadesRepository;
 import com.rlsp.cervejaria.repository.EstadosRepository;
 import com.rlsp.cervejaria.repository.filter.CidadeFilter;
 import com.rlsp.cervejaria.service.CadastroCidadeService;
+import com.rlsp.cervejaria.service.exception.ImpossivelExcluirEntidadeException;
 import com.rlsp.cervejaria.service.exception.NomeCidadeJaCadastradaException;
 
 @Controller
@@ -78,11 +82,11 @@ public class CidadeController {
 	 */
 	//@CacheEvict(value = "cidades", allEntries = true)
 	
-	@PostMapping("/nova")
+	@PostMapping({"/nova", "/nova/{codigo}"})
 	@CacheEvict(value = "cidades", key="#cidade.estado.codigo", condition="#cidade.temEstado()")
 	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
-			System.out.println(" >>> Era pra imprimir os ERRORs");
+			
 			return nova(cidade);
 			
 		}
@@ -110,5 +114,21 @@ public class CidadeController {
 		return mv;
 	}
 	
+	@DeleteMapping("/{codigo}")
+	public ResponseEntity<?> excluir(@PathVariable("codigo") Cidade cidade) {
+		try {
+			this.cadastroCidadeService.excluir(cidade);
+		} catch (ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("/{codigo}")
+	public ModelAndView atualizar(@PathVariable("codigo") Cidade cidade) {
+		ModelAndView mv = this.nova(cidade);
+		mv.addObject(this.cidades.findByCodigoFetchingEstado(cidade.getCodigo()));
+		return mv;
+	}
 	
 }

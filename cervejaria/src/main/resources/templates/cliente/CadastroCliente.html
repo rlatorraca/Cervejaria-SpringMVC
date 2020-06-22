@@ -18,7 +18,8 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-10">
-					<h1>Cadastro de Cliente</h1>
+					<h1 th:if="${cliente.novo}">Cadastro de cliente</h1>
+					<h1 th:unless="${cliente.novo}" th:text="|Edição do cliente :  ${cliente.nome}|">Edição de cliente</h1>
 				</div>
 				
 				<div class="col-sm-2">
@@ -40,10 +41,14 @@
 			<i class="fa  fa-exclamation-circle"></i> Já existe um produto com o nome informado.
 		</div> -->
 
-			<form method="POST" th:object="${cliente}" th:action="@{/clientes/novo}">
+			<!-- <form method="POST" th:object="${cliente}" th:action="@{/clientes/novo}">  -->
+			<form method="POST" th:object="${cliente}" 
+				th:action="${cliente.novo} ? @{/clientes/novo} : @{/clientes/{codigo}(codigo=${cliente.codigo})}">
 				
 				<!-- ELEMENTO do dialeto personalizado -->
 				<cervejaria:message/>	
+				
+				<input type="hidden" th:field="*{codigo}" /> 
 				
 				<div class="row">
 					<div class="form-group  col-sm-12 bw-required"  cervejaria:classforerror="nome">
@@ -93,7 +98,7 @@
 				
 				<div class="form-group  col-sm-8 bw-required"  cervejaria:classforerror="cpfOuCnpj" >
 					<label for="cpfOuCnpj" class="control-label" >CPF/CNPJ</label>
-					<input type="text" class="form-control" id="cpfOuCnpj" th:field="*{cpfOuCnpj}" disabled/>
+					<input type="text" class="form-control" id="cpfOuCnpj" th:field="*{cpfOuCnpj}" th:disabled="${cliente.novo}" />
 				</div>
 			</div>
 

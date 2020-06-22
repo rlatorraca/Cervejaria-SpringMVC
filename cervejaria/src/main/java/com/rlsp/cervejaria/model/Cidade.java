@@ -67,6 +67,12 @@ public class Cidade implements Serializable{
 		
 	
 	//----------------------------------------------------
+	
+	
+	public boolean isNova() {
+		return this.codigo == null;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

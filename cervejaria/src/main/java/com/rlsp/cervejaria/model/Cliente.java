@@ -76,6 +76,10 @@ public class Cliente implements Serializable {
 		return TipoPessoa.removerFormatacao(this.cpfOuCnpj);
 	}
 	
+	public boolean isNovo() {
+		return this.codigo == null;
+	}
+	
 	@PostLoad
 	private void postLoad() {
 		this.cpfOuCnpj = this.tipoPessoa.formatar(this.cpfOuCnpj);
