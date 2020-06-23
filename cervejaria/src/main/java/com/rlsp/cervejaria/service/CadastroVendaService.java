@@ -2,9 +2,9 @@ package com.rlsp.cervejaria.service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rlsp.cervejaria.model.StatusVenda;
 import com.rlsp.cervejaria.model.Venda;
 import com.rlsp.cervejaria.repository.VendasRepository;
+import com.rlsp.cervejaria.service.event.venda.VendaEvent;
 
 
 
@@ -20,6 +21,10 @@ public class CadastroVendaService {
 
 	@Autowired
 	private VendasRepository vendas;
+	
+	@Autowired
+	private ApplicationEventPublisher publisher; // Usado para atualizar o ESTOQUE em caso de uma VENDA
+	
 	
 	@Transactional
 	public Venda salvar(Venda venda) {
@@ -55,7 +60,9 @@ public class CadastroVendaService {
 	public void emitir(Venda venda) {
 		venda.setStatus(StatusVenda.EMITIDA);		
 		salvar(venda);
-		System.out.println(" >>> Status Venda : " + venda.getStatus());
+		
+		publisher.publishEvent(new VendaEvent(venda));
+		
 	}
 
 	/**
