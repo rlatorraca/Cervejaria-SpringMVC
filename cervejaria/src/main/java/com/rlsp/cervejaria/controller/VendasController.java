@@ -1,5 +1,6 @@
 package com.rlsp.cervejaria.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,11 +21,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rlsp.cervejaria.controller.page.PageWrapper;
 import com.rlsp.cervejaria.controller.validator.VendaValidator;
+import com.rlsp.cervejaria.dto.VendaMes;
+import com.rlsp.cervejaria.dto.VendaOrigem;
 import com.rlsp.cervejaria.mail.Mailer;
 import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.model.ItemVenda;
@@ -233,6 +237,16 @@ public class VendasController {
 		
 		attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
 		return new ModelAndView("redirect:/vendas/" + venda.getCodigo());
+	}
+	
+	@GetMapping("/totalPorMes")
+	public @ResponseBody List<VendaMes> listarTotalVendaPorMes() {
+		return vendas.totalPorMes();
+	}
+	
+	@GetMapping("/porOrigem")
+	public @ResponseBody List<VendaOrigem> vendasPorNacionalidade() {
+		return this.vendas.totalPorOrigem();
 	}
 
 	private ModelAndView mvTabelaItensVenda(String uuid) {

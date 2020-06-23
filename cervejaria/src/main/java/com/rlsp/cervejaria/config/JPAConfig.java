@@ -65,7 +65,9 @@ public class JPAConfig {
 		factory.setDataSource(dataSource); // Pega as configuracoes do Data Source (metodo ACIMA)
 		factory.setJpaVendorAdapter(jpaVendorAdapter); // Pegar as configuracoes do Hibernate (metodos ACIMA)
 		factory.setPackagesToScan(Cerveja.class.getPackage().getName()); // Pega o nome do pacote da Classe Cerveja
+		factory.setMappingResources("sql/consultas-nativas.xml"); // Faz o mapeamento para usar as consultas SQL
 		factory.afterPropertiesSet(); // cria o FACTORY faz depois que tudo estiver pronto
+		
 		return factory.getObject();
 	}
 	

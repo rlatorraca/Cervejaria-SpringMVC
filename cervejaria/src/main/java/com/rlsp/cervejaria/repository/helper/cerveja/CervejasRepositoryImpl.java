@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.rlsp.cervejaria.dto.CervejaDTO;
+import com.rlsp.cervejaria.dto.ValorItensEstoque;
 import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.repository.filter.CervejaFilter;
 import com.rlsp.cervejaria.repository.paginacao.PaginacaoUtil;
@@ -156,5 +157,11 @@ public class CervejasRepositoryImpl  implements CervejasRepositoryQueries{
 					.getResultList();
 		
 		return cervejasFiltradas;
+	}
+	
+	@Override
+	public ValorItensEstoque valorItensEstoque() {
+		String query = "select new com.rlsp.cervejaria.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
+		return manager.createQuery(query, ValorItensEstoque.class).getSingleResult();
 	}
 }
