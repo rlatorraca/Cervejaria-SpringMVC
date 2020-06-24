@@ -2,11 +2,14 @@ package com.rlsp.cervejaria.config.init;
 
 import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration.Dynamic;
 
 import org.springframework.web.filter.FormContentFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.rlsp.cervejaria.config.AWSS3Config;
 import com.rlsp.cervejaria.config.JPAConfig;
 import com.rlsp.cervejaria.config.MailConfig;
 import com.rlsp.cervejaria.config.SecurityConfig;
@@ -27,7 +30,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		
-		return new Class<?>[] { JPAConfig.class , ServiceConfig.class,  SecurityConfig.class};
+		return new Class<?>[] { JPAConfig.class , ServiceConfig.class,  SecurityConfig.class, AWSS3Config.class};
 		//return null;
 	}
 
@@ -83,5 +86,13 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	}
 	
 	
+	/**
+	 * Usado para configurar o Storage da Foto (storage-local = LOCAL = computador) ou (storage-aws = na aws)
+	 */
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException {
+		super.onStartup(servletContext);
+		servletContext.setInitParameter("spring.profiles.default", "local"); // O padrao vai ser n o Computador
+	}
 
 }

@@ -17,7 +17,7 @@ public class CervejaListener {
 	 */
 	@EventListener(condition = "#evento.temFoto() and #evento.novaFoto()") // so vai chamar se TIVER UMA FOTO vinculada
 	public void cervejaSalva(CervejaSalvaEvent evento) {
-		fotoStorage.salvar(evento.getCerveja().getFoto());
+		//fotoStorage.salvar(evento.getCerveja().getFoto());
 	}
 	
 }

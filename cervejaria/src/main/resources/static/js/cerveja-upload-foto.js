@@ -6,6 +6,7 @@ Cervejaria.UploadFoto = (function() {
 		this.inputNomeFoto = $('input[name=foto]');
 		this.inputContentType = $('input[name=contentType]');
 		this.novaFoto = $('input[name=novaFoto]');
+		this.inputURLFoto = $('input[name=urlFoto]');
 		
 		this.htmlFotoCervejaTemplate = $('#foto-cerveja').html();
 		this.template = Handlebars.compile(this.htmlFotoCervejaTemplate);
@@ -115,7 +116,11 @@ Cervejaria.UploadFoto = (function() {
 	    
 	    if (this.inputNomeFoto[0].defaultValue) {
 			//onUploadCompleto.call(this, { nome:  this.inputNomeFoto[0].defaultValue, contentType: this.inputContentType[0].defaultValue});
-	    	renderizarFoto.call(this, { nome:  this.inputNomeFoto[0].defaultValue, contentType: this.inputContentType[0].defaultValue});
+	    	renderizarFoto.call(this, { nome:  this.inputNomeFoto[0].defaultValue, 
+	    							    contentType: this.inputContentType[0].defaultValue, 
+	    							    url : this.inputURLFoto[0].defaultValue
+	    							   }
+	    						);
 		}    
 		
 	}	
@@ -124,6 +129,8 @@ Cervejaria.UploadFoto = (function() {
 	function onUploadCompleto(resposta) {
 			
 		this.novaFoto.val('true');
+		this.inputURLFoto.val(resposta.response.url);
+		
 		renderizarFoto.call(this, resposta);
 		
 		/*
@@ -160,35 +167,42 @@ Cervejaria.UploadFoto = (function() {
 	
 	function renderizarFoto(resposta){
 		
-		if(resposta.response)
+		if(resposta.response){
 			this.inputNomeFoto.val(resposta.response.nome);
-		else {
-			this.inputNomeFoto.val(resposta.nome);
-		}
-		
-		if(resposta.response) {
 			this.inputContentType.val(resposta.response.contentType);
+			this.inputURLFoto.val(resposta.response.url);
 		} else {
 			this.inputContentType.val(resposta.contentType);
+			this.inputNomeFoto.val(resposta.nome);
+			this.inputURLFoto.val(resposta.url);
 		}
+		
+//		if(resposta.response) {
+//			this.inputContentType.val(resposta.response.contentType);
+//		} else {
+//			this.inputContentType.val(resposta.contentType);
+//		}
 		
 		this.uploadDrop.addClass('hidden');
 		
 		var foto='';
 		
+		/*
 		if (this.novaFoto.val() == 'true') {
 			foto = 'temp/';
-		}
+		} */
 		
 		var htmlFotoCerveja;
 		
+		
 		if(resposta.response){
-			foto += resposta.response.nome
-			htmlFotoCerveja = this.template({foto: foto});
+			foto += resposta.response.url;
+			//htmlFotoCerveja = this.template({foto: foto});			
 		} else {
-			foto += resposta.nome;
-			htmlFotoCerveja = this.template({foto: foto});
-		}
+			foto += resposta.url;
+			//htmlFotoCerveja = this.template({foto: foto});
+		} 
+		htmlFotoCerveja = this.template({url: foto});
 		//var htmlFotoCerveja = this.template({nomeFoto: resposta.response.nome});
 		this.containerFotoCerveja.append(htmlFotoCerveja);
 		

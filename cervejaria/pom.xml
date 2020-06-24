@@ -86,14 +86,18 @@
 
 		<!-- JUNIT -->
 		<junit-version>4.13</junit-version>
-		
+
 		<!-- JAVA Mail -->
-		<java-mail-version>1.6.2</java-mail-version>			
+		<java-mail-version>1.6.2</java-mail-version>
+
+		<!-- AWS -->
+		<aws-version>1.11.808</aws-version>
+
 
 	</properties>
 
 	<build>
-		<finalName>${project.name}</finalName>
+		<finalName>${artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<!-- compilador do Maven -->
@@ -334,7 +338,14 @@
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
-			<version>${java-mail-version}</version>			
+			<version>${java-mail-version}</version>
+		</dependency>
+
+		<!-- AWS -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>${aws-version}</version>
 		</dependency>
 
 	</dependencies>

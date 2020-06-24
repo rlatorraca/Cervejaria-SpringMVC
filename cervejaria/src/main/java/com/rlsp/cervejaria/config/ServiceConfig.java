@@ -8,7 +8,7 @@ import com.rlsp.cervejaria.storage.FotoStorage;
 import com.rlsp.cervejaria.storage.local.FotoStorageLocal;
 
 @Configuration()
-@ComponentScan(basePackages = "com.rlsp.cervejaria.service")
+@ComponentScan(basePackages = { "com.rlsp.cervejaria.service", "com.rlsp.cervejaria.storage" })
 public class ServiceConfig {
 
 	

@@ -121,6 +121,21 @@ public class Cerveja implements Serializable {
 		return codigo == null;
 	}
 
+	@Transient
+	private String urlFoto;
+	
+	
+	
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
+
 	public Long getCodigo() {
 		return codigo;
 	}
