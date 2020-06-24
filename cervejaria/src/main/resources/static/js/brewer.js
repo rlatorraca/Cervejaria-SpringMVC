@@ -20,6 +20,10 @@ Cervejaria.MaskMoney = (function(){
 		this.decimal.maskMoney({ decimal: ",", thousands: ".", allowZero: true });
 		this.plain.maskMoney({ precision: 0 , thousands: ",", allowZero: true });
 		
+		// using masknumber.js
+		//this.decimal.maskMoney({ decimal: ",", thousands: "."});
+		//this.plain.maskMoney({ interger: true , thousands: "," });
+		
 	}
 	
 	return MaskMoney;

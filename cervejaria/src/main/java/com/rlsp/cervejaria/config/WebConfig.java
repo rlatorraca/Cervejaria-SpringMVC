@@ -2,7 +2,6 @@ package com.rlsp.cervejaria.config;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -14,19 +13,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -35,6 +36,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
+import com.rlsp.cervejaria.config.format.BigDecimalFormatter;
 import com.rlsp.cervejaria.controller.BeerController;
 import com.rlsp.cervejaria.controller.converter.CidadeConverter;
 import com.rlsp.cervejaria.controller.converter.EstadoConverter;
@@ -155,13 +157,32 @@ public class WebConfig implements WebMvcConfigurer {
 	 * Faz o PT-BR o padrao de configuracao da APLICACAO
 	 * @return
 	 */
-	@Bean	
-	public LocaleResolver localeResolver() {
-		//return new FixedLocaleResolver(new Locale("pt", "BR"));
-		SessionLocaleResolver localeResolver = new SessionLocaleResolver();		
-	    localeResolver.setDefaultLocale(new Locale("pt", "BR"));//StringUtils.parseLocaleString("en")
-
-	    return localeResolver;
+//	@Bean	
+//	public LocaleResolver localeResolver() {
+//		//return new FixedLocaleResolver(new Locale("pt", "BR"));
+//		SessionLocaleResolver localeResolver = new SessionLocaleResolver();		
+//	    localeResolver.setDefaultLocale(new Locale("pt", "BR"));//StringUtils.parseLocaleString("en")
+//
+//	    return localeResolver;
+//	}
+	
+//	@Bean
+//	public LocaleResolver localeResolver() {
+//	    SessionLocaleResolver slr = new SessionLocaleResolver();
+//	    slr.setDefaultLocale(Locale.CANADA);
+//	    return slr;
+//	}
+	
+	@Bean
+	public LocaleChangeInterceptor localeChangeInterceptor() {
+	    LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+	    lci.setParamName("lang");
+	    return lci;
+	}
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+	    registry.addInterceptor(localeChangeInterceptor());
 	}
 	
 	/**
@@ -179,10 +200,12 @@ public class WebConfig implements WebMvcConfigurer {
 		/**
 		 * Converte valores BigDecimais que entrarem no form respeitando o padrao da mascara
 		 */
-		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,###,##0.00");
+//		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,###,##0.00"); // Usado se nao precisar de INTERNACIONALIZACAO
+		BigDecimalFormatter bigDecimalFormatter = new BigDecimalFormatter("#,###,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);
 		
-		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
+//		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");           // Usado se nao precisar de INTERNACIONALIZACAO
+		BigDecimalFormatter integerFormatter = new BigDecimalFormatter("#,##0");
 		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
 		
 		// API de Datas a partir JAVA 8
@@ -227,6 +250,14 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
 	
+	@Bean
+	public ResourceBundleMessageSource messageSource() {
+	    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+	    messageSource.setBasename("messages");	   
+	    return messageSource;
+	}
+	
+	
 	/*
 	 * - Usando para fazer a INTEGRACAO entre o SPRING MVC + SPRING JPA, permitindo a busca de um Elemento de uma ENTIDADE
 	 *  sem, precisar usar a funcao/metodo findById()
@@ -236,5 +267,20 @@ public class WebConfig implements WebMvcConfigurer {
 	public DomainClassConverter<FormattingConversionService> domainClassConverter() {
 		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
+	
+	/*
+	 * Usado para INTERNACIONALIZAR as MENSAGENS de ERRO 
+	 */
+	@Bean
+	public LocalValidatorFactoryBean validator() {
+	    LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
+	    validatorFactoryBean.setValidationMessageSource(messageSource());
+	    
+	    return validatorFactoryBean;
+	}
 
+	@Override
+	public Validator getValidator() {
+		return validator();
+	}
 }

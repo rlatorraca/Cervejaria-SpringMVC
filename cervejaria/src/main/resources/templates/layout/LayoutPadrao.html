@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+<html th:lang="${#locale.language}"  xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
@@ -46,7 +46,8 @@
 	<script th:src="@{'/layout/javascripts/vendors.min.js'}"></script>
 	<script th:src="@{'/layout/javascripts/algaworks.min.js'}"></script>
 	
-	<script th:src="@{'/js/vendors/jquery.maskMoney.min.js'}"></script>
+	 <script th:src="@{'/js/vendors/jquery.maskMoney.min.js'}"></script>
+	<!--<script th:src="@{'/js/vendors/jquery.masknumber.min.js'}"></script>  -->
 	<script th:src="@{'/js/vendors/jquery.mask.min.js'}"></script>
 
 	<script th:src="@{'/js/vendors/bootstrap-datepicker.js'}"></script>
@@ -60,4 +61,6 @@
 	
 	<th:block layout:fragment="js-extra"></th:block>
 </body>
+
+
 </html>

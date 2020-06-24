@@ -27,7 +27,8 @@ public @interface SKU {
 	 * Sobrescreve o a mensagem padrao do "pattern" 
 	 */
 	@OverridesAttribute(constraint = Pattern.class, name = "message")
-	String message() default "SKU deve seguir o padrão XX9999";
+	//String message() default "SKU deve seguir o padrão XX9999";
+	String message() default "{com.rlsp.cervejaria.constraints.SKU.message}";
 	
 	
 	Class<?>[] groups() default {}; // Para agrupar validacoes
