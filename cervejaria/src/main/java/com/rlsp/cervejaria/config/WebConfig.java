@@ -2,6 +2,7 @@ package com.rlsp.cervejaria.config;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -22,12 +23,15 @@ import org.springframework.format.support.FormattingConversionService;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -131,6 +135,7 @@ public class WebConfig implements WebMvcConfigurer {
 	 * applicationContext : Objeto do Spring recebido com a Inicialziacao (implementando "ApplicationContextAware")
 	 * 
 	 */
+	
 	private ITemplateResolver templateResolver() {
 		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver(); // Resolve templates do SPRING
 		resolver.setApplicationContext(applicationContext); 
@@ -176,14 +181,22 @@ public class WebConfig implements WebMvcConfigurer {
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 	    LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-	    lci.setParamName("lang");
+	    lci.setParamName("lang");	    
 	    return lci;
 	}
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 	    registry.addInterceptor(localeChangeInterceptor());
+//		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+//		localeChangeInterceptor.setParamName("lang");
+//		registry.addInterceptor(localeChangeInterceptor);
 	}
+	
+    @Bean
+    public LocaleResolver localeResolver() {
+        return new CookieLocaleResolver();
+    }
 	
 	/**
 	 * Registro dos CONVERSORES (String --> Objeto)

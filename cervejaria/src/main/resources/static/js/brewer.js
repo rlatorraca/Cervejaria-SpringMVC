@@ -116,7 +116,85 @@ Cervejaria.recuperarValor = function(valorFormatado) {
 	return numero._value;
 }
 
+
+Cervejaria.UrlBundle = (function(){
+	
+	//Inicializacao
+	function UrlBundle() {	
+		
+		this.inputUrlEn = $('.js-languages-en');
+		this.inputUrlFr = $('.js-languages-fr');
+		this.inputUrlPt = $('.js-languages-pt');
+		
+
+		
+	}
+	
+	//Execucao
+	UrlBundle.prototype.enable = function(){	
+		
+		getUrl(this.inputUrlFr.data('lang'));
+		getUrl(this.inputUrlPt.data('lang'));
+		getUrl(this.inputUrlEn.data('lang'));
+		
+		//$('.js-languages-en').on('click', onSelectecLanguage.bind(this));
+		//$('.js-languages-fr').on('click', onSelectecLanguage.bind(this));
+		//$('.js-languages-pt').on('click', onSelectecLanguage.bind(this));	
+		
+	}
+	
+	function getUrl(language) {
+		var linkRaw = window.location.href 
+		var existOnUrl = linkRaw.search('lang=');
+		var link ;
+		if (existOnUrl != -1){ // Se achou o lang n
+			 var url = window.location.href;
+             url = url.split('?lang=');
+             url = url[0];             
+             link = url + "?lang=" + language;
+             
+		} else {
+			link = window.location.href + "?lang=" + language;
+			
+			
+		}	
+		
+		var atributo = ".js-languages-"+language.slice(0,2);
+		$(atributo).removeAttr("href");
+		$(atributo).attr("href", link);
+		retorno = $(atributo).attr('href'); 
+		
+				
+		return retorno;
+	}
+	
+	function onSelectecLanguage(evento){	
+		var languageChosen = $(evento.currentTarget); // Pega quem DISPAROU o EVENTO de CLICK
+		var tongue = languageChosen[0].dataset.lang;
+		var lang = tongue.slice(0,2);
+		
+		//setUptongue(lang);
+	}
+	
+	function setUpTongue(tongue){
+		$('.js-languages-en').removeClass('selected');
+		$('.js-languages-fr').removeClass('selected');
+		$('.js-languages-pt').removeClass('selected');		
+		var atributo = ".js-languages-"+tongue
+		$(atributo).addClass('selected');		
+	}
+	
+	return UrlBundle;
+})();
+
+
+
+
+
+
 $(function() {
+
+	
 	var maskMoney = new Cervejaria.MaskMoney();
 	maskMoney.enable();
 	
@@ -131,4 +209,7 @@ $(function() {
 	
 	var security = new Cervejaria.Security();
 	security.enable();
+	
+	var urlBundle = new Cervejaria.UrlBundle();
+	urlBundle.enable();
 });

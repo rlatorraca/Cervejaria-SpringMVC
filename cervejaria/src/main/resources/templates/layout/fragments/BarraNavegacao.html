@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${#locale.language}"  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
 
 <body>
 
@@ -19,18 +20,35 @@
 							class="fa  fa-bars"></i></a></li>
 				</ul>
 			</div>
-
-			<ul class="nav navbar-nav  navbar-right">
-				<li>
-					<!-- <p class="nav-bar-text" th:text="${#authentication.name}"></p> --> 
-					<a class="nav-bar-text" th:text="${#authentication.principal.usuario.nome}"></a>
-				</li>
-				<li>
-					<a th:href="@{/logout}"><em class="fa  fa-sign-out"></em></a>
-				</li>
-			</ul>
+			
+			<div class="js-useramelogged" >
+				<ul class="nav navbar-nav navbar-right ">
+					<li>
+						<!-- <p class="nav-bar-text" th:text="${#authentication.name}"></p> -->
+						<a class="nav-bar-text"
+						th:text="${#authentication.principal.usuario.nome}"></a>
+					</li>
+					<li><a th:href="@{/logout}"><em class="fa  fa-sign-out"></em></a>
+					</li>
+				</ul>
+			</div>
+			
+			<div id="js-languages">
+				<ul class="nav navbar-nav ">
+					<li><a href="#" class="js-languages-en" data:lang="en_CA" th:class="__${#locale.language}__=='en'?'selected js-languages-en':'js-languages-en'"
+						data-th-text="#{label.lang.en}"></a></li>
+					<li><a href="#" class="js-languages-fr" data:lang="fr_CA" th:class="__${#locale.language}__=='fr'?'selected js-languages-fr':'js-languages-fr'"
+						data-th-text="#{label.lang.fr}"></a></li>
+					<li><a href="#" class="js-languages-pt" data:lang="pt_BR" th:class="__${#locale.language}__=='pt'?'selected js-languages-pt':'js-languages-pt'"
+						data-th-text="#{label.lang.pt}"></a></li>
+				</ul>
+			</div>
+			
+			
 
 		</div>
 	</nav>
 </body>
+
+
 </html>
