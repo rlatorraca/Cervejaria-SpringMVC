@@ -26,6 +26,7 @@ import com.rlsp.cervejaria.dto.ValorItensEstoque;
 import com.rlsp.cervejaria.model.Cerveja;
 import com.rlsp.cervejaria.repository.filter.CervejaFilter;
 import com.rlsp.cervejaria.repository.paginacao.PaginacaoUtil;
+import com.rlsp.cervejaria.storage.FotoStorage;
 
 public class CervejasRepositoryImpl  implements CervejasRepositoryQueries{
 
@@ -34,6 +35,9 @@ public class CervejasRepositoryImpl  implements CervejasRepositoryQueries{
 	
 	@Autowired
 	private PaginacaoUtil paginacaoUtil;
+	
+	@Autowired
+	private FotoStorage fotoStorage;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -147,14 +151,17 @@ public class CervejasRepositoryImpl  implements CervejasRepositoryQueries{
 	/**
 	 * Usado para mostra a CERVEJA com FOTO na pagina de VENDAS / PEDIDOS	 * 
 	 */
+	
 	public List<CervejaDTO> porSkuOuNome(String skuOuNome) {
 		
 		String jpql = "select new com.rlsp.cervejaria.dto.CervejaDTO(codigo, sku, nome, origem, valor, foto) "
 				+ "from Cerveja where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
 		
 		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
-					.setParameter("skuOuNome", skuOuNome + "%")
+					.setParameter("skuOuNome", "%" + skuOuNome + "%")
 					.getResultList();
+				
+		cervejasFiltradas.forEach(c -> c.setUrlThumbnailFoto(fotoStorage.getUrl(FotoStorage.THUMBNAIL_PREFIX + c.getFoto())));
 		
 		return cervejasFiltradas;
 	}

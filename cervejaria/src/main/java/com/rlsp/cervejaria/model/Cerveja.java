@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -25,9 +26,10 @@ import javax.validation.constraints.Size;
 
 import org.springframework.util.StringUtils;
 
+import com.rlsp.cervejaria.repository.listener.CervejaEntityListener;
 import com.rlsp.cervejaria.validation.SKU;
 
-
+@EntityListeners(CervejaEntityListener.class) // Listener usado para pegar o link da cerveja para ser usado em "PesquisaCerveja"
 @Entity
 @Table(name = "cerveja")
 public class Cerveja implements Serializable {
@@ -124,7 +126,8 @@ public class Cerveja implements Serializable {
 	@Transient
 	private String urlFoto;
 	
-	
+	@Transient
+	private String urlThumbnailFoto;
 	
 	public String getUrlFoto() {
 		return urlFoto;
@@ -242,7 +245,6 @@ public class Cerveja implements Serializable {
 	}
 	
 	
-
 	public boolean isNovaFoto() {
 		return novaFoto;
 	}
@@ -250,6 +252,15 @@ public class Cerveja implements Serializable {
 
 	public void setNovaFoto(boolean novaFoto) {
 		this.novaFoto = novaFoto;
+	}
+	
+	public String getUrlThumbnailFoto() {
+		return urlThumbnailFoto;
+	}
+
+
+	public void setUrlThumbnailFoto(String urlThumbnailFoto) {
+		this.urlThumbnailFoto = urlThumbnailFoto;
 	}
 
 
