@@ -1,11 +1,16 @@
 package com.rlsp.cervejaria.config;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -34,11 +39,35 @@ public class JPAConfig {
 	 * Faz a configuracao para ligar ao context.xml[Data source] (src/main/webapp/context.xml)
 	 * context.xml ==> serve pra configurar o Tomcat
 	 */
+	//@Profile("local")
 	@Bean
 	public DataSource dataSource() {
 		JndiDataSourceLookup dataSourceLookup = new JndiDataSourceLookup(); //recuper o arquivo context.xml
 		dataSourceLookup.setResourceRef(true); //procura dentro do Conteiner = Tomcat ??? Configurando dentro do Tomcat
 		return dataSourceLookup.getDataSource("jdbc/cervejariaDB");
+	}
+	
+	/**
+	 * Configuracao do HEROKU para conectar o DB 
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	//@Profile("prod")
+	//@Bean
+	public DataSource dataSourceProd() throws URISyntaxException {
+		URI jdbUri = new URI(System.getenv("JAWSDB_URL"));
+
+	    String username = jdbUri.getUserInfo().split(":")[0];
+	    String password = jdbUri.getUserInfo().split(":")[1];
+	    String port = String.valueOf(jdbUri.getPort());
+	    String jdbUrl = "jdbc:mysql://" + jdbUri.getHost() + ":" + port + jdbUri.getPath();
+	    
+	    BasicDataSource dataSource = new BasicDataSource(); // da dependencia "Commons dbp2"
+	    dataSource.setUrl(jdbUrl);
+	    dataSource.setUsername(username);
+	    dataSource.setPassword(password);
+	    dataSource.setInitialSize(10); // tamanho do pool de Conexoes
+	    return dataSource;
 	}
 	
 	/**

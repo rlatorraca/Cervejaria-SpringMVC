@@ -55,7 +55,8 @@ public class MailConfig {
 		mailSender.setPort(587);
 		
 		mailSender.setUsername(env.getProperty("email.username"));
-		mailSender.setPassword(env.getProperty("email.password"));
+		//mailSender.setPassword(env.getProperty("email.password"));
+		mailSender.setPassword(env.getProperty("SENDGRID_PASSWORD"));
 
 		Properties props = new Properties();
 		props.put("mail.transport.protocol", "smtp");
