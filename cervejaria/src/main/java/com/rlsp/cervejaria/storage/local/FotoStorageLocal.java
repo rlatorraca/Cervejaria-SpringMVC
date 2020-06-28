@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +22,10 @@ import net.coobird.thumbnailator.name.Rename;
  * FotoStorageLocal e FotoStorageS3 ambos implementam FotoStorage (interface)
  *  - 
  */
-@Profile("storage-local")
+@Profile("local")
 @Component 
 public class FotoStorageLocal implements FotoStorage {
+
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FotoStorageLocal.class);
 	private static final String THUMBNAIL_PREFIX = "thumbnail.";
@@ -96,17 +96,19 @@ public class FotoStorageLocal implements FotoStorage {
 		}
 	}
 	
-	private String renomearArquivo(String nomeOriginal) {
-		String novoNome = UUID.randomUUID().toString() + "_" + nomeOriginal; // Acrescente um STRING RANDOMICA na frente do nome do arquivo
-		
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug(String.format("Nome original: %s, novo nome: %s", nomeOriginal, novoNome));
-		}
-		
-		return novoNome;
-		
-	}
-
+	/*
+	 * private String renomearArquivo(String nomeOriginal) { String novoNome =
+	 * UUID.randomUUID().toString() + "_" + nomeOriginal;
+	 * 
+	 * if (LOGGER.isDebugEnabled()) {
+	 * LOGGER.debug(String.format("Nome original: %s, novo nome: %s", nomeOriginal,
+	 * novoNome)); }
+	 * 
+	 * return novoNome;
+	 * 
+	 * }
+	 */
+	
 //	@Override
 //	public void salvar(String foto) {
 //		try {
@@ -155,6 +157,8 @@ public class FotoStorageLocal implements FotoStorage {
 
 	@Override
 	public String getUrl(String foto) {
+		System.out.println("getURL - LOCAL");
+		
 		return "http://localhost:8080/cervejaria/fotos/" + foto;
 	}
 

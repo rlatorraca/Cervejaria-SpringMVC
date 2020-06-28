@@ -14,6 +14,7 @@ Cervejaria.UploadFoto = (function() {
 		this.containerFotoCerveja = $('.js-container-foto-cerveja');
 		
 		this.uploadDrop = $('.js-upload');
+		this.imgLoading = $('.js-img-loading');
 	}
 	
 	
@@ -38,10 +39,7 @@ Cervejaria.UploadFoto = (function() {
 	        	var token = $('input[name=_csrf]').val();
 	    		var header = $('input[name=_csrf_header]').val();
 	    		environment.headers[header] = token;
-	    		
-
-	    		
-	    		
+	
 	    		//console.log(environment.headers);
 	    		//environment.headers(header, token); // Adicona o Token na requisicao
 	            
@@ -60,27 +58,16 @@ Cervejaria.UploadFoto = (function() {
 	            console.log('error', arguments);
 	        },
 	        
-//	            console.log(arguments[0].response.nome);
-//	            this.inputNomeFoto.val(arguments[0].response.nome);
-	            //$('input[name=foto]').val(arguments[0].response.nome);
-	            
-//	            this.inputContentType.val(arguments[0].response.contentType);
-				//$('input[name=contentType]').val(arguments[0].response.contentType);
-	            
-//	            this.uploadDrop.addClass('hidden');
-//	    		var htmlFotoCerveja = this.template({nomeFoto: arguments[0].response.nome});
-//	    		this.containerFotoCerveja.append(htmlFotoCerveja);
-//	    		
-//	    		$('.js-remove-foto').on('click', onRemoverFoto.bind(this));
-//	        	
-//	        },
 
 	        loadStart: function (e) {
 	            console.log('loadStart', arguments);
-
+	            
+	            $('.js-img-loading').removeClass('hidden');
+	            
 	            bar.removeAttribute('hidden');
 	            bar.max = e.total;
 	            bar.value = e.loaded;
+	            
 	        },
 
 	        progress: function (e) {
@@ -124,7 +111,9 @@ Cervejaria.UploadFoto = (function() {
 		}    
 		
 	}	
-	
+	function uploadLoadingImage(resposta){
+		this.imgLoading.removeClass('hidden');
+	}
 
 	function onUploadCompleto(resposta) {
 			
@@ -133,6 +122,7 @@ Cervejaria.UploadFoto = (function() {
 		
 		renderizarFoto.call(this, resposta);
 		
+		 $('.js-img-loading').addClass('hidden');
 		/*
 		if(resposta.response)
 			this.inputNomeFoto.val(resposta.response.nome);

@@ -22,7 +22,7 @@ public interface FotoStorage {
 
 	public String getUrl(String foto);
 	
-//	default String renomearArquivo(String nomeOriginal) {
-//		return UUID.randomUUID().toString() + "_" + nomeOriginal;
-//	}
+	default String renomearArquivo(String nomeOriginal) {
+		return UUID.randomUUID().toString() + "_" + nomeOriginal;
+	}
 }

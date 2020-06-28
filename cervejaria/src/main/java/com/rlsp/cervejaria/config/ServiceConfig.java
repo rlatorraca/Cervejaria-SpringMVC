@@ -1,19 +1,17 @@
 package com.rlsp.cervejaria.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import com.rlsp.cervejaria.service.CadastroCervejaService;
 import com.rlsp.cervejaria.storage.FotoStorage;
-import com.rlsp.cervejaria.storage.local.FotoStorageLocal;
 
 @Configuration()
-@ComponentScan(basePackages = { "com.rlsp.cervejaria.service", "com.rlsp.cervejaria.storage" })
+@ComponentScan(basePackageClasses =  { CadastroCervejaService.class, FotoStorage.class})
 public class ServiceConfig {
 
 	
-	@Bean
-	public FotoStorage fotoStorage() {
-		return new FotoStorageLocal();
-	}
+	/*
+	 * @Bean public FotoStorage fotoStorage() { return new FotoStorageLocal(); }
+	 */
 }

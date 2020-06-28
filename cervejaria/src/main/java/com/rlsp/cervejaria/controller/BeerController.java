@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
@@ -58,6 +59,7 @@ public class BeerController{
 		mv.addObject("sabores", Sabor.values());
 		mv.addObject("estilos", estilos.findAll());
 		mv.addObject("origens", Origem.values());
+		getActiveProfiles();
 		//cervejas.findAll();
 		// model.addAttribute(new Beer()); //cria e passa o OBJETO de "Beer" para o HTML
 		return mv;
@@ -152,4 +154,13 @@ public class BeerController{
 		mv.addObject(cerveja); // Adiciona as informacoes da CERVEJA e chama a pagina de cadastro da CERVEJA (mudando para Editar)
 		return mv;
 	}
+	
+	 @Autowired
+	 private Environment environment;
+	 
+	 public void getActiveProfiles() {
+	        for (String profileName : environment.getActiveProfiles()) {
+	            System.out.println("Currently active profile - " + profileName);
+	        }  
+	   }
 }
