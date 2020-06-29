@@ -3,11 +3,13 @@ package com.rlsp.cervejaria.config;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -74,7 +76,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @EnableSpringDataWebSupport
 @EnableCaching
 @EnableAsync // Habilita as chamadas assicronas (usado pelo EMAIL - Mailer.class)
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer,ApplicationContextAware {
 //public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
 
 
@@ -84,9 +86,25 @@ public class WebConfig implements WebMvcConfigurer {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-//	@Override
-//	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-//		this.applicationContext = applicationContext;
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
+	
+	/**
+	 * Configura o ViewResolver para o JasperReport 
+	 *  - Usado ate o Spring 4
+	 */
+//	@Bean
+//	public ViewResolver jasperReportsViewResolver(DataSource datasource) {
+//		JasperReportsViewResolver resolver = new JasperReportsViewResolver();
+//		resolver.setPrefix("classpath:/relatorios/");
+//		resolver.setSuffix(".jasper");
+//		resolver.setViewNames("relatorio_*");
+//		resolver.setViewClass(JasperReportsMultiFormatView.class);
+//		resolver.setJdbcDataSource(datasource);
+//		resolver.setOrder(0);
+//		return resolver;
 //	}
 
 	/**

@@ -3,6 +3,7 @@ package com.rlsp.cervejaria.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
@@ -12,6 +13,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
+@Profile("prod")
 @Configuration
 @PropertySource(value = { "file://${HOME}/.cervejaria-s3.properties" }, ignoreResourceNotFound = true)
 public class S3Config {
@@ -24,10 +26,6 @@ public class S3Config {
 	  
 	  BasicAWSCredentials credenciais = new  BasicAWSCredentials(env.getProperty("AWS_ACCESS_KEY"),
 	  env.getProperty("AWS_SECRET_ACCESS_KEY"));
-	  System.out.println(env.getProperty("AWS_ACCESS_KEY"));
-	  System.out.println(env.getProperty("AWS_SECRET_ACCESS_KEY"));
-	  
-	  
 	  
 	  //String regiao = Region.getRegion(Regions.US_EAST_1); 
 		/*
