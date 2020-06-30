@@ -1,13 +1,17 @@
 package com.rlsp.cervejaria.config;
 
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
 import java.time.format.DateTimeFormatter;
+
+import javax.cache.Caching;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
@@ -250,10 +254,15 @@ public class WebConfig implements WebMvcConfigurer,ApplicationContextAware {
 	 * Implementacao do CACHE
 	 *  - Esse padrao eh do SPRING (
 	 *  - NAO RECOMENDADO para producao
+	 * @throws Exception 
 	 */
 	@Bean
-	public CacheManager chacheManager() {
-		 return new ConcurrentMapCacheManager();  //guarda o CACHE em MAP (SPRING)
+	public CacheManager chacheManager() throws Exception {		 
+		
+		return new JCacheCacheManager(Caching.getCachingProvider().getCacheManager(
+				getClass().getResource("/cache/ehcache.xml").toURI(),
+				getClass().getClassLoader()
+				)); // Pega um implementacao de de cache do EhCache
 		
 		 /* >> Usado para GUAVA
 		 CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder()
@@ -265,6 +274,8 @@ public class WebConfig implements WebMvcConfigurer,ApplicationContextAware {
 		cacheManager.setCacheBuilder(cacheBuilder);
 		return cacheManager;
 		*/
+		 
+		 //return new ConcurrentMapCacheManager();  //guarda o CACHE em MAP (SPRING)
 	}
 	
 	/*
