@@ -3,6 +3,7 @@ package com.rlsp.cervejaria.thymeleaf;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.standard.StandardDialect;
@@ -14,13 +15,9 @@ import com.rlsp.cervejaria.thymeleaf.processor.OrderElementTagProcessor;
 import com.rlsp.cervejaria.thymeleaf.processor.PaginationElementTagProcessor;
 
 
-
+@Component
 public class CervejariaDialect extends AbstractProcessorDialect {
 
-//	protected CervejariaDialect(String name, String prefix, int processorPrecedence) {
-//		super(name, prefix, processorPrecedence);
-//		
-//	}
 
 	public CervejariaDialect() {
 		super("RLSP Cervejaria", "cervejaria", StandardDialect.PROCESSOR_PRECEDENCE);

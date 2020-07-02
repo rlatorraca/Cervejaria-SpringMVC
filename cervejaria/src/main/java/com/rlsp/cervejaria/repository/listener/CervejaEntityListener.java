@@ -23,6 +23,7 @@ public class CervejaEntityListener {
 		/**
 		 * Pertence ao SPRING
 		 *  - Resolve as injecoes de dependencias dependentes para fotoStorage baseado no ATUAL CONTEXTO
+		 *  - Isto pois, CervejaEntity nao faz parte do Contexto de Cervejaria
 		 */		
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 		
