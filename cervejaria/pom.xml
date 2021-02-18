@@ -61,7 +61,7 @@
 		<!-- ><spring-data-jpa-version>1.11.23.RELEASE</spring-data-jpa-version> -->
 
 		<!-- JSON -->
-		<jackson-json-version>2.10.4</jackson-json-version>
+		<jackson-json-version>2.10.5.1</jackson-json-version>
 
 		<!-- Glassfish-el -->
 		<glassfish-el-version>3.0.1-b11</glassfish-el-version>
