@@ -79,7 +79,7 @@
 		<beansutils-version>1.9.4</beansutils-version>
 
 		<!-- Spring SECURITY -->
-		<spring-security-version>5.3.2.RELEASE</spring-security-version>
+		<spring-security-version>5.3.9.RELEASE</spring-security-version>
 
 		<!-- Spring SECURITY EXTRA / Mostar o Nome do USuario na tela -->
 		<spring-extra-spring-security>3.0.4.RELEASE</spring-extra-spring-security>
