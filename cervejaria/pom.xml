@@ -30,6 +30,7 @@
 		<!-- Spring Framework (Bill of Materials) ==> Controla a compabilidade 
 			das versões dos projetos Maven -->
 		<spring-framework.version>5.2.5.RELEASE</spring-framework.version>
+		
 
 		<!-- Servlet API -->
 		<servlet.version>4.0.1</servlet.version>
@@ -79,7 +80,8 @@
 		<beansutils-version>1.9.4</beansutils-version>
 
 		<!-- Spring SECURITY -->
-		<spring-security-version>5.3.2.RELEASE</spring-security-version>
+		<spring-security-version>5.3.8</spring-security-version>
+		
 
 		<!-- Spring SECURITY EXTRA / Mostar o Nome do USuario na tela -->
 		<spring-extra-spring-security>3.0.4.RELEASE</spring-extra-spring-security>
