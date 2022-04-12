@@ -29,7 +29,7 @@
 		<!-- Spring MVC -->
 		<!-- Spring Framework (Bill of Materials) ==> Controla a compabilidade 
 			das versões dos projetos Maven -->
-		<spring-framework.version>5.2.5.RELEASE</spring-framework.version>
+		<spring-framework.version>5.2.9.RELEASE</spring-framework.version>
 		
 
 		<!-- Servlet API -->
