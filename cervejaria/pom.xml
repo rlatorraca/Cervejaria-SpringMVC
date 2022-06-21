@@ -52,7 +52,7 @@
 		<hibernate.version>5.4.15.Final</hibernate.version>
 
 		<!-- MySQL -->
-		<mysql-connector-java.version>8.0.20</mysql-connector-java.version>
+		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 
 		<!-- Flyway - migacao do DB -->
 		<flyway-maven-plugin.version>6.4.1</flyway-maven-plugin.version>
