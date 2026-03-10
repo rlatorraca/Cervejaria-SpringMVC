@@ -1,0 +1,53 @@
+name: CI - Build, Test & Security Scan
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        user: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      - name: Cache Maven packages
+        user: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hasFiles('**/pom.xml')}}
+
+      - name: Build with Maven
+        run: mvn -f cervejaria/pom.xml clean package -DskipTest
+
+      -name: Run Tests
+       run: mvn -f cervejaria/pom.xml test
+
+    security-scan:
+      name: Security Scan
+      runs-on: ubuntu-latest
+      needs: build-and-test
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Trivy - Vulnerability Scan
+          user: aquasecurity/trivy-action@master
+          with:
+            scan-type: 'fs'
+            scan-ref: '.'
+            severity: 'CRITICAL, HIGH'
+            format: 'table'
+            exit-code: '0'
+
