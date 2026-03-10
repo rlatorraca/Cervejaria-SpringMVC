@@ -39,20 +39,20 @@
 		<thymeleaf.version>3.0.13.RELEASE</thymeleaf.version>
 
 		<!-- Bean Validation / Hibernate Validator -->
-		<hibernate-validator.version>6.1.2.Final</hibernate-validator.version>
+		<hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
 
 		<!-- Thymeleaf - Layout Dialect -->
 		<thymeleaf-layout-dialect.version>2.4.1</thymeleaf-layout-dialect.version>
 
 		<!-- Logging -->
-		<log4j.version>2.17.1</log4j.version>
+		<log4j.version>2.25.3</log4j.version>
 		<jcl-over-slf4j.version>2.0.0-alpha1</jcl-over-slf4j.version>
 
 		<!-- Hibernate -->
 		<hibernate.version>5.4.15.Final</hibernate.version>
 
 		<!-- MySQL -->
-		<mysql-connector-java.version>8.0.20</mysql-connector-java.version>
+		<mysql-connector-java.version>9.2.0</mysql-connector-java.version>
 
 		<!-- Flyway - migacao do DB -->
 		<flyway-maven-plugin.version>6.4.1</flyway-maven-plugin.version>
@@ -62,7 +62,7 @@
 		<!-- ><spring-data-jpa-version>1.11.23.RELEASE</spring-data-jpa-version> -->
 
 		<!-- JSON -->
-		<jackson-json-version>2.12.6.1</jackson-json-version>
+		<jackson-json-version>2.12.7.1</jackson-json-version>
 
 		<!-- Glassfish-el -->
 		<glassfish-el-version>3.0.1-b11</glassfish-el-version>
@@ -74,13 +74,13 @@
 		<thymeleaf-tags-version>2.0.1</thymeleaf-tags-version>
 
 		<!-- Google Guave - Cache Profissional -->
-		<guava.version>32.0.0-jre</guava.version>
+		<guava.version>32.0.1</guava.version>
 
 		<!-- Apache Beans Utils -->
-		<beansutils-version>1.9.4</beansutils-version>
+		<beansutils-version>1.11.0</beansutils-version>
 
 		<!-- Spring SECURITY -->
-		<spring-security-version>5.3.8</spring-security-version>
+		<spring-security-version>5.7.13</spring-security-version>
 		
 
 		<!-- Spring SECURITY EXTRA / Mostar o Nome do USuario na tela -->
@@ -99,7 +99,7 @@
 		<commons-dbcp2-version>2.7.0</commons-dbcp2-version>
 
 		<!-- JasperReports -->
-		<jasperreports.version>6.13.0</jasperreports.version>
+		<jasperreports.version>7.0.4</jasperreports.version>
 
 		<!-- JasperReports Fonts -->
 		<jasperreports-fonts.version>6.13.0</jasperreports-fonts.version>
@@ -180,8 +180,8 @@
 			<dependencies>
 				<!-- MySQL Driver -->
 				<dependency>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
+					<groupId>com.mysql</groupId>
+					<artifactId>mysql-connector-j</artifactId>
 					<version>${mysql-connector-java.version}</version>
 					<scope>compile</scope>
 				</dependency>
